@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(sudo apt install:*)",
+      "Bash(apt install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(echo $VIRTUAL_ENV)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(venv/bin/python:*)",
+      "Bash(venv/Scripts/python.exe -m pip install:*)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": []
+  }
+}
