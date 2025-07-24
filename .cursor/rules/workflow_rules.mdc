@@ -1,0 +1,168 @@
+# Workflow.mcd - Reglas de Trabajo para INGLAT
+
+## Flujo de Trabajo con Claude Code + Cursor
+
+### Antes de cualquier tarea:
+1. **LEER CONTEXTO**: Revisar `CLAUDE.md` para entender el flujo
+2. **CONSULTAR DOCS**: Según el tipo de tarea, revisar documentación específica:
+   - **UI/UX**: `docs/UI_UX_doc.md` - Para cualquier cambio visual o de experiencia
+   - **Arquitectura**: `docs/Project_structure.md` - Para cambios estructurales o nuevas apps
+   - **Implementación**: `docs/Implementation.md` - Para detalles técnicos específicos
+   - **Bugs**: `docs/Bug_tracking.md` - Para verificar errores conocidos
+   - **Reglas**: `docs/PRD.md` - Para validar requisitos de negocio
+
+### Proceso de Desarrollo:
+
+#### 1. ANÁLISIS (Obligatorio)
+```
+- Leer y entender la tarea completamente
+- Identificar archivos afectados
+- Consultar documentación relevante
+- Verificar si hay bugs relacionados documentados
+```
+
+#### 2. PLANIFICACIÓN (Requiere Aprobación)
+```
+- Crear plan detallado en todo.md
+- Listar tareas específicas con checkboxes
+- Identificar archivos a modificar
+- Estimar complejidad: Simple/Medio/Complejo
+- ESPERAR APROBACIÓN antes de continuar
+```
+
+#### 3. EJECUCIÓN (Automatizada tras aprobación)
+```
+- Trabajar tarea por tarea
+- Marcar completadas con ✅
+- Aplicar principio de simplicidad
+- Documentar cambios significativos
+- NO preguntar constantemente por aprobación
+```
+
+#### 4. FINALIZACIÓN
+```
+- Actualizar todo.md con sección de revisión
+- Documentar cambios en archivos relevantes
+- Reportar nuevos bugs si los hay
+- Verificar que todo funciona correctamente
+```
+
+---
+
+## Reglas Específicas por Tipo de Tarea
+
+### Desarrollo Frontend (HTML/CSS/JS)
+**SIEMPRE consultar `docs/UI_UX_doc.md` antes de comenzar**
+- Mantener consistencia con el diseño establecido
+- Verificar responsive design en mobile, tablet, desktop
+- Optimizar imágenes y assets
+- Validar accesibilidad básica
+- Seguir convenciones de naming del proyecto
+
+### Desarrollo Backend (Django/Python)
+**SIEMPRE consultar `docs/Project_structure.md` para arquitectura**
+- Seguir estructura MVT de Django
+- Mantener separación de apps lógica
+- Aplicar PEP 8 estrictamente
+- Escribir docstrings para funciones complejas
+- Crear migraciones apropiadas
+- Validar modelos antes de migrar
+
+### Nuevas Funcionalidades
+**OBLIGATORIO consultar `docs/PRD.md` para requisitos**
+- Verificar que cumple con reglas de negocio
+- Mantener coherencia con el roadmap
+- Considerar impacto en SEO y performance
+- Documentar nueva funcionalidad en Implementation.md
+
+### Corrección de Bugs
+**PRIMERO revisar `docs/Bug_tracking.md`**
+- Verificar si el bug ya está documentado
+- Reproducir el error paso a paso
+- Aplicar fix mínimo y efectivo
+- Actualizar Bug_tracking.md con la solución
+- Escribir test si es necesario
+
+### Optimizaciones de Performance
+- Medir antes y después del cambio
+- Priorizar impacto en métricas clave (PageSpeed, tiempo de carga)
+- Mantener funcionalidad intacta
+- Documentar mejoras obtenidas
+
+---
+
+
+## Checklist de Calidad
+
+### Antes de hacer commit:
+- [ ] Código sigue PEP 8 (Python) y convenciones del proyecto
+- [ ] No hay errores en consola del navegador
+- [ ] Responsive design funciona correctamente
+- [ ] Enlaces y formularios funcionan
+- [ ] Imágenes tienen alt text apropiado
+- [ ] No hay hardcoded URLs o valores
+- [ ] Documentación actualizada si es necesario
+
+### Antes de deploy:
+- [ ] Tests pasan correctamente
+- [ ] Static files recolectados
+- [ ] Variables de entorno configuradas
+- [ ] Base de datos migrada
+- [ ] Backup realizado
+
+---
+
+## Gestión de Errores
+
+### Errores Comunes Django:
+1. **Import Error**: Verificar INSTALLED_APPS y estructura
+2. **Template Not Found**: Revisar TEMPLATES settings y rutas
+3. **Static Files**: Ejecutar collectstatic y verificar STATIC_URL
+4. **Database**: Verificar migraciones y conexión
+5. **CSRF**: Incluir {% csrf_token %} en formularios
+
+### Debugging:
+1. Usar Django Debug Toolbar en desarrollo
+2. Revisar logs de error (django.log)
+3. Verificar Network tab en DevTools
+4. Usar print() o logging para debugging específico
+
+---
+
+## Documentación de Cambios
+
+### En todo.md:
+```markdown
+## Revisión de Cambios
+
+### Archivos Modificados:
+- `apps/core/views.py` - Agregada vista ContactView
+- `templates/contact/contact.html` - Nuevo template de contacto
+- `static/css/contact.css` - Estilos para formulario
+
+
+## Principios de Desarrollo
+
+### Simplicidad Primero:
+- Un cambio a la vez
+- Funcionalidad mínima viable
+- Reutilizar código existente
+- Evitar sobre-ingeniería
+
+### Performance Always:
+- Optimizar consultas DB
+- Comprimir imágenes
+- Minificar CSS/JS en producción  
+- Usar cache inteligentemente
+
+### User Experience:
+- Feedback visual en acciones
+- Estados de carga claros
+- Mensajes de error útiles
+- Navegación intuitiva
+
+### Mantenibilidad:
+- Código autodocumentado
+- Separación de responsabilidades
+- Tests para funcionalidad crítica
+- Documentación actualizada
