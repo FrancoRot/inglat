@@ -10,7 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
+
+def get_env_variable(var_name, default=None):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        if default is not None:
+            return default
+        error_msg = f"Set the {var_name} environment variable"
+        raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d60r9p8sk!d#7=f%8_7^l*a21$*n@s8rjk&kepfr0+ve8r%9j9'
+SECRET_KEY = get_env_variable('SECRET_KEY', 'django-insecure-d60r9p8sk!d#7=f%8_7^l*a21$*n@s8rjk&kepfr0+ve8r%9j9')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = get_env_variable('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -79,11 +90,11 @@ WSGI_APPLICATION = 'INGLAT.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'inglat_db',
-        'USER': 'postgres',
-        'PASSWORD': 'franco4369',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': get_env_variable('DB_NAME', 'inglat_db'),
+        'USER': get_env_variable('DB_USER', 'postgres'),
+        'PASSWORD': get_env_variable('DB_PASSWORD', 'franco4369'),
+        'HOST': get_env_variable('DB_HOST', 'localhost'),
+        'PORT': get_env_variable('DB_PORT', '5432'),
     }
 }
 

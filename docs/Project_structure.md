@@ -26,22 +26,22 @@
 ## Estructura de Directorios
 
 ```
-inglat_project/
+codigo/
 ├── manage.py
+├── requirements.txt             # Archivo principal de dependencias
 ├── requirements/
 │   ├── base.txt
 │   ├── development.txt
 │   └── production.txt
-├── inglat/                     # Proyecto principal
+├── INGLAT/                     # Proyecto principal Django
 │   ├── __init__.py
-│   ├── settings/
-│   │   ├── __init__.py
-│   │   ├── base.py
-│   │   ├── development.py
-│   │   └── production.py
+│   ├── settings.py             # Configuración unificada (no subdirectorio)
 │   ├── urls.py
 │   ├── wsgi.py
-│   └── asgi.py
+│   ├── asgi.py
+│   ├── CLAUDE.md              # Documentación para Claude
+│   └── todo.md                # Lista de tareas
+├── inglat_project/             # Directorio adicional (revisar uso)
 ├── apps/                       # Aplicaciones Django
 │   ├── __init__.py
 │   ├── core/                   # App principal
@@ -96,18 +96,23 @@ inglat_project/
 │       └── contact.html
 ├── static/                     # Archivos estáticos
 │   ├── css/
-│   │   ├── base.css
-│   │   ├── components.css
-│   │   └── pages.css
+│   │   ├── base.css           # Estilos base con variables UI/UX
+│   │   ├── components.css     # Componentes reutilizables
+│   │   ├── pages.css          # Estilos específicos de páginas
+│   │   ├── header.css         # Estilos del header
+│   │   ├── footer.css         # Estilos del footer
+│   │   └── home.css           # Estilos específicos del home
 │   ├── js/
-│   │   ├── main.js
-│   │   ├── contact.js
-│   │   └── utils.js
+│   │   ├── base.js            # JavaScript base global
+│   │   ├── main.js            # Script principal
+│   │   ├── contact.js         # Scripts del formulario de contacto
+│   │   ├── home.js            # Scripts específicos del home
+│   │   └── utils.js           # Utilidades JavaScript
 │   ├── images/
-│   │   ├── logo/
-│   │   ├── projects/
-│   │   └── icons/
-│   └── fonts/
+│   │   ├── logo/              # Logos de la empresa
+│   │   ├── projects/          # Imágenes de proyectos
+│   │   └── icons/             # Iconos del sitio
+│   └── fonts/                 # Fuentes personalizadas
 ├── media/                      # Archivos subidos
 │   ├── projects/
 │   ├── blog/
@@ -118,13 +123,12 @@ inglat_project/
 │   ├── Implementation.md
 │   ├── UI_UX_doc.md
 │   └── Bug_tracking.md
-├── cursor/
+├── cursor/                     # Configuración del editor Cursor
 │   └── rules/
-│       ├── Generate.mdc
-│       └── Workflow.mcd
-├── CLAUDE.md
-├── todo.md
-└── README.md
+│       ├── Generate.mdc       # Reglas de generación
+│       └── Workflow.mcd       # Reglas de flujo de trabajo
+├── venv/                       # Entorno virtual Python
+└── README.md                   # Documentación principal del proyecto
 ```
 
 ## Configuración por Entornos
@@ -199,7 +203,10 @@ boto3>=1.26.0  # Para S3
 ## Convenciones para CSS y JS
 
 - Utiliza `static/css/base.css` y `static/js/base.js` para estilos y scripts globales.
-- Crea archivos por página/app en `static/css/` y `static/js/` (ej: `static/css/about.css`, `static/js/contact.js`).
+- **IMPLEMENTADO**: Archivos separados por funcionalidad:
+  - `static/css/header.css`, `static/css/footer.css`, `static/css/home.css`
+  - `static/js/home.js`, `static/js/contact.js`
+- **IMPLEMENTADO**: Variables CSS con paleta de colores INGLAT en `base.css`
 - No uses estilos ni scripts inline en los HTML.
 - Referencia los archivos en los templates con `{% load static %}` y las etiquetas `<link>` y `<script>`.
 
