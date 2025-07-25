@@ -22,7 +22,18 @@
       "Bash(for app in core projects blog contact dashboard)",
       "Bash(do touch apps/$app/__init__.py apps/$app/models.py apps/$app/views.py apps/$app/urls.py apps/$app/admin.py apps/$app/apps.py)",
       "Bash(done)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(venv/Scripts/pip.exe install:*)",
+      "Bash(venv/Scripts/python.exe manage.py makemigrations:*)",
+      "Bash(venv/Scripts/python.exe manage.py migrate:*)",
+      "Bash(venv/Scripts/python.exe:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(DJANGO_SETTINGS_MODULE=INGLAT.settings.development venv/Scripts/python.exe manage.py migrate)",
+      "Bash(PYTHONPATH=/mnt/c/Users/franc/Desktop/INGLAT/codigo venv/Scripts/python.exe manage.py migrate)",
+      "Bash(rm:*)",
+      "Bash(venv/Scripts/python manage.py runserver:*)"
     ],
     "deny": []
   }

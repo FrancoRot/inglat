@@ -1,1 +1,0 @@
-# Development settings for INGLAT project

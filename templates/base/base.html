@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}INGLAT - Instalaciones de Energía Renovable{% endblock %}</title>
+    <meta name="description" content="{% block description %}INGLAT es líder en instalaciones de energía fotovoltaica y renovable. Especialistas en paneles solares, mantenimiento y monitorización en tiempo real.{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}energía solar, paneles solares, fotovoltaica, energía renovable, instalaciones solares, INGLAT{% endblock %}">
+    <meta name="author" content="INGLAT">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{% block og_title %}INGLAT - Instalaciones de Energía Renovable{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Especialistas en energía fotovoltaica con soluciones integrales para instalaciones solares{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{% block og_url %}https://inglat.com{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% load static %}{% static 'images/og-image.jpg' %}{% endblock %}">
+    <meta property="og:site_name" content="INGLAT">
+    <meta property="og:locale" content="es_ES">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}INGLAT - Energía Renovable{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Líderes en instalaciones fotovoltaicas{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% load static %}{% static 'images/twitter-card.jpg' %}{% endblock %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% load static %}{% static 'images/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% load static %}{% static 'images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% load static %}{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% load static %}{% static 'images/favicon-16x16.png' %}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "INGLAT",
+        "description": "Empresa especializada en instalaciones de energía renovable y fotovoltaica",
+        "url": "https://inglat.com",
+        "logo": "{% static 'images/logo/inglat-logo.png' %}",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+34-XXX-XXX-XXX",
+            "contactType": "customer service",
+            "areaServed": "ES",
+            "availableLanguage": "Spanish"
+        },
+        "sameAs": [
+            "https://www.linkedin.com/company/inglat",
+            "https://www.facebook.com/inglat",
+            "https://www.instagram.com/inglat"
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Calle Principal 123",
+            "addressLocality": "Ciudad",
+            "postalCode": "12345",
+            "addressCountry": "ES"
+        }
+    }
+    </script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only sr-only-focusable">Saltar al contenido principal</a>
+    
+    <!-- Header -->
+    <header class="header" role="banner">
+        {% include 'base/header.html' %}
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content" role="main" class="main-content">
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="alert alert--{{ message.tags }}" role="alert">
+                        {{ message }}
+                        <button type="button" class="alert__close" aria-label="Cerrar mensaje">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}
+        <!-- Contenido específico de cada página -->
+        {% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        {% include 'base/footer.html' %}
+    </footer>
+    
+    <!-- JavaScript Files -->
+    <script src="{% static 'js/base.js' %}" defer></script>
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Cookie Consent (if needed) -->
+    {% block cookie_consent %}
+    <!-- Cookie consent implementation would go here -->
+    {% endblock %}
+    
+    <!-- Google Analytics or similar (if needed) -->
+    {% block analytics %}
+    <!-- Analytics code would go here -->
+    {% endblock %}
+</body>
+</html>
