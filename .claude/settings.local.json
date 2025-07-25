@@ -17,7 +17,12 @@
       "Bash(git config:*)",
       "Bash(git remote add:*)",
       "Bash(git push:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
+      "Bash(for app in core projects blog contact dashboard)",
+      "Bash(do touch apps/$app/__init__.py apps/$app/models.py apps/$app/views.py apps/$app/urls.py apps/$app/admin.py apps/$app/apps.py)",
+      "Bash(done)",
+      "Bash(find:*)"
     ],
     "deny": []
   }
