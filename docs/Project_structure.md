@@ -193,3 +193,26 @@ boto3>=1.26.0  # Para S3
 - Prefijos vendor cuando sea necesario
 - Comentarios en español
 - Archivos separados por funcionalidad
+
+---
+
+## Convenciones para CSS y JS
+
+- Utiliza `static/css/base.css` y `static/js/base.js` para estilos y scripts globales.
+- Crea archivos por página/app en `static/css/` y `static/js/` (ej: `static/css/about.css`, `static/js/contact.js`).
+- No uses estilos ni scripts inline en los HTML.
+- Referencia los archivos en los templates con `{% load static %}` y las etiquetas `<link>` y `<script>`.
+
+### Ejemplo de referencia en un template:
+```django
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/about.js' %}"></script>
+```
+
+- Comenta y etiqueta el código en español.
+- Si cambias la estructura, actualiza esta documentación.
+
+---

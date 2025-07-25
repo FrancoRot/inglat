@@ -107,3 +107,38 @@ DEFAULT_FROM_EMAIL = 'noreply@inglat.com'
 - **Errores**: Ver `Bug_tracking.md`
 
 **Nota**: El código fuente está en los archivos .py. Este documento mantiene solo el estado y referencias del proyecto.
+
+---
+
+## Convenciones para CSS y JS
+
+### Organización de Archivos
+- Utiliza un archivo global `base.css` y `base.js` para estilos y scripts compartidos en todo el sitio.
+- Para estilos o scripts específicos de una página o app, crea archivos separados en `static/css/` y `static/js/` (ejemplo: `static/css/home.css`, `static/js/home.js`).
+- No incluyas estilos ni scripts inline en los archivos HTML. Todo debe estar en archivos separados y correctamente referenciados.
+
+### Referencia en Templates
+- En cada template HTML, incluye los archivos CSS y JS correspondientes usando `{% load static %}` y las etiquetas `<link>` y `<script>`:
+
+```django
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/home.js' %}"></script>
+```
+
+### Ejemplo de Organización
+- Para la página principal (`home.html`):
+  - Estilos globales en `base.css`.
+  - Estilos específicos en `home.css`.
+  - Scripts globales en `base.js`.
+  - Scripts específicos en `home.js`.
+
+### Reglas para Nuevos Estilos y Scripts
+- Siempre que crees una nueva página o funcionalidad, crea y referencia sus archivos CSS/JS específicos.
+- Si un estilo o script es reutilizable, muévelo a `base.css` o `base.js`.
+- Etiqueta y comenta el código en español.
+- Actualiza esta documentación si cambias la estructura o agregas nuevas convenciones.
+
+---

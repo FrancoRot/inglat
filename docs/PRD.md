@@ -55,7 +55,20 @@ Posicionar a INGLAT como líder en instalaciones de energía renovable con una p
 - **Social**: Open Graph tags
 - **Security**: HTTPS, CSRF protection
 
-
+### Organización y Referencia de CSS/JS
+- Todos los estilos y scripts deben estar en archivos separados en `static/css/` y `static/js/`.
+- Usar `base.css` y `base.js` para lo global, y archivos por página/app para lo específico.
+- Referenciar siempre desde los templates con `{% load static %}` y las etiquetas `<link>` y `<script>`.
+- Ejemplo:
+```django
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/home.js' %}"></script>
+```
+- No se permite CSS ni JS inline.
+- Comentar y etiquetar en español.
 
 ### UX/UI
 - Diseño limpio y profesional
