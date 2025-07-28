@@ -33,7 +33,27 @@
       "Bash(DJANGO_SETTINGS_MODULE=INGLAT.settings.development venv/Scripts/python.exe manage.py migrate)",
       "Bash(PYTHONPATH=/mnt/c/Users/franc/Desktop/INGLAT/codigo venv/Scripts/python.exe manage.py migrate)",
       "Bash(rm:*)",
-      "Bash(venv/Scripts/python manage.py runserver:*)"
+      "Bash(venv/Scripts/python manage.py runserver:*)",
+      "mcp__firecrawl__firecrawl_scrape",
+      "WebFetch(domain:reactbits.dev)",
+      "Bash(./venv/Scripts/python.exe --version)",
+      "Bash(./venv/Scripts/pip.exe list)",
+      "mcp__firecrawl__firecrawl_search",
+      "WebFetch(domain:www.geeksforgeeks.org)",
+      "WebFetch(domain:codepen.io)",
+      "WebFetch(domain:stackoverflow.com)",
+      "WebFetch(domain:kellylougheed.medium.com)",
+      "WebFetch(domain:www.kirupa.com)",
+      "WebFetch(domain:slicker.me)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:codepen.io)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:starfield.js.org)",
+      "Bash(./venv/Scripts/python.exe manage.py makemigrations core)",
+      "Bash(./venv/Scripts/python.exe manage.py migrate)",
+      "Bash(./venv/Scripts/python.exe manage.py runserver:*)",
+      "Bash(./venv/Scripts/python.exe manage.py check)"
     ],
     "deny": []
   }

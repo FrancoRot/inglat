@@ -11,16 +11,19 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="hero">
+    <!-- Hyperspeed Starfield Canvas -->
+    <canvas id="starfield-canvas"></canvas>
+    
     <div class="container">
         <h1 class="hero__title">{{ hero_title }}</h1>
         <p class="hero__subtitle">{{ hero_subtitle }}</p>
         
         <div class="hero__actions">
-            <a href="{% url 'contact:contact' %}" class="btn btn--accent">
-                Solicitar Presupuesto Gratuito
-            </a>
-            <a href="{% url 'core:services' %}" class="btn btn--secondary">
+            <a href="{% url 'core:services' %}" class="btn btn--primary">
                 Conocer Servicios
+            </a>
+            <a href="#proyectos" class="btn btn--secondary">
+                Ver Proyectos
             </a>
         </div>
     </div>
@@ -83,6 +86,104 @@
     </div>
 </section>
 
+<!-- Proyectos Destacados -->
+<section id="proyectos" class="projects-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Proyectos Destacados</h2>
+            <p class="section-subtitle">
+                Conoce algunos de nuestros proyectos más exitosos de instalaciones solares
+            </p>
+        </div>
+        
+        {% if featured_projects %}
+        <div class="projects-grid">
+            {% for project in featured_projects %}
+            <article class="project-card" data-project-id="{{ project.id }}">
+                <div class="project-card__image">
+                    {% if project.featured_image %}
+                        <img src="{{ project.featured_image.url }}" 
+                             alt="{{ project.title }}" 
+                             loading="lazy">
+                    {% else %}
+                        <div class="project-card__placeholder">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 7.77L18.39 18H5.61L12 7.77M12 4L2 20h20L12 4z"/>
+                                <circle cx="12" cy="10" r="2"/>
+                            </svg>
+                        </div>
+                    {% endif %}
+                    {% if project.power_capacity %}
+                        <div class="project-card__badge">{{ project.power_capacity }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="project-card__content">
+                    <div class="project-card__header">
+                        <h3 class="project-card__title">{{ project.title }}</h3>
+                        <div class="project-card__meta">
+                            <span class="project-card__location">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                {{ project.location }}
+                            </span>
+                            <span class="project-card__date">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                                </svg>
+                                {{ project.date_completed|date:"M Y" }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <p class="project-card__description">{{ project.description_short }}</p>
+                    
+                    <button class="project-card__toggle" 
+                            aria-expanded="false" 
+                            aria-controls="project-details-{{ project.id }}">
+                        <span class="project-card__toggle-text">Ver más</span>
+                        <svg class="project-card__toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="project-card__details" 
+                     id="project-details-{{ project.id }}" 
+                     aria-hidden="true">
+                    <div class="project-card__details-content">
+                        <div class="project-details">
+                            {% if project.client_type %}
+                            <div class="project-detail">
+                                <strong>Tipo de Cliente:</strong> {{ project.client_type }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if project.power_capacity %}
+                            <div class="project-detail">
+                                <strong>Potencia Instalada:</strong> {{ project.power_capacity }}
+                            </div>
+                            {% endif %}
+                            
+                            <div class="project-detail">
+                                <strong>Descripción Completa:</strong>
+                            </div>
+                            <p class="project-description-full">{{ project.description_full|linebreaks }}</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="projects-empty">
+            <p>Próximamente estaremos agregando nuestros proyectos destacados.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
 <!-- Estadísticas -->
 <section class="stats-section">
     <div class="container">
@@ -116,7 +217,7 @@
         </p>
         
         <div class="hero__actions">
-            <a href="{% url 'contact:contact' %}" class="btn btn--accent">
+            <a href="{% url 'contact:contact' %}" class="btn btn--primary">
                 Solicitar Consulta Gratuita
             </a>
             <a href="tel:+34XXX-XXX-XXX" class="btn btn--secondary">

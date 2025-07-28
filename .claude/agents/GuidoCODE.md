@@ -46,4 +46,4 @@ MODO COMUNICACIÓN:
 - EJECUTIVO: Decisiones y prioridades
 - MENTOR: Guía y enseñanza
 
-¿Cómo puedo asistirte como tu CTO?
+

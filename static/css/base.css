@@ -9,12 +9,12 @@
   --midnight-green: #065a60;          /* Verde medianoche */
   --midnight-green-2: #0b525b;        /* Verde medianoche 2 */
   --midnight-green-3: #144552;        /* Verde medianoche 3 */
-  --charcoal: #1b3a4b;                /* Carbón azulado */
+  --charcoal: #1b3a4b;                /* Carbï¿½n azulado */
   --prussian-blue: #212f45;           /* Azul prusiano */
   --space-cadet: #272640;             /* Azul espacial */
-  --dark-purple: #312244;             /* Púrpura oscuro */
-  --dark-purple-2: #3e1f47;           /* Púrpura oscuro 2 */
-  --palatinate: #4d194d;              /* Púrpura palatino */
+  --dark-purple: #312244;             /* Pï¿½rpura oscuro */
+  --dark-purple-2: #3e1f47;           /* Pï¿½rpura oscuro 2 */
+  --palatinate: #4d194d;              /* Pï¿½rpura palatino */
   
   /* Colores principales del sistema */
   --primary-color: var(--caribbean-current);
@@ -62,7 +62,7 @@
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-secondary: 'Merriweather', Georgia, serif;
   
-  /* Tamaños de fuente */
+  /* Tamaï¿½os de fuente */
   --text-sm: 0.875rem;    /* 14px */
   --text-base: 1rem;      /* 16px */
   --text-lg: 1.125rem;    /* 18px */
@@ -464,4 +464,151 @@ body {
   .container {
     padding: 0 var(--space-8);
   }
+}
+
+/* ==========================================================================
+   BotÃ³n Flotante de WhatsApp
+   ========================================================================== */
+
+.whatsapp-float {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 9999 !important;
+    width: 56px !important;
+    height: 56px !important;
+    background: #25D366 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    outline: none !important;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+    background: #20BA5A !important;
+}
+
+.whatsapp-float:focus {
+    outline: 3px solid rgba(37, 211, 102, 0.5) !important;
+    outline-offset: 2px !important;
+}
+
+.whatsapp-float svg {
+    width: 28px !important;
+    height: 28px !important;
+    color: white !important;
+    fill: white !important;
+}
+
+.whatsapp-float::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(37, 211, 102, 0.3), transparent 70%);
+    animation: whatsapp-pulse 2s infinite;
+    z-index: -1;
+}
+
+@keyframes whatsapp-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Responsive para WhatsApp */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 16px !important;
+        right: 16px !important;
+        width: 52px !important;
+        height: 52px !important;
+    }
+    
+    .whatsapp-float svg {
+        width: 26px !important;
+        height: 26px !important;
+    }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .whatsapp-float::before {
+        animation: none;
+    }
+    
+    .whatsapp-float:hover {
+        transform: none;
+    }
+}
+
+/* Screen readers */
+.whatsapp-float .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.whatsapp-float:focus .sr-only {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: var(--space-2);
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background: var(--gray-900);
+    color: var(--white);
+    border-radius: var(--border-radius);
+    font-size: var(--text-sm);
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Estilos adicionales para evitar conflictos */
+.whatsapp-float * {
+    box-sizing: border-box !important;
+}
+
+.whatsapp-float:link,
+.whatsapp-float:visited,
+.whatsapp-float:hover,
+.whatsapp-float:active {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* Consolidar estilos adicionales en la declaraciÃ³n principal */
+
+/* Asegurar posiciÃ³n fija en todos los contextos */
+body .whatsapp-float {
+    position: fixed !important;
 }

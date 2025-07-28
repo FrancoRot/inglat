@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "id": "example_001",
+      "timestamp": "2025-07-26T13:45:00.000Z",
+      "agent": "GuidoCODE",
+      "type": "architecture_decision",
+      "title": "Implementación de sistema de agentes",
+      "description": "Decisión de usar shared_memory/ para comunicación entre agentes",
+      "impact": ["communication", "scalability", "maintenance"],
+      "status": "implemented"
+    }
+  ],
+  "last_update": "2025-07-26T13:45:00.000Z"
+}
