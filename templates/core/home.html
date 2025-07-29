@@ -19,29 +19,26 @@
         <p class="hero__subtitle">{{ hero_subtitle }}</p>
         
         <div class="hero__actions">
-            <a href="{% url 'core:services' %}" class="btn btn--primary">
-                Conocer Servicios
-            </a>
-            <a href="#proyectos" class="btn btn--secondary">
+            <a href="#proyectos" class="btn btn--primary">
                 Ver Proyectos
+            </a>
+            <a href="#servicios" class="btn btn--secondary">
+                Conocer Servicios
             </a>
         </div>
     </div>
 </section>
 
 <!-- Servicios Preview -->
-<section class="services-preview">
+<section id="servicios" class="services-preview">
     <div class="container">
         <h2 class="text-center" style="font-size: var(--text-3xl); font-weight: var(--font-bold); color: var(--gray-900); margin-bottom: var(--space-4);">
             Nuestros Servicios
         </h2>
-        <p class="text-center" style="color: var(--gray-700); font-size: var(--text-lg); max-width: 600px; margin: 0 auto;">
-            Soluciones integrales en energía renovable con tecnología de vanguardia y servicio personalizado
-        </p>
-        
+            
         <div class="services-preview__grid">
             <!-- Instalación Solar -->
-            <div class="service-card">
+            <div class="service-card" data-service="instalacion">
                 <div class="service-card__icon">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 7.77L18.39 18H5.61L12 7.77M12 4L2 20h20L12 4z"/>
@@ -52,11 +49,36 @@
                 <p class="service-card__description">
                     Instalaciones fotovoltaicas completas con paneles de alta eficiencia y garantía extendida.
                 </p>
-                <a href="{% url 'core:services' %}#instalacion" class="btn btn--primary">Más información</a>
+                <button class="service-card__toggle btn btn--primary" 
+                        data-toggle="instalacion"
+                        aria-expanded="false">
+                    <span class="toggle-text">Ver más</span>
+                    <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                    </svg>
+                </button>
+                
+                <!-- Contenido desplegable -->
+                <div class="service-card__details" id="details-instalacion" aria-hidden="true">
+                    <div class="service-detail__content">
+                        <p class="service-detail__description">
+                            Realizamos instalaciones completas de sistemas fotovoltaicos con los más altos estándares de calidad. 
+                            Nuestro equipo de ingenieros especialistas se encarga de todo el proceso desde el diseño hasta la puesta en marcha.
+                        </p>
+                        <ul class="service-detail__features">
+                            <li>Análisis detallado de consumo energético</li>
+                            <li>Diseño personalizado del sistema</li>
+                            <li>Paneles solares de alta eficiencia</li>
+                            <li>Inversores de última generación</li>
+                            <li>Garantía extendida de 25 años</li>
+                            <li>Tramitación de permisos y subvenciones</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             
             <!-- Mantenimiento -->
-            <div class="service-card">
+            <div class="service-card" data-service="mantenimiento">
                 <div class="service-card__icon">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
@@ -66,11 +88,36 @@
                 <p class="service-card__description">
                     Servicio de mantenimiento preventivo y correctivo para máximo rendimiento de tu instalación.
                 </p>
-                <a href="{% url 'core:services' %}#mantenimiento" class="btn btn--primary">Más información</a>
+                <button class="service-card__toggle btn btn--primary" 
+                        data-toggle="mantenimiento"
+                        aria-expanded="false">
+                    <span class="toggle-text">Ver más</span>
+                    <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                    </svg>
+                </button>
+                
+                <!-- Contenido desplegable -->
+                <div class="service-card__details" id="details-mantenimiento" aria-hidden="true">
+                    <div class="service-detail__content">
+                        <p class="service-detail__description">
+                            Garantizamos el óptimo rendimiento de tu instalación solar con nuestro servicio de mantenimiento 
+                            preventivo y correctivo. Maximiza la vida útil y eficiencia de tu sistema.
+                        </p>
+                        <ul class="service-detail__features">
+                            <li>Revisiones periódicas programadas</li>
+                            <li>Limpieza profesional de paneles</li>
+                            <li>Verificación de conexiones eléctricas</li>
+                            <li>Análisis de rendimiento del sistema</li>
+                            <li>Reparaciones rápidas y eficaces</li>
+                            <li>Servicio técnico 24/7</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             
             <!-- Monitorización -->
-            <div class="service-card">
+            <div class="service-card" data-service="monitorizacion">
                 <div class="service-card__icon">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M3 3v18h18v-2H5V3H3zm14 7h2v7h-2v-7zm-4-4h2v11h-2V6zm-4 6h2v5H9v-5z"/>
@@ -80,7 +127,114 @@
                 <p class="service-card__description">
                     Control en tiempo real de tu instalación solar con informes detallados de rendimiento.
                 </p>
-                <a href="{% url 'core:services' %}#monitorizacion" class="btn btn--primary">Más información</a>
+                <button class="service-card__toggle btn btn--primary" 
+                        data-toggle="monitorizacion"
+                        aria-expanded="false">
+                    <span class="toggle-text">Ver más</span>
+                    <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                    </svg>
+                </button>
+                
+                <!-- Contenido desplegable -->
+                <div class="service-card__details" id="details-monitorizacion" aria-hidden="true">
+                    <div class="service-detail__content">
+                        <p class="service-detail__description">
+                            Sistema avanzado de monitorización en tiempo real que te permite controlar completamente 
+                            tu instalación solar desde cualquier dispositivo, optimizando tu independencia energética.
+                        </p>
+                        <ul class="service-detail__features">
+                            <li>Dashboard en tiempo real</li>
+                            <li>Alertas automáticas de incidencias</li>
+                            <li>Histórico detallado de producción</li>
+                            <li>Análisis predictivo de rendimiento</li>
+                            <li>App móvil para iOS y Android</li>
+                            <li>Reportes mensuales automáticos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección Nosotros -->
+<section id="nosotros" class="about-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Sobre INGLAT</h2>
+            <p class="section-subtitle">
+                Líderes en instalaciones de energía renovable con más de 10 años de experiencia
+            </p>
+        </div>
+        
+        <div class="about-content">
+            <div class="about-story">
+                <h3 class="about-story__title">Nuestra Historia</h3>
+                <p class="about-story__text">
+                    INGLAT nace de la pasión por las energías renovables y el compromiso con un futuro sostenible. 
+                    Desde nuestros inicios, nos hemos especializado en ofrecer soluciones integrales de energía 
+                    fotovoltaica, combinando la más avanzada tecnología con un servicio personalizado y de calidad.
+                </p>
+                <p class="about-story__text">
+                    Con más de 500 instalaciones completadas y un equipo de ingenieros altamente cualificados, 
+                    nos hemos consolidado como referente en el sector energético, siempre a la vanguardia de 
+                    las últimas innovaciones en monitorización y control de sistemas solares.
+                </p>
+            </div>
+            
+            <div class="about-mission">
+                <h3 class="about-mission__title">Nuestra Misión</h3>
+                <p class="about-mission__text">
+                    Acelerar la transición hacia un modelo energético sostenible, proporcionando soluciones 
+                    fotovoltaicas inteligentes que maximicen la eficiencia, reduzcan costos y contribuyan 
+                    a la preservación del medio ambiente para las generaciones futuras.
+                </p>
+            </div>
+            
+            <div class="about-values">
+                <h3 class="about-values__title">Nuestros Valores</h3>
+                <div class="values-grid">
+                    <div class="value-item">
+                        <div class="value-item__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="value-item__title">Excelencia</h4>
+                        <p class="value-item__description">Compromiso con la calidad en cada proyecto</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <div class="value-item__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <h4 class="value-item__title">Confianza</h4>
+                        <p class="value-item__description">Transparencia y honestidad in todas nuestras relaciones</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <div class="value-item__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="value-item__title">Innovación</h4>
+                        <p class="value-item__description">Tecnología de vanguardia para soluciones avanzadas</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <div class="value-item__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.06.66C6.16 17.74 9 14.26 17 8zm3.5-2L18 4l-1.5 2 1.5 2 1.5-2zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.19 0 2.34-.21 3.41-.6-.63-.78-1.35-1.6-1.98-2.4-.47.06-.94.1-1.43.1-8.28 0-15-6.72-15-15S3.72 2 12 2c8.28 0 15 6.72 15 15 0 .49-.04.96-.1 1.43.8.63 1.62 1.35 2.4 1.98.39-1.07.6-2.22.6-3.41 0-5.52-4.48-10-10-10z"/>
+                            </svg>
+                        </div>
+                        <h4 class="value-item__title">Sostenibilidad</h4>
+                        <p class="value-item__description">Compromiso con el medio ambiente y el futuro</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -217,11 +371,11 @@
         </p>
         
         <div class="hero__actions">
-            <a href="{% url 'contact:contact' %}" class="btn btn--primary">
-                Solicitar Consulta Gratuita
+            <a href="{% url 'core:simulador' %}" class="btn btn--primary">
+                Simulador Solar
             </a>
-            <a href="tel:+34XXX-XXX-XXX" class="btn btn--secondary">
-                Llamar Ahora
+            <a href="{% url 'contact:contact' %}" class="btn btn--secondary">
+                Solicitar Consulta
             </a>
         </div>
     </div>

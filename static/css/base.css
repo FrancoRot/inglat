@@ -9,12 +9,12 @@
   --midnight-green: #065a60;          /* Verde medianoche */
   --midnight-green-2: #0b525b;        /* Verde medianoche 2 */
   --midnight-green-3: #144552;        /* Verde medianoche 3 */
-  --charcoal: #1b3a4b;                /* Carb�n azulado */
+  --charcoal: #1b3a4b;                /* Carbón azulado */
   --prussian-blue: #212f45;           /* Azul prusiano */
   --space-cadet: #272640;             /* Azul espacial */
-  --dark-purple: #312244;             /* P�rpura oscuro */
-  --dark-purple-2: #3e1f47;           /* P�rpura oscuro 2 */
-  --palatinate: #4d194d;              /* P�rpura palatino */
+  --dark-purple: #312244;             /* Púrpura oscuro */
+  --dark-purple-2: #3e1f47;           /* Púrpura oscuro 2 */
+  --palatinate: #4d194d;              /* Púrpura palatino */
   
   /* Colores principales del sistema */
   --primary-color: var(--caribbean-current);
@@ -62,7 +62,7 @@
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-secondary: 'Merriweather', Georgia, serif;
   
-  /* Tama�os de fuente */
+  /* Tamaños de fuente */
   --text-sm: 0.875rem;    /* 14px */
   --text-base: 1rem;      /* 16px */
   --text-lg: 1.125rem;    /* 18px */
@@ -71,6 +71,9 @@
   --text-3xl: 1.875rem;   /* 30px */
   --text-4xl: 2.25rem;    /* 36px */
   --text-5xl: 3rem;       /* 48px */
+  --text-6xl: 3.75rem;    /* 60px */
+  --text-7xl: 4.5rem;     /* 72px */
+  --text-8xl: 6rem;       /* 96px */
   
   /* Pesos de fuente */
   --font-normal: 400;

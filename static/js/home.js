@@ -282,6 +282,98 @@ document.addEventListener('DOMContentLoaded', function() {
     
     statNumbers.forEach(num => observer.observe(num));
     
+    // === TARJETAS DE SERVICIOS EXPANDIBLES - VERSIÓN SIMPLIFICADA ===
+    
+    
+    // Función simple para inicializar tarjetas
+    function initServiceCards() {
+        const cards = document.querySelectorAll('.service-card__details');
+        const buttons = document.querySelectorAll('.service-card__toggle');
+        
+        
+        // Asegurar que todas las tarjetas estén colapsadas
+        cards.forEach((card, i) => {
+            card.classList.remove('show');
+            card.style.maxHeight = '0px';
+        });
+        
+        // Inicializar botones  
+        buttons.forEach((btn, i) => {
+            btn.setAttribute('aria-expanded', 'false');
+            const text = btn.querySelector('.toggle-text');
+            const icon = btn.querySelector('.toggle-icon');
+            if (text) text.textContent = 'Ver más';
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        });
+    }
+    
+    // Función simple de toggle
+    function toggleCard(button) {
+        const serviceType = button.getAttribute('data-toggle');
+        const card = document.getElementById(`details-${serviceType}`);
+        
+        
+        if (!card) {
+            console.error(`❌ No se encontró: details-${serviceType}`);
+            return;
+        }
+        
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        const text = button.querySelector('.toggle-text');
+        const icon = button.querySelector('.toggle-icon');
+        
+        if (isExpanded) {
+            // COLAPSAR
+            button.setAttribute('aria-expanded', 'false');
+            card.setAttribute('aria-hidden', 'true');
+            card.classList.remove('show');
+            card.style.maxHeight = '0px';
+            if (text) text.textContent = 'Ver más';
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        } else {
+            // EXPANDIR  
+            button.setAttribute('aria-expanded', 'true');
+            card.setAttribute('aria-hidden', 'false');
+            card.classList.add('show');
+            
+            // Calcular altura real del contenido
+            const content = card.querySelector('.service-detail__content');
+            if (content) {
+                const height = content.scrollHeight + 40; // +40px padding
+                card.style.maxHeight = `${height}px`;
+            }
+            
+            if (text) text.textContent = 'Ver menos';
+            if (icon) icon.style.transform = 'rotate(180deg)';
+        }
+    }
+    
+    // Configurar event listeners
+    function setupCardListeners() {
+        const buttons = document.querySelectorAll('.service-card__toggle');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleCard(this);
+            });
+            
+            // Soporte teclado
+            button.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleCard(this);
+                }
+            });
+        });
+        
+    }
+    
+    // EJECUTAR INMEDIATAMENTE (tenemos defer en el script)
+    initServiceCards();
+    setupCardListeners();
+    
+    
     // Smooth scroll para enlaces internos
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {

@@ -9,16 +9,16 @@
     <!-- Navegación Principal -->
     <nav class="header__nav" role="navigation" aria-label="Navegación principal">
         <a href="{% url 'core:home' %}" class="header__nav-link">Inicio</a>
-        <a href="{% url 'core:about' %}" class="header__nav-link">Nosotros</a>
-        <a href="{% url 'core:services' %}" class="header__nav-link">Servicios</a>
+        <a href="/#nosotros" class="header__nav-link">Nosotros</a>
+        <a href="/#servicios" class="header__nav-link">Servicios</a>
         <a href="{% url 'blog:list' %}" class="header__nav-link">Noticias</a>
         <a href="{% url 'contact:contact' %}" class="header__nav-link">Contacto</a>
     </nav>
     
     <!-- Botón CTA Principal -->
     <div class="header__cta">
-        <a href="{% url 'contact:contact' %}" class="btn btn--primary">
-            Solicitar Presupuesto
+        <a href="{% url 'core:simulador' %}" class="btn btn--primary">
+            Simulador
         </a>
     </div>
     
@@ -34,15 +34,15 @@
 <div class="header__mobile-menu" id="mobile-menu" aria-hidden="true">
     <nav class="header__mobile-nav" role="navigation" aria-label="Navegación móvil">
         <a href="{% url 'core:home' %}" class="header__mobile-link">Inicio</a>
-        <a href="{% url 'core:about' %}" class="header__mobile-link">Nosotros</a>
-        <a href="{% url 'core:services' %}" class="header__mobile-link">Servicios</a>
+        <a href="/#nosotros" class="header__mobile-link">Nosotros</a>
+        <a href="/#servicios" class="header__mobile-link">Servicios</a>
         <a href="{% url 'blog:list' %}" class="header__mobile-link">Noticias</a>
         <a href="{% url 'contact:contact' %}" class="header__mobile-link">Contacto</a>
         
         <!-- CTA en menú móvil -->
         <div class="header__mobile-cta">
-            <a href="{% url 'contact:contact' %}" class="btn btn--primary btn--full-width">
-                Solicitar Presupuesto
+            <a href="{% url 'core:simulador' %}" class="btn btn--primary btn--full-width">
+                Simulador
             </a>
         </div>
         

@@ -1,0 +1,56 @@
+<svg width="100" height="60" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="roofGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="panelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E3A8A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Very steep roof at 60 degrees -->
+  <polygon points="20,50 55,10 60,15 25,55" fill="url(#roofGradient)" stroke="#B91C1C" stroke-width="1"/>
+  
+  <!-- Solar panels following steep roof slope -->
+  <g opacity="0.9">
+    <polygon points="30,47 38,32 41,35 33,50" fill="url(#panelGradient)" stroke="#1E40AF" stroke-width="1"/>
+    <polygon points="42,35 48,25 51,28 45,38" fill="url(#panelGradient)" stroke="#1E40AF" stroke-width="1"/>
+    <polygon points="52,28 56,20 59,23 55,31" fill="url(#panelGradient)" stroke="#1E40AF" stroke-width="1"/>
+    
+    <!-- Panel grid lines -->
+    <line x1="32" y1="42" x2="35" y2="45" stroke="#60A5FA" stroke-width="0.5"/>
+    <line x1="36" y1="39" x2="39" y2="42" stroke="#60A5FA" stroke-width="0.5"/>
+    <line x1="44" y1="30" x2="47" y2="33" stroke="#60A5FA" stroke-width="0.5"/>
+    <line x1="46" y1="27" x2="49" y2="30" stroke="#60A5FA" stroke-width="0.5"/>
+    <line x1="54" y1="23" x2="57" y2="26" stroke="#60A5FA" stroke-width="0.5"/>
+  </g>
+  
+  <!-- Ground reference line -->
+  <line x1="20" y1="57" x2="80" y2="57" stroke="#374151" stroke-width="1" stroke-dasharray="2,2"/>
+  
+  <!-- Angle indicator -->
+  <path d="M 50 55 L 60 55 A 20 20 0 0 0 43 40" stroke="#EF4444" stroke-width="2" fill="none"/>
+  <text x="62" y="50" font-family="Arial, sans-serif" font-size="10" fill="#EF4444" font-weight="bold">60°</text>
+  
+  <!-- Sun rays (very steep angle) -->
+  <g opacity="0.5">
+    <path d="M5 25 L15 38" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+    <path d="M12 15 L22 28" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+    <path d="M20 8 L30 21" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+    <path d="M28 12 L38 25" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Sun -->
+    <circle cx="25" cy="8" r="3" fill="#FBBF24" opacity="0.7"/>
+  </g>
+  
+  <!-- Warning indicator -->
+  <g transform="translate(70, 15)">
+    <polygon points="5,0 10,8 0,8" fill="#EF4444" opacity="0.8"/>
+    <text x="5" y="6" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white" font-weight="bold">!</text>
+  </g>
+  
+  <!-- Labels -->
+  <text x="50" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#374151" font-weight="bold">60° - Muy Pronunciado</text>
+</svg>

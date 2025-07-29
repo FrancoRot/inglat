@@ -1,10 +1,10 @@
 # Bug_tracking.md - Seguimiento de Errores INGLAT
 
 ## Estado Actual
-**Última actualización**: 27/07/2025  
-**Bugs activos**: 16
-**Bugs resueltos este mes**: 4  
-**Total histórico**: 20
+**Última actualización**: 29/07/2025  
+**Bugs activos**: 23
+**Bugs resueltos este mes**: 7  
+**Total histórico**: 30
 
 ---
 
@@ -136,6 +136,442 @@ ALLOWED_HOSTS = get_env_variable('ALLOWED_HOSTS', 'localhost,127.0.0.1').split('
 ---
 
 ## 🔴 Bugs Activos
+
+## 🔴 CRÍTICA - Atención Inmediata
+
+## Bug Report #7
+
+### 📋 Información General
+- **Fecha**: 2025-07-27 16:00:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/INGLAT/settings.py`
+- **Línea**: 37
+- **Tipo**: Seguridad
+- **Severidad**: 🔴 Crítica
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+DEBUG=True habilitado en producción - vulnerabilidad crítica de seguridad
+
+### 💻 Código Problemático
+```python
+DEBUG = True
+```
+
+### ✅ Solución Recomendada
+```python
+DEBUG = get_env_variable('DEBUG', 'False').lower() in ['true', '1', 'yes']
+```
+
+---
+
+## Bug Report #8
+
+### 📋 Información General
+- **Fecha**: 2025-07-27 16:05:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/INGLAT/settings.py`
+- **Línea**: 95
+- **Tipo**: Seguridad
+- **Severidad**: 🔴 Crítica
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Credenciales de base de datos expuestas en código fuente (PASSWORD visible)
+
+### 💻 Código Problemático
+```python
+'PASSWORD': get_env_variable('DB_PASSWORD', 'franco4369'),
+```
+
+### ✅ Solución Recomendada
+```python
+'PASSWORD': get_env_variable('DB_PASSWORD'),  # Sin valor por defecto
+```
+
+---
+
+## Bug Report #9
+
+### 📋 Información General
+- **Fecha**: 2025-07-27 16:10:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/INGLAT/settings.py`
+- **Línea**: 34
+- **Tipo**: Seguridad
+- **Severidad**: 🔴 Crítica
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+SECRET_KEY con valor por defecto inseguro expuesto en código
+
+### 💻 Código Problemático
+```python
+SECRET_KEY = get_env_variable('SECRET_KEY', 'django-insecure-d60r9p8sk!d#7=f%8_7^l*a21$*n@s8rjk&kepfr0+ve8r%9j9')
+```
+
+### ✅ Solución Recomendada
+```python
+SECRET_KEY = get_env_variable('SECRET_KEY')  # Sin valor por defecto
+```
+
+---
+
+## 🟠 ALTA PRIORIDAD
+
+## Bug Report #10
+
+### 📋 Información General
+- **Fecha**: 2025-07-27 16:15:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/INGLAT/settings.py`
+- **Línea**: 124-130
+- **Tipo**: Configuración
+- **Severidad**: 🟠 Alta
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Configuración de internacionalización incorrecta - idioma en inglés para sitio en español
+
+### 💻 Código Problemático
+```python
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+```
+
+### ✅ Solución Recomendada
+```python
+LANGUAGE_CODE = 'es-es'
+TIME_ZONE = 'Europe/Madrid'  # o 'America/Argentina/Buenos_Aires'
+```
+
+---
+
+## Bug Report #21
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:00:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/INGLAT/settings.py`
+- **Línea**: 144
+- **Tipo**: Configuración
+- **Severidad**: 🟠 Alta
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+MEDIA_URL y MEDIA_ROOT no definidos para ImageField de Project model
+
+### 💻 Código Problemático
+```python
+# MEDIA settings missing but ImageField in Project model requires them
+```
+
+### ✅ Solución Recomendada
+```python
+# Media files (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+```
+
+---
+
+## Bug Report #13
+
+### 📋 Información General
+- **Fecha**: 2025-07-27 16:30:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/apps/core/models.py`
+- **Línea**: 102-104
+- **Tipo**: Bug
+- **Severidad**: 🟠 Alta
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+get_absolute_url referencia URL inexistente 'core:project_detail'
+
+### 💻 Código Problemático
+```python
+def get_absolute_url(self):
+    return reverse('core:project_detail', kwargs={'slug': self.slug})
+```
+
+### ✅ Solución Recomendada
+```python
+def get_absolute_url(self):
+    return reverse('projects:detail', kwargs={'slug': self.slug})
+```
+
+---
+
+## Bug Report #23
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:10:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/apps/core/models.py`
+- **Línea**: 99-100
+- **Tipo**: Bug
+- **Severidad**: 🟠 Alta
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Potencial bug de slug duplicado - no maneja unicidad automática
+
+### 💻 Código Problemático
+```python
+def save(self, *args, **kwargs):
+    if not self.slug:
+        self.slug = slugify(self.title)
+    super().save(*args, **kwargs)
+```
+
+### ✅ Solución Recomendada
+```python
+def save(self, *args, **kwargs):
+    if not self.slug:
+        self.slug = self._generate_unique_slug()
+    super().save(*args, **kwargs)
+
+def _generate_unique_slug(self):
+    slug = slugify(self.title)
+    unique_slug = slug
+    counter = 1
+    while Project.objects.filter(slug=unique_slug).exclude(pk=self.pk).exists():
+        unique_slug = f"{slug}-{counter}"
+        counter += 1
+    return unique_slug
+```
+
+---
+
+## Bug Report #25
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:20:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/apps/core/views.py`
+- **Línea**: 104
+- **Tipo**: Seguridad
+- **Severidad**: 🟠 Alta
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Conversión de datos de entrada sin validación puede causar errores o vulnerabilidades
+
+### 💻 Código Problemático
+```python
+consumo_anual = float(data.get('consumo_anual', 0))
+superficie = float(data.get('superficie', 0))
+```
+
+### ✅ Solución Recomendada
+```python
+try:
+    consumo_anual = float(data.get('consumo_anual', 0))
+    if consumo_anual < 0 or consumo_anual > 50000:
+        raise ValueError("Consumo anual fuera de rango válido")
+except (ValueError, TypeError):
+    return JsonResponse({'success': False, 'error': 'Consumo anual inválido'}, status=400)
+```
+
+---
+
+## 🟡 MEDIA PRIORIDAD
+
+---
+
+## Bug Report #24
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:15:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/apps/core/views.py`
+- **Línea**: 36-53
+- **Tipo**: Redundancia
+- **Severidad**: 🟡 Media
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Código duplicado entre HomeView (CBV) e index (FBV) - violación principio DRY
+
+### 💻 Código Problemático
+```python
+# Misma lógica duplicada en ambas vistas
+featured_projects = Project.objects.filter(is_featured=True, is_active=True)
+```
+
+### ✅ Solución Recomendada
+```python
+# Eliminar una de las dos vistas y usar solo HomeView (CBV preferido)
+# O extraer lógica común en un método helper
+```
+
+---
+
+## Bug Report #25
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:20:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/apps/core/views.py`
+- **Línea**: 104
+- **Tipo**: Seguridad
+- **Severidad**: 🟠 Alta
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Conversión de datos de entrada sin validación puede causar errores o vulnerabilidades
+
+### 💻 Código Problemático
+```python
+consumo_anual = float(data.get('consumo_anual', 0))
+superficie = float(data.get('superficie', 0))
+```
+
+### ✅ Solución Recomendada
+```python
+try:
+    consumo_anual = float(data.get('consumo_anual', 0))
+    if consumo_anual < 0 or consumo_anual > 50000:
+        raise ValueError("Consumo anual fuera de rango válido")
+except (ValueError, TypeError):
+    return JsonResponse({'success': False, 'error': 'Consumo anual inválido'}, status=400)
+```
+
+---
+
+## Bug Report #26
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:25:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/static/js/whatsapp.js`
+- **Línea**: 11
+- **Tipo**: Configuración
+- **Severidad**: 🟡 Media
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Número de teléfono hardcodeado en JavaScript con código de Argentina pero empresa parece estar en España
+
+### 💻 Código Problemático
+```javascript
+phoneNumber: '541167214369',
+```
+
+### ✅ Solución Recomendada
+```javascript
+// Verificar ubicación real de la empresa y usar código correcto
+phoneNumber: '34912345678', // Si está en España
+// O mantener Argentina si es correcto
+```
+
+---
+
+## Bug Report #27
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:30:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/apps/blog/models.py`
+- **Línea**: 1
+- **Tipo**: Arquitectura
+- **Severidad**: 🟡 Media
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Modelo de blog vacío pero app está registrada en INSTALLED_APPS
+
+### 💻 Código Problemático
+```python
+# Archivo completamente vacío
+```
+
+### ✅ Solución Recomendada
+```python
+# Implementar modelos básicos de blog o remover de INSTALLED_APPS
+from django.db import models
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    # ... resto del modelo
+```
+
+---
+
+## Bug Report #28
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:35:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/apps/contact/models.py`
+- **Línea**: 1
+- **Tipo**: Arquitectura
+- **Severidad**: 🟡 Media
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Modelo de contacto vacío pero app está registrada en INSTALLED_APPS
+
+### 💻 Código Problemático
+```python
+# Archivo completamente vacío
+```
+
+### ✅ Solución Recomendada
+```python
+# Implementar modelo de contacto o remover de INSTALLED_APPS
+from django.db import models
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100)
+    # ... resto del modelo
+```
+
+---
+
+## Bug Report #29
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:40:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/requirements.txt`
+- **Línea**: 1-9
+- **Tipo**: Dependencias
+- **Severidad**: 🟢 Baja
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+python-decouple instalado pero no utilizado en settings.py
+
+### 💻 Código Problemático
+```python
+# En requirements.txt: python-decouple==3.8
+# Pero en settings.py se usa os.environ directamente
+```
+
+### ✅ Solución Recomendada
+```python
+# Usar python-decouple para mejor manejo de variables de entorno
+from decouple import config
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
+```
+
+---
+
+## Bug Report #30
+
+### 📋 Información General
+- **Fecha**: 2025-07-29 10:45:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/templates/base/base.html`
+- **Línea**: 20, 31-34
+- **Tipo**: Recursos
+- **Severidad**: 🟡 Media
+- **Estado**: 🆕 Nuevo
+
+### 🐛 Descripción del Problema
+Referencias a imágenes que probablemente no existen (favicon, og-image, etc.)
+
+### 💻 Código Problemático
+```html
+<meta property="og:image" content="{% static 'images/og-image.jpg' %}">
+<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+```
+
+### ✅ Solución Recomendada
+```python
+# Crear las imágenes referenciadas o usar placeholders
+# Verificar que existan en static/images/
+```
+
+---
 
 ## Bug Report #7
 

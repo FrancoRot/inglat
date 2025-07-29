@@ -4,15 +4,18 @@ from . import views
 app_name = 'core'
 
 urlpatterns = [
-    # Página de inicio - usando vista función
+    # PÃ¡gina de inicio - usando vista funciÃ³n
     path('', views.index, name='home'),
     
-    # Página de inicio alternativa - usando vista basada en clase
+    # PÃ¡gina de inicio alternativa - usando vista basada en clase
     # path('', views.HomeView.as_view(), name='home'),
     
-    # Página Nosotros
+    # PÃ¡gina Nosotros
     path('nosotros/', views.AboutView.as_view(), name='about'),
     
-    # Página Servicios
+    # PÃ¡gina Servicios
     path('servicios/', views.ServicesView.as_view(), name='services'),
+    
+    # Simulador Solar
+    path('simulador/', views.SimuladorSolarView.as_view(), name='simulador'),
 ]
