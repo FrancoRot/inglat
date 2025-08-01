@@ -1,4 +1,5 @@
 /* Estilos adicionales para el menú móvil - Header Component */
+/* IMPORTANTE: Solo mostrar en dispositivos móviles */
 .header__mobile-menu {
     position: fixed;
     top: 0;
@@ -10,6 +11,14 @@
     transition: right 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
+    display: none; /* Oculto por defecto */
+}
+
+/* Mostrar solo en dispositivos móviles (768px o menos) */
+@media (max-width: 768px) {
+    .header__mobile-menu {
+        display: block;
+    }
 }
 
 .header__mobile-menu.active {
@@ -82,6 +91,14 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    display: none; /* Oculto por defecto */
+}
+
+/* Mostrar overlay solo en dispositivos móviles */
+@media (max-width: 768px) {
+    .header__mobile-overlay {
+        display: block;
+    }
 }
 
 .header__mobile-overlay.active {

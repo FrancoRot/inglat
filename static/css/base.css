@@ -86,6 +86,7 @@
   --space-2: 0.5rem;      /* 8px */
   --space-3: 0.75rem;     /* 12px */
   --space-4: 1rem;        /* 16px */
+  --space-5: 1.25rem;     /* 20px */
   --space-6: 1.5rem;      /* 24px */
   --space-8: 2rem;        /* 32px */
   --space-12: 3rem;       /* 48px */
@@ -338,6 +339,41 @@ body {
 .btn--accent:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px 0 rgba(255, 107, 53, 0.3);
+}
+
+.btn--simulator {
+  background: var(--gradient-accent);
+  color: var(--white);
+  box-shadow: var(--shadow-accent);
+  font-weight: var(--font-semibold);
+}
+
+.btn--simulator:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(255, 107, 53, 0.4);
+}
+
+.btn--whatsapp {
+  background: #25D366;
+  color: var(--white);
+  box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.25);
+}
+
+.btn--whatsapp:hover {
+  background: #20BD5A;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(37, 211, 102, 0.3);
+}
+
+.btn--call {
+  background: var(--gradient-primary);
+  color: var(--white);
+  box-shadow: var(--shadow-primary);
+}
+
+.btn--call:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(0, 100, 102, 0.3);
 }
 
 /* Cards */

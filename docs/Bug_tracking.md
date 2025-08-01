@@ -1,10 +1,10 @@
 # Bug_tracking.md - Seguimiento de Errores INGLAT
 
 ## Estado Actual
-**Última actualización**: 29/07/2025  
-**Bugs activos**: 23
-**Bugs resueltos este mes**: 7  
-**Total histórico**: 30
+**Última actualización**: 30/07/2025  
+**Bugs activos**: 22
+**Bugs resueltos este mes**: 8  
+**Total histórico**: 31
 
 ---
 
@@ -136,6 +136,62 @@ ALLOWED_HOSTS = get_env_variable('ALLOWED_HOSTS', 'localhost,127.0.0.1').split('
 ---
 
 ## 🔴 Bugs Activos
+
+## Bug Report #31 🟠
+
+### 📋 Información General
+- **Fecha**: 2025-07-30 12:00:00
+- **Archivo**: `/mnt/c/Users/franc/Desktop/INGLAT/codigo/templates/base/header.html`
+- **Línea**: 49-63
+- **Tipo**: Diseño/CSS
+- **Severidad**: 🟡 Media
+- **Estado**: 🟠 Pendiente de verificación
+
+### 🐛 Descripción del Problema
+Formulario/elemento flotante no deseado aparece en la derecha de la página home. El menú móvil con información de contacto se está mostrando incorrectamente en resoluciones desktop.
+
+### 📷 Evidencia
+Imagen de referencia: `/mnt/c/Users/franc/Downloads/error1.jpg` muestra elemento flotante en lado derecho de la página que no debería estar visible.
+
+### 🔍 Causa Raíz Identificada
+El problema estaba en `static/css/header.css`. Los elementos del menú móvil (`.header__mobile-menu` y `.header__mobile-overlay`) no tenían media queries para ocultarse en resoluciones desktop, causando que se mostraran siempre.
+
+### ✅ Solución Aplicada
+**Archivos modificados:**
+1. **`static/css/header.css`**: Agregadas media queries para ocultar menú móvil en desktop
+2. **`templates/base/header.html`**: Corregidas URLs placeholder con números reales
+
+**Cambios realizados:**
+```css
+/* En header.css - Líneas 3-22 */
+.header__mobile-menu {
+    /* ... estilos existentes ... */
+    display: none; /* Oculto por defecto */
+}
+
+@media (max-width: 768px) {
+    .header__mobile-menu {
+        display: block; /* Mostrar solo en móviles */
+    }
+}
+
+/* Similar para .header__mobile-overlay */
+```
+
+```html
+<!-- En header.html - Líneas 51, 55, 57 -->
+<a href="tel:+541167214369" class="header__mobile-phone">
+    +54 11 6721-4369
+</a>
+<a href="https://wa.me/541167214369" class="header__mobile-whatsapp">
+```
+
+**Fecha resolución**: Pendiente
+
+### 🔄 Actualización 2025-07-30 18:00:00
+Usuario reporta que el problema persiste. Verificando solución aplicada y evaluando cause raíz adicional.
+
+---
 
 ## 🔴 CRÍTICA - Atención Inmediata
 

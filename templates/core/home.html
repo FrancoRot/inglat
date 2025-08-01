@@ -22,7 +22,7 @@
             <a href="#proyectos" class="btn btn--primary">
                 Ver Proyectos
             </a>
-            <a href="#servicios" class="btn btn--secondary">
+            <a href="#servicios" class="btn btn--primary">
                 Conocer Servicios
             </a>
         </div>
@@ -158,83 +158,124 @@
     </div>
 </section>
 
-<!-- Sección Nosotros -->
+<!-- Sección Quiénes Somos -->
 <section id="nosotros" class="about-section">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Sobre INGLAT</h2>
-            <p class="section-subtitle">
-                Líderes en instalaciones de energía renovable con más de 10 años de experiencia
+            <h2 class="section-title">Quiénes Somos</h2>
+            <p class="section-subtitle about-vision">
+                Una visión transformando el futuro energético del mundo
             </p>
         </div>
         
         <div class="about-content">
-            <div class="about-story">
-                <h3 class="about-story__title">Nuestra Historia</h3>
-                <p class="about-story__text">
-                    INGLAT nace de la pasión por las energías renovables y el compromiso con un futuro sostenible. 
-                    Desde nuestros inicios, nos hemos especializado en ofrecer soluciones integrales de energía 
-                    fotovoltaica, combinando la más avanzada tecnología con un servicio personalizado y de calidad.
-                </p>
-                <p class="about-story__text">
-                    Con más de 500 instalaciones completadas y un equipo de ingenieros altamente cualificados, 
-                    nos hemos consolidado como referente en el sector energético, siempre a la vanguardia de 
-                    las últimas innovaciones en monitorización y control de sistemas solares.
+            <!-- Introducción -->
+            <div class="about-intro">
+                <p class="about-intro__text">
+                    En 2022, cuando la transición energética global demandaba soluciones más innovadoras y eficientes, nació INGLAT: la convergencia perfecta entre el talento ingenieril internacional y la tecnología solar de vanguardia. No fue casualidad, fue destino.
                 </p>
             </div>
             
+            <!-- Nuestros Orígenes -->
+            <div class="about-origins">
+                <h3 class="about-origins__title">Nuestros Orígenes</h3>
+                <p class="about-origins__text">
+                    INGLAT surgió de la experiencia colectiva de un grupo excepcional de ingenieros que habían conquistado diversos sectores de las energías renovables. Desde la gestión de proyectos hasta el diseño de sistemas de baterías de última generación, desde la conceptualización de parques solares hasta el commissioning de instalaciones a gran escala, cada uno aportó su expertise para crear algo más grande que la suma de sus partes.
+                </p>
+                
+                <!-- Imagen y párrafo de Franco -->
+                <div class="franco-section">
+                    <div class="franco-image-container">
+                        <img src="{% static 'images/franco.jpg' %}" alt="Franco Rotella - Fundador y CEO de INGLAT" class="franco-image">
+                    </div>
+                    <div class="franco-text">
+                        <p class="about-origins__text">
+                            Franco Rotella, nuestro fundador y CEO, visualizó lo que otros no podían ver: que la experiencia diversa de profesionales trabajando en diferentes áreas del sector renovable podía converger en una propuesta única e integral. Su visión se materializó en INGLAT, cuyo nombre refleja nuestros orígenes (INGenieros LATinoamericanos), pero cuyo alcance y equipo son verdaderamente globales.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nuestra Misión -->
             <div class="about-mission">
                 <h3 class="about-mission__title">Nuestra Misión</h3>
                 <p class="about-mission__text">
-                    Acelerar la transición hacia un modelo energético sostenible, proporcionando soluciones 
-                    fotovoltaicas inteligentes que maximicen la eficiencia, reduzcan costos y contribuyan 
-                    a la preservación del medio ambiente para las generaciones futuras.
+                    Somos especialistas en el monitoreo, mantenimiento e instalación de módulos solares a gran escala. Pero somos mucho más que eso. Somos los arquitectos de la eficiencia energética, los guardianes de cada kilovatio generado, los innovadores que transforman la luz solar en progreso sostenible.
                 </p>
             </div>
             
-            <div class="about-values">
-                <h3 class="about-values__title">Nuestros Valores</h3>
-                <div class="values-grid">
-                    <div class="value-item">
-                        <div class="value-item__icon">
+            <!-- Por Qué Elegir INGLAT -->
+            <div class="why-choose-inglat">
+                <h3 class="why-choose__title">Por Qué Elegir INGLAT</h3>
+                <div class="why-choose-grid">
+                    <div class="why-choose-item">
+                        <div class="why-choose-item__icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                             </svg>
                         </div>
-                        <h4 class="value-item__title">Excelencia</h4>
-                        <p class="value-item__description">Compromiso con la calidad en cada proyecto</p>
+                        <h4 class="why-choose-item__title">Expertise Multidisciplinario</h4>
+                        <p class="why-choose-item__description">
+                            Nuestro equipo combina décadas de experiencia en project management, ingeniería de baterías, diseño de parques solares y commissioning. Esta diversidad nos permite abordar cada proyecto desde múltiples perspectivas técnicas.
+                        </p>
                     </div>
                     
-                    <div class="value-item">
-                        <div class="value-item__icon">
+                    <div class="why-choose-item">
+                        <div class="why-choose-item__icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                <path d="M12 7.77L18.39 18H5.61L12 7.77M12 4L2 20h20L12 4z"/>
+                                <circle cx="12" cy="10" r="2"/>
                             </svg>
                         </div>
-                        <h4 class="value-item__title">Confianza</h4>
-                        <p class="value-item__description">Transparencia y honestidad in todas nuestras relaciones</p>
+                        <h4 class="why-choose-item__title">Enfoque en Gran Escala</h4>
+                        <p class="why-choose-item__description">
+                            Nos especializamos en proyectos que realmente marquen la diferencia. Cuando hablamos de instalaciones solares a gran escala, hablamos de impacto real en la matriz energética.
+                        </p>
                     </div>
                     
-                    <div class="value-item">
-                        <div class="value-item__icon">
+                    <div class="why-choose-item">
+                        <div class="why-choose-item__icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-.5-13H10v6l5.25 3.15.75-1.23-4.5-2.67z"/>
                             </svg>
                         </div>
-                        <h4 class="value-item__title">Innovación</h4>
-                        <p class="value-item__description">Tecnología de vanguardia para soluciones avanzadas</p>
+                        <h4 class="why-choose-item__title">Perspectiva Global</h4>
+                        <p class="why-choose-item__description">
+                            Nuestra experiencia internacional nos permite aplicar las mejores prácticas globales, adaptándolas a las necesidades específicas de cada región y cliente.
+                        </p>
                     </div>
                     
-                    <div class="value-item">
-                        <div class="value-item__icon">
+                    <div class="why-choose-item">
+                        <div class="why-choose-item__icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.06.66C6.16 17.74 9 14.26 17 8zm3.5-2L18 4l-1.5 2 1.5 2 1.5-2zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.19 0 2.34-.21 3.41-.6-.63-.78-1.35-1.6-1.98-2.4-.47.06-.94.1-1.43.1-8.28 0-15-6.72-15-15S3.72 2 12 2c8.28 0 15 6.72 15 15 0 .49-.04.96-.1 1.43.8.63 1.62 1.35 2.4 1.98.39-1.07.6-2.22.6-3.41 0-5.52-4.48-10-10-10z"/>
+                                <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
                             </svg>
                         </div>
-                        <h4 class="value-item__title">Sostenibilidad</h4>
-                        <p class="value-item__description">Compromiso con el medio ambiente y el futuro</p>
+                        <h4 class="why-choose-item__title">Soluciones Integrales</h4>
+                        <p class="why-choose-item__description">
+                            No solo instalamos paneles solares. Monitoreamos su rendimiento, optimizamos su funcionamiento y garantizamos su mantenimiento para maximizar la inversión de nuestros clientes.
+                        </p>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Nuestro Compromiso -->
+            <div class="about-commitment">
+                <h3 class="about-commitment__title">Nuestro Compromiso</h3>
+                <p class="about-commitment__text">
+                    En INGLAT, cada proyecto es una oportunidad de demostrar que la ingeniería de excelencia está a la altura de los desafíos energéticos más complejos del mundo. Trabajamos con la precisión de la ciencia, la pasión de los pioneros y la responsabilidad de quienes construyen el futuro.
+                </p>
+                <p class="about-commitment__text">
+                    Porque el futuro es renovable. Y en INGLAT, ese futuro comienza hoy.
+                </p>
+            </div>
+            
+            <!-- Cita de Franco -->
+            <div class="franco-quote">
+                <blockquote class="franco-quote__text">
+                    "La energía solar no es solo una tecnología, es la manifestación de nuestra capacidad para transformar recursos infinitos en progreso sostenible."
+                </blockquote>
+                <cite class="franco-quote__author">Franco Rotella, Fundador y CEO de INGLAT</cite>
             </div>
         </div>
     </div>
@@ -371,7 +412,7 @@
         </p>
         
         <div class="hero__actions">
-            <a href="{% url 'core:simulador' %}" class="btn btn--primary">
+            <a href="{% url 'core:simulador' %}" class="btn btn--simulator">
                 Simulador Solar
             </a>
             <a href="{% url 'contact:contact' %}" class="btn btn--secondary">

@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Version Control**: Git
 
 ### Current Project Phase:
-Corporate website with project portfolio, blog, and contact systems. Future dashboard functionality for client monitoring.
+Corporate website with project portfolio, blog, contact systems, and solar energy simulator. Future dashboard functionality for client monitoring.
 
 ---
 
@@ -35,6 +35,12 @@ python manage.py collectstatic
 
 # Shell access
 python manage.py shell
+```
+
+### Testing Commands:
+```bash
+# No test framework currently configured
+# Tests should be added using Django's built-in testing or pytest-django
 ```
 
 ### Database Operations:
@@ -64,28 +70,33 @@ pip install -r requirements.txt
 ## Architecture Overview
 
 ### Django Apps Structure:
-- **apps/core**: Main application - homepage, about, services
-- **apps/projects**: Project portfolio management (models in core app)
-- **apps/blog**: News and articles system
-- **apps/contact**: Contact forms and WhatsApp integration
+- **apps/core**: Main application - homepage, about, services, and project models
+- **apps/projects**: Project portfolio management (uses models from core app)
+- **apps/blog**: News and articles system (models not yet implemented)
+- **apps/contact**: Contact forms and WhatsApp integration (models not yet implemented)
 - **apps/dashboard**: Future client dashboard functionality
 
-### Key Models:
-- **Project** (apps.core.models): Solar installation projects with images, descriptions, and technical specs
-- **Blog models** (apps.blog): Articles and news content
-- **Contact models** (apps.contact): Contact form submissions
+### Key Models (apps/core/models.py):
+- **Project**: Solar installation projects with images, descriptions, and technical specs
+- **SimuladorConfig**: Global configuration for the solar energy simulator
+- **CostoInstalacion**: Installation cost ranges by power capacity
+- **FactorUbicacion**: Solar irradiation factors by Argentine provinces
+- **FactorOrientacion**: Efficiency factors by roof orientation
+- **TipoTejado**: Roof types with complexity factors
+- **AnguloTejado**: Roof inclination angles with efficiency factors
 
 ### URL Structure:
 - `/` - Homepage (core app)
 - `/proyectos/` - Projects portfolio
+- `/simulador/` - Solar energy simulator
 - `/blog/` - Blog/news section  
 - `/contacto/` - Contact page
 - `/admin/` - Django admin panel
 
 ### Static Files Organization:
-- **CSS**: `static/css/` - Separated by functionality (base.css, header.css, footer.css, home.css)
-- **JavaScript**: `static/js/` - Modular structure (base.js, home.js, contact.js, whatsapp.js)
-- **Images**: `static/images/` - Organized by type
+- **CSS**: `static/css/` - Separated by functionality (base.css, header.css, footer.css, home.css, simulador.css)
+- **JavaScript**: `static/js/` - Modular structure (base.js, home.js, contact.js, whatsapp.js, simulador.js)
+- **Images**: `static/images/` - Organized by type, includes simulator SVG icons
 - **Media**: `media/` - User uploaded files (projects, blog)
 
 ---
@@ -94,9 +105,11 @@ pip install -r requirements.txt
 
 ### Python/Django:
 - Follow PEP 8 standards
-- Spanish comments for team collaboration
+- Spanish comments and docstrings for team collaboration
 - Use Django's MVT pattern consistently
 - Environment variables for sensitive settings via `get_env_variable()`
+- Models use Spanish verbose names for admin interface
+- Proper field validation and help text in Spanish
 
 ### Templates:
 - Extend from `templates/base/base.html`
@@ -122,6 +135,34 @@ pip install -r requirements.txt
 - Models with Spanish verbose names for admin interface
 - Use slugs for SEO-friendly URLs
 - Automatic timestamping with created_at/updated_at
+
+---
+
+## Solar Energy Simulator
+
+The project includes a comprehensive solar energy calculator with the following components:
+
+### Simulator Models:
+- **SimuladorConfig**: Global settings for calculations (efficiency, prices, autoconsumo factors)
+- **CostoInstalacion**: Installation costs by power range (0-3kW, 3-5kW, 5-10kW, 10+kW)
+- **FactorUbicacion**: Solar irradiation by Argentine provinces
+- **FactorOrientacion**: Efficiency by roof orientation (N, NE, E, SE, S, SO, O, NO)
+- **TipoTejado**: Roof types with complexity factors
+- **AnguloTejado**: Inclination angles with efficiency factors
+
+### Simulator Features:
+- Annual consumption calculation
+- Optimal power sizing
+- Installation cost estimation
+- Battery system options
+- Electric vehicle integration
+- ROI and payback calculations
+- Province-specific solar irradiation
+- Roof type and orientation optimization
+
+### Simulator URL:
+- `/simulador/` - Interactive solar calculator
+- AJAX endpoint: `/calcular-solar/` (POST)
 
 ---
 
@@ -154,6 +195,12 @@ pip install -r requirements.txt
 3. Review `docs/UI_UX_doc.md` for design guidelines
 4. Understand business rules in `docs/PRD.md`
 
+### Security Considerations:
+- Check `docs/Bug_tracking.md` for critical security issues
+- Never commit sensitive data (passwords, keys) with default values
+- Validate all user inputs in calculator endpoints
+- Use environment variables for all sensitive settings
+
 ### CSS/JS Development:
 - Always use separate files, never inline
 - Update `base.css` for global styles and CSS variables
@@ -173,3 +220,24 @@ pip install -r requirements.txt
 - Verify responsive design on mobile/tablet
 - Check Django admin functionality for content management
 - Validate SEO meta tags and schema markup
+- Test solar calculator with various input combinations
+- Verify AJAX endpoints return valid JSON responses
+
+---
+
+## Known Issues & Considerations
+
+### Critical Issues (see docs/Bug_tracking.md):
+- Blog and Contact apps have empty models but are in INSTALLED_APPS
+- Some URL patterns may reference non-existent views
+- MEDIA_URL/MEDIA_ROOT configuration required for ImageField
+- Input validation missing in calculator endpoints
+
+### Dependencies:
+- `python-decouple` installed but not used (consider using for better environment variable handling)
+- No testing framework configured (recommend adding pytest-django)
+
+### Regional Settings:
+- Project targets Argentine market (provinces, phone numbers)
+- Solar irradiation data specific to Argentina
+- Currency calculations in USD

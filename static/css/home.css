@@ -28,34 +28,28 @@
     text-align: center;
 }
 
-.hero__title {
-    font-size: var(--text-6xl);
+.hero .hero__title {
+    font-size: var(--text-4xl);
     font-weight: var(--font-bold);
-    color: var(--white);
+    color: var(--white) !important;
     margin-bottom: var(--space-6);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.3);
-    background: linear-gradient(135deg, #ffffff 0%, #e0e6ff 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
-    line-height: 1.1;
-}
-
-.hero__subtitle {
-    font-size: var(--text-2xl);
-    color: rgba(255, 255, 255, 0.95);
-    margin-bottom: var(--space-8);
-    max-width: 700px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.7);
+    line-height: 1.2;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.3);
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-    padding: var(--space-4) var(--space-6);
-    border-radius: var(--border-radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    line-height: 1.4;
+}
+
+.hero .hero__subtitle {
+    font-size: var(--text-xl);
+    color: var(--white) !important;
+    margin-bottom: var(--space-8);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.7);
+    line-height: 1.5;
+    font-weight: var(--font-medium);
 }
 
 .hero__actions {
@@ -93,12 +87,16 @@
     .hero__title {
         font-size: var(--text-4xl);
         line-height: 1.2;
+        padding: var(--space-4) var(--space-6);
+        margin-bottom: var(--space-4);
+        max-width: 95%;
     }
     
     .hero__subtitle {
         font-size: var(--text-lg);
-        padding: var(--space-3) var(--space-4);
+        padding: var(--space-4) var(--space-5);
         margin: 0 var(--space-2) var(--space-6);
+        max-width: 95%;
     }
     
     .hero__actions {
@@ -140,6 +138,11 @@
         height: 16px;
         font-size: 10px;
         margin-top: 1px;
+    }
+    
+    /* Ajustes móviles para la nueva sección Quiénes Somos */
+    .about-content {
+        gap: var(--space-12);
     }
 }
 
@@ -443,7 +446,7 @@
     background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent);
 }
 
-/* Sección Nosotros */
+/* Sección Quiénes Somos */
 .about-section {
     padding: var(--space-24) 0;
     background: var(--white);
@@ -452,61 +455,158 @@
 .about-content {
     margin-top: var(--space-16);
     display: grid;
-    gap: var(--space-12);
+    gap: var(--space-16);
 }
 
-.about-story, .about-mission {
+/* Subtítulo de visión */
+.about-vision {
+    font-size: var(--text-xl);
+    font-weight: var(--font-medium);
+    color: var(--primary-color);
+    font-style: italic;
+}
+
+/* Introducción */
+.about-intro {
     text-align: center;
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
-.about-story__title, .about-mission__title, .about-values__title {
-    font-size: var(--text-2xl);
-    font-weight: var(--font-semibold);
-    color: var(--gray-900);
-    margin-bottom: var(--space-4);
+.about-intro__text {
+    font-size: var(--text-lg);
+    color: var(--gray-700);
+    line-height: 1.8;
+    font-weight: var(--font-medium);
+    background: var(--gray-50);
+    padding: var(--space-6);
+    border-radius: var(--border-radius-lg);
+    border-left: 4px solid var(--primary-color);
 }
 
-.about-story__text, .about-mission__text {
+/* Nuestros Orígenes */
+.about-origins {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.about-origins__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--gray-900);
+    margin-bottom: var(--space-6);
+    text-align: center;
+}
+
+.about-origins__text {
     font-size: var(--text-lg);
     color: var(--gray-700);
     line-height: 1.7;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
+    text-align: justify;
 }
 
-.about-values {
+/* Sección Franco */
+.franco-section {
+    display: grid;
+    gap: var(--space-8);
+    align-items: center;
     margin-top: var(--space-8);
+    padding: var(--space-8);
+    background: var(--gray-50);
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--gray-200);
 }
 
-.about-values__title {
+.franco-image-container {
     text-align: center;
-    margin-bottom: var(--space-8);
 }
 
-.values-grid {
+.franco-image {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+    border: 4px solid var(--white);
+}
+
+.franco-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px 0 rgba(0, 100, 102, 0.15);
+}
+
+.franco-text {
+    display: flex;
+    align-items: center;
+}
+
+/* Misión */
+.about-mission {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-8);
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-primary);
+}
+
+.about-mission__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--white);
+    margin-bottom: var(--space-6);
+}
+
+.about-mission__text {
+    font-size: var(--text-lg);
+    color: var(--white);
+    line-height: 1.7;
+    opacity: 0.95;
+}
+
+/* Por Qué Elegir INGLAT */
+.why-choose-inglat {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.why-choose__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--gray-900);
+    margin-bottom: var(--space-8);
+    text-align: center;
+}
+
+.why-choose-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-6);
-    margin-top: var(--space-8);
+    gap: var(--space-8);
 }
 
-.value-item {
-    text-align: center;
-    padding: var(--space-6);
+.why-choose-item {
+    background: var(--white);
+    padding: var(--space-8);
     border-radius: var(--border-radius-lg);
-    background: var(--gray-50);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
     transition: all 0.3s ease;
+    text-align: center;
 }
 
-.value-item:hover {
-    background: var(--gray-100);
-    transform: translateY(-4px);
+.why-choose-item:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
 }
 
-.value-item__icon {
-    width: 48px;
-    height: 48px;
+.why-choose-item__icon {
+    width: 60px;
+    height: 60px;
     margin: 0 auto var(--space-4);
     background: var(--gradient-primary);
     border-radius: 50%;
@@ -516,17 +616,86 @@
     color: var(--white);
 }
 
-.value-item__title {
-    font-size: var(--text-lg);
+.why-choose-item__title {
+    font-size: var(--text-xl);
     font-weight: var(--font-semibold);
     color: var(--gray-900);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-4);
 }
 
-.value-item__description {
+.why-choose-item:hover .why-choose-item__title {
+    color: var(--primary-color);
+}
+
+.why-choose-item__description {
     font-size: var(--text-base);
-    color: var(--gray-600);
-    line-height: 1.5;
+    color: var(--gray-700);
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Compromiso */
+.about-commitment {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-commitment__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--gray-900);
+    margin-bottom: var(--space-6);
+}
+
+.about-commitment__text {
+    font-size: var(--text-lg);
+    color: var(--gray-700);
+    line-height: 1.7;
+    margin-bottom: var(--space-4);
+    text-align: justify;
+}
+
+/* Cita de Franco */
+.franco-quote {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-8);
+    background: var(--gray-50);
+    border-radius: var(--border-radius-xl);
+    border-left: 6px solid var(--accent-color);
+    position: relative;
+}
+
+.franco-quote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: var(--space-6);
+    font-size: 4rem;
+    color: var(--accent-color);
+    font-weight: var(--font-bold);
+    line-height: 1;
+}
+
+.franco-quote__text {
+    font-size: var(--text-xl);
+    font-style: italic;
+    color: var(--gray-800);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+    font-weight: var(--font-medium);
+    border: none;
+    padding: 0;
+    margin-top: var(--space-4);
+}
+
+.franco-quote__author {
+    font-size: var(--text-base);
+    color: var(--primary-color);
+    font-weight: var(--font-semibold);
+    font-style: normal;
 }
 
 /* Proyectos Destacados Section */
@@ -747,16 +916,87 @@
     font-size: var(--text-lg);
 }
 
-/* Responsive Design para Nosotros */
+/* Responsive Design para Quiénes Somos */
 @media (min-width: 768px) {
-    .values-grid {
+    .franco-section {
+        grid-template-columns: 300px 1fr;
+        gap: var(--space-12);
+        text-align: left;
+    }
+    
+    .franco-image-container {
+        text-align: left;
+    }
+    
+    .why-choose-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .why-choose-item {
+        text-align: left;
+    }
+    
+    .why-choose-item__icon {
+        margin: 0 0 var(--space-4) 0;
     }
 }
 
 @media (min-width: 1024px) {
-    .values-grid {
-        grid-template-columns: repeat(4, 1fr);
+    .why-choose-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-12);
+    }
+    
+    .franco-section {
+        grid-template-columns: 320px 1fr;
+        gap: var(--space-16);
+    }
+    
+    .franco-image {
+        width: 320px;
+        height: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-intro__text {
+        padding: var(--space-4);
+        font-size: var(--text-base);
+    }
+    
+    .franco-section {
+        padding: var(--space-6);
+        gap: var(--space-6);
+    }
+    
+    .franco-image {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .about-mission,
+    .about-commitment {
+        padding: var(--space-6);
+    }
+    
+    .about-mission__title,
+    .about-commitment__title,
+    .about-origins__title,
+    .why-choose__title {
+        font-size: var(--text-2xl);
+    }
+    
+    .franco-quote {
+        padding: var(--space-6);
+        margin: 0 var(--space-4);
+    }
+    
+    .franco-quote__text {
+        font-size: var(--text-lg);
+    }
+    
+    .why-choose-item {
+        padding: var(--space-6);
     }
 }
 

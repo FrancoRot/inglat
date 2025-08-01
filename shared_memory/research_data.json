@@ -1,344 +1,151 @@
 {
   "assigned_by": "Guido",
-  "topic": "backgrounds_animados_corporativos",
-  "timestamp": "2025-07-27",
+  "topic": "claude_code_hooks_sound_notifications",
+  "timestamp": "2025-08-01",
   "sources": [
     {
-      "category": "CodePen_Collections",
-      "url": "https://codepen.io/collection/KpNYjd",
-      "title": "Animated Backgrounds Collection by Eric Karkovack",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/hooks",
       "credibility": "alta",
       "key_insights": [
-        "Colección específica para backgrounds animados profesionales",
-        "Incluye ejemplos con CSS y JavaScript optimizados",
-        "Companion de artículo en Speckyboy Web Design Magazine"
+        "Hooks are user-defined shell commands that execute at various points in Claude Code's lifecycle",
+        "PostToolUse runs immediately after a tool completes successfully",
+        "Configuration through settings.json with specific matcher patterns",
+        "Support for project-specific hooks using $CLAUDE_PROJECT_DIR"
       ],
-      "code_examples": "Disponible en CodePen con código completo"
+      "code_examples": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Write|Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/sound-notification.sh\"\n          }\n        ]\n      }\n    ]\n  }\n}"
     },
     {
-      "category": "CodePen_Collections", 
-      "url": "https://codepen.io/collection/ABNwxq/",
-      "title": "Background Effects Collection by Mātthīas",
+      "url": "https://github.com/disler/claude-code-hooks-mastery",
       "credibility": "alta",
       "key_insights": [
-        "Efectos de background variados y profesionales",
-        "Implementaciones con diferentes técnicas",
-        "Código libre y modificable"
+        "Hooks run in parallel with 60-second execution limit",
+        "Support for JSON output and sophisticated flow control",
+        "Intelligent TTS integration with multiple providers",
+        "Exit codes control execution flow (0=success, 2=critical block)"
       ],
-      "code_examples": "Ejemplos completos con HTML, CSS y JS"
+      "code_examples": "# Python hook handler example\nif tool_name == \"Write\" and not tool_response.get(\"success\"):\n    output = {\n        \"decision\": \"block\",\n        \"reason\": \"File write operation failed\"\n    }\n    print(json.dumps(output))"
     },
     {
-      "category": "CSS_Generators",
-      "url": "https://wweb.dev/resources/animated-css-background-generator",
-      "title": "Animated CSS Background Generator",
+      "url": "https://superuser.com/questions/101974/play-a-sound-maybe-wav-from-windows-line-command",
       "credibility": "alta",
       "key_insights": [
-        "Generador basado en diseños de Louis Hoebregts",
-        "Código HTML y CSS listo para usar",
-        "Fácil implementación en cualquier sitio web"
-      ],
-      "code_examples": "Generador automático con exportación directa"
+        "PowerShell console beep: [console]::beep(frequency, duration)",
+        "System sounds via [System.Media.SystemSounds]",
+        "WSL2 can call PowerShell commands directly",
+        "Multiple sound options: beep, wav files, system sounds"
+      ],  
+      "code_examples": "# PowerShell beep commands\npowershell.exe -c \"[console]::beep(1000,300)\"\npowershell.exe -c \"[System.Media.SystemSounds]::Exclamation.Play()\"\n\n# WSL2 beep function\n_beep () { powershell.exe \"[console]::beep($1,$2)\" }\nalias beep=\"_beep 2000 300\""
     },
     {
-      "category": "Three.js_Particles",
-      "url": "https://particles.js.org/",
-      "title": "tsParticles - JavaScript Particles Library",
+      "url": "https://github.com/anthropics/claude-code/issues/1288",
       "credibility": "alta",
       "key_insights": [
-        "Librería altamente personalizable para partículas",
-        "Componentes ready-to-use para React, Vue, Angular",
-        "Efectos de confetti, fuegos artificiales y partículas"
+        "Feature request específica para sound notifications en Claude Code",
+        "Comunidad activa pidiendo alertas auditivas",
+        "Casos de uso documentados para notificaciones de tareas completadas",
+        "Discusión sobre implementación multiplataforma"
       ],
-      "code_examples": "Implementación completa con múltiples frameworks"
+      "code_examples": "# Ejemplo de implementación sugerida\n\"hooks\": {\n  \"PostToolUse\": [\n    {\n      \"matcher\": \"*\",\n      \"hooks\": [\n        {\n          \"type\": \"command\",\n          \"command\": \"osascript -e 'beep 2'\" # macOS\n        }\n      ]\n    }\n  ]\n}"
     },
     {
-      "category": "Three.js_Particles",
-      "url": "https://vincentgarreau.com/particles.js/",
-      "title": "particles.js by Vincent Garreau",
+      "url": "https://unix.stackexchange.com/questions/585229/how-do-i-make-my-pc-speaker-beep-in-wsl",
       "credibility": "alta",
       "key_insights": [
-        "Librería ligera específica para crear partículas",
-        "Base de la mayoría de animaciones de partículas",
-        "Configuración simple y efectiva"
+        "WSL2 no soporta nativamente el PC speaker beep",
+        "PowerShell es la solución más confiable para sonidos en WSL2",
+        "Alternativas incluyen herramientas específicas como wsl-beep",
+        "Consideraciones de permisos y disponibilidad de PowerShell"
       ],
-      "code_examples": "JavaScript puro con configuración JSON"
-    },
-    {
-      "category": "Three.js_3D",
-      "url": "https://www.vantajs.com/",
-      "title": "Vanta.js - Animated 3D Backgrounds",
-      "credibility": "alta",
-      "key_insights": [
-        "Galería de backgrounds animados 3D con three.js",
-        "Plug & play, altamente customizable",
-        "Efectos WebGL optimizados para websites"
-      ],
-      "code_examples": "Ejemplos interactivos con configuración visual"
-    },
-    {
-      "category": "CSS_Geometric_Patterns",
-      "url": "https://www.magicpattern.design/tools/css-backgrounds",
-      "title": "CSS Background Patterns by MagicPattern",
-      "credibility": "alta",
-      "key_insights": [
-        "Más de 20 patrones CSS background específicos para web design",
-        "Herramienta para crear y personalizar rápidamente",
-        "Patrones responsive y optimizados"
-      ],
-      "code_examples": "CSS puro con patrones geométricos profesionales"
-    },
-    {
-      "category": "CSS_Geometric_Patterns",
-      "url": "https://alvarotrigo.com/blog/animated-backgrounds-css/",
-      "title": "34 Animated Backgrounds Examples with Pure CSS",
-      "credibility": "alta",
-      "key_insights": [
-        "34 ejemplos específicos con código completo",
-        "Solo CSS puro, sin dependencias",
-        "Enfoque en performance y accesibilidad"
-      ],
-      "code_examples": "Código CSS completo para cada ejemplo"
-    },
-    {
-      "category": "P5js_Sketches",
-      "url": "https://editor.p5js.org/ktorn/sketches/SJbh2GVk4",
-      "title": "Website Background Sketch - p5.js Web Editor",
-      "credibility": "alta",
-      "key_insights": [
-        "Ejemplo específico de background para websites",
-        "Código p5.js editable en línea",
-        "Implementación directa en proyectos web"
-      ],
-      "code_examples": "Sketch completo en editor web de p5.js"
-    },
-    {
-      "category": "P5js_Sketches",
-      "url": "https://editor.p5js.org/humayuns/sketches/tInV8OddW",
-      "title": "Animated Wave Backgrounds - p5.js",
-      "credibility": "alta",
-      "key_insights": [
-        "Efectos de ondas animadas para backgrounds",
-        "Código p5.js optimizado para web",
-        "Implementación de Perlin noise para suavidad"
-      ],
-      "code_examples": "JavaScript p5.js con animaciones de ondas"
-    },
-    {
-      "category": "Awwwards_Inspiration",
-      "url": "https://www.awwwards.com/inspiration/animated-background",
-      "title": "Animated Background Inspiration - Awwwards",
-      "credibility": "alta",
-      "key_insights": [
-        "Backgrounds 3D abstractos animados",
-        "Perfectos para añadir toque vibrante y dinámico",
-        "Ejemplos premiados en diseño web"
-      ],
-      "code_examples": "Inspiración visual con técnicas avanzadas"
-    },
-    {
-      "category": "Awwwards_Inspiration",
-      "url": "https://www.awwwards.com/websites/business-corporate/",
-      "title": "Business/Corporate Websites - Awwwards",
-      "credibility": "alta",
-      "key_insights": [
-        "Selección de sitios corporativos premiados",
-        "Frente digital de empresas con valores corporativos",
-        "Crucial para integridad de marca"
-      ],
-      "code_examples": "Casos de estudio de implementaciones reales"
-    },
-    {
-      "category": "GitHub_Repositories",
-      "url": "https://github.com/VincentGarreau/particles.js",
-      "title": "particles.js - GitHub Repository",
-      "credibility": "alta",
-      "key_insights": [
-        "Repositorio oficial de particles.js",
-        "Documentación completa y ejemplos",
-        "Configuración detallada y opciones"
-      ],
-      "code_examples": "Código fuente completo y ejemplos de implementación"
-    },
-    {
-      "category": "GitHub_Repositories",
-      "url": "https://github.com/tsparticles/tsparticles",
-      "title": "tsParticles - Main Repository",
-      "credibility": "alta",
-      "key_insights": [
-        "Librería más avanzada para efectos de partículas",
-        "Componentes para React, Vue, Angular, Svelte",
-        "Efectos de confetti, explosiones y fireworks"
-      ],
-      "code_examples": "Implementación multi-framework con TypeScript"
-    },
-    {
-      "category": "GitHub_Repositories",
-      "url": "https://github.com/ayushkumar15070/CSS-Particle-Backgrounds",
-      "title": "CSS Particle Backgrounds Collection",
-      "credibility": "alta",
-      "key_insights": [
-        "Colección de backgrounds de partículas con CSS y JavaScript",
-        "Partículas dinámicas e interactivas",
-        "Mejora la estética del sitio web"
-      ],
-      "code_examples": "Múltiples ejemplos con CSS y JavaScript puro"
-    },
-    {
-      "category": "Wave_Fluid_Effects",
-      "url": "https://freefrontend.com/css-waves/",
-      "title": "CSS Wave Effects Collection",
-      "credibility": "alta",
-      "key_insights": [
-        "Efectos de ondas para backgrounds, divisores y animaciones",
-        "Creados con CSS puro para diseños fluidos",
-        "Sin imágenes ni JavaScript requerido"
-      ],
-      "code_examples": "CSS puro con efectos de ondas suaves"
-    },
-    {
-      "category": "Wave_Fluid_Effects",
-      "url": "https://freefrontend.com/css-liquid-effects/",
-      "title": "CSS Liquid Effects Collection",
-      "credibility": "alta",
-      "key_insights": [
-        "25 efectos líquidos CSS para motion fluido",
-        "Animaciones orgánicas que imitan agua y materiales viscosos",
-        "Magia CSS pura sin dependencias"
-      ],
-      "code_examples": "Efectos líquidos avanzados con CSS3"
-    },
-    {
-      "category": "Gradient_Animations",
-      "url": "https://animated-gradient-background-generator.netlify.app/",
-      "title": "Animated Gradient Background Generator",
-      "credibility": "alta",
-      "key_insights": [
-        "Generador de gradientes animados CSS puro",
-        "Loops infinitos sin JavaScript",
-        "Exportación directa de código CSS"
-      ],
-      "code_examples": "CSS con keyframes para gradientes animados"
-    },
-    {
-      "category": "Gradient_Animations",
-      "url": "https://ui.aceternity.com/components/background-gradient-animation",
-      "title": "Background Gradient Animation - Aceternity UI",
-      "credibility": "alta",
-      "key_insights": [
-        "Componente profesional para gradientes animados",
-        "Parámetros customizables para aplicaciones corporativas",
-        "Smooth y elegante cambio de posición de gradiente"
-      ],
-      "code_examples": "Componente React con TypeScript"
-    },
-    {
-      "category": "Matrix_Effects",
-      "url": "https://matrix.logic-wire.de/",
-      "title": "Matrix Master Pro - Digital Rain Generator",
-      "credibility": "alta",
-      "key_insights": [
-        "Generador gratuito de efectos Matrix/Digital Rain",
-        "Creado con HTML5, CSS3 y JavaScript",
-        "Proyecto independiente de investigación y arte"
-      ],
-      "code_examples": "Generador completo con múltiples opciones"
-    },
-    {
-      "category": "Matrix_Effects",
-      "url": "https://github.com/Rezmason/matrix",
-      "title": "Matrix Web-based Green Code Rain",
-      "credibility": "alta",
-      "key_insights": [
-        "Implementación web del efecto Matrix",
-        "Altamente customizable con paletas de colores",
-        "Velocidades de animación y efectos especiales"
-      ],
-      "code_examples": "JavaScript completo con configuración avanzada"
-    },
-    {
-      "category": "SVG_Animations",
-      "url": "https://freefrontend.com/css-background-patterns/",
-      "title": "CSS Background Patterns Collection",
-      "credibility": "alta",
-      "key_insights": [
-        "222 patrones CSS background incluyendo SVG animados",
-        "Patrones geométricos, texturas orgánicas y diseños animados",
-        "CSS puro para backgrounds lightweight y customizables"
-      ],
-      "code_examples": "Amplia colección de patrones CSS y SVG"
+      "code_examples": "# Solución WSL2 más confiable\npowershell.exe -c \"[console]::beep(1000,500)\"\n\n# Función bash para WSL2\nbeep() {\n  powershell.exe -c \"[System.Console]::Beep($1, $2)\"\n}\n\n# Uso\nbeep 800 200  # frecuencia 800Hz, duración 200ms"
     }
   ],
-  "technical_summary": "La investigación revela una amplia gama de soluciones para backgrounds animados corporativos, desde implementaciones CSS puras hasta bibliotecas JavaScript avanzadas. Las opciones van desde efectos simples de gradientes hasta complejas simulaciones 3D con WebGL.",
+  "technical_summary": "Claude Code hooks permiten ejecutar comandos automáticamente en eventos específicos. PostToolUse es ideal para notificaciones sonoras después de completar herramientas como Edit, Write, Bash, TodoWrite. En Windows/WSL2, PowerShell ofrece múltiples métodos para reproducir sonidos: console beep, system sounds y archivos wav. La configuración se realiza via settings.json con matchers que identifican las herramientas objetivo.",
   "implementation_recommendations": [
-    "Para sitios corporativos conservadores: Usar gradientes animados CSS puros o patrones geométricos sutiles",
-    "Para empresas tecnológicas: Implementar particles.js o tsParticles para efectos de partículas profesionales",
-    "Para máximo impacto visual: Considerar Vanta.js con efectos 3D WebGL",
-    "Para performance óptima: Priorizar soluciones CSS puras sobre JavaScript cuando sea posible",
-    "Para compatibilidad móvil: Usar detect de prefers-reduced-motion para usuarios sensibles al movimiento",
-    "Para mantenimiento: Elegir bibliotecas bien documentadas como tsParticles o particles.js",
-    "Para customización: Usar generadores como MagicPattern o Animated Gradient Generator",
-    "Para inspiración: Revisar Awwwards para ver implementaciones reales en sitios corporativos"
+    "Usar PostToolUse hooks para notificaciones después de completar tareas",
+    "Implementar comandos PowerShell para sonidos en Windows/WSL2",
+    "Configurar matchers específicos: 'Edit|Write|Bash|TodoWrite'",
+    "Usar frecuencias diferenciadas: 1000Hz para tareas normales, 2000Hz para errores",
+    "Considerar duraciones cortas (200-500ms) para evitar interrupciones",
+    "Crear scripts separados en .claude/hooks/ para mejor organización",
+    "Usar variables de entorno como $CLAUDE_PROJECT_DIR para portabilidad"
   ],
   "potential_issues": [
-    "Performance en dispositivos móviles con efectos complejos",
-    "Accesibilidad - algunos usuarios pueden ser sensibles a animaciones",
-    "SEO - efectos pesados pueden afectar tiempo de carga",
-    "Compatibilidad de navegadores para efectos WebGL avanzados",
-    "Consumo de batería en dispositivos móviles",
-    "Distracción del contenido principal si el efecto es muy llamativo",
-    "Mantenimiento de bibliotecas JavaScript third-party",
-    "Configuración responsive para diferentes tamaños de pantalla"
+    "Hooks pueden fallar silenciosamente si el comando no existe",
+    "Timeout de 60 segundos para ejecución de hooks",
+    "Sonidos pueden no funcionar sin configuración de audio en WSL2",
+    "PowerShell debe estar disponible en PATH para comandos desde WSL2",
+    "Matchers son case-sensitive y deben coincidir exactamente",
+    "Múltiples hooks pueden ejecutarse simultáneamente causando solapamiento de sonidos"
   ],
-  "categorized_options": {
-    "CSS_Puro_Minimalista": {
-      "description": "Efectos ligeros sin dependencias JavaScript",
-      "examples": [
-        "Gradientes animados con keyframes CSS",
-        "Patrones geométricos CSS",
-        "Efectos de ondas CSS puras",
-        "Transformaciones CSS con pseudo-elementos"
-      ],
-      "best_for": "Sitios corporativos conservadores, máxima performance"
+  "hook_types_available": {
+    "PreToolUse": {
+      "description": "Runs after Claude creates tool parameters and before processing the tool call",
+      "use_cases": ["Permission validation", "Pre-execution checks", "Parameter modification"],
+      "control_flow": "Can block execution with 'deny' decision"
     },
-    "JavaScript_Particles": {
-      "description": "Sistemas de partículas configurables",
-      "examples": [
-        "particles.js - ligero y simple",
-        "tsParticles - avanzado y multi-framework", 
-        "Conexiones de red animadas",
-        "Efectos de confetti profesionales"
-      ],
-      "best_for": "Empresas tecnológicas, sitios interactivos"
+    "PostToolUse": {
+      "description": "Runs immediately after a tool completes successfully",
+      "use_cases": ["Sound notifications", "Code formatting", "Logging", "Cleanup tasks"],
+      "control_flow": "Cannot block execution, only react to completion"
     },
-    "WebGL_3D": {
-      "description": "Efectos 3D complejos con máximo impacto visual",
-      "examples": [
-        "Vanta.js backgrounds 3D",
-        "Three.js custom implementations",
-        "P5.js creative coding",
-        "Efectos fluid WebGL"
-      ],
-      "best_for": "Empresas creativas, portfolios, sitios premium"
+    "Notification": {
+      "description": "Runs when Claude Code sends notifications",
+      "use_cases": ["Desktop notifications", "Attention alerts", "Status updates"],
+      "control_flow": "Informational only"
     },
-    "Efectos_Especiales": {
-      "description": "Efectos temáticos específicos",
-      "examples": [
-        "Matrix digital rain effects",
-        "Network topology visualizations",
-        "Data flow animations",
-        "Corporate abstract patterns"
-      ],
-      "best_for": "Empresas tech, consultoras IT, startups"
+    "Stop": {
+      "description": "Runs when the main Claude Code agent has finished responding",
+      "use_cases": ["Session cleanup", "Final status notifications", "Summary reports"],
+      "control_flow": "End-of-session processing"
+    },
+    "SessionStart": {
+      "description": "Runs when a new Claude Code session begins",
+      "use_cases": ["Environment setup", "Welcome notifications", "Initialization"],
+      "control_flow": "Setup and preparation"
+    },
+    "UserPromptSubmit": {
+      "description": "Runs when user submits a prompt",
+      "use_cases": ["Prompt logging", "User activity tracking", "Input validation"],
+      "control_flow": "Can process user input"
     }
   },
-  "performance_guidelines": [
-    "Usar CSS animations sobre JavaScript cuando sea posible",
-    "Implementar lazy loading para efectos complejos",
-    "Considerar IntersectionObserver para activar/desactivar efectos",
-    "Usar will-change CSS property para optimizar rendering",
-    "Implementar fallbacks para dispositivos de baja potencia",
-    "Respetar prefers-reduced-motion media query",
-    "Optimizar textures y assets para WebGL",
-    "Usar requestAnimationFrame para animaciones JavaScript"
-  ]
+  "specific_examples": {
+    "basic_beep_hook": {
+      "settings_json": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write|Bash|TodoWrite\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[console]::beep(1000,300)'\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+      "description": "Beep simple para herramientas principales"
+    },
+    "differentiated_sounds": {
+      "settings_json": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[System.Media.SystemSounds]::Asterisk.Play()'\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Bash\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[console]::beep(2000,200)'\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"TodoWrite\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[System.Media.SystemSounds]::Question.Play()'\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+      "description": "Sonidos diferenciados por tipo de herramienta"
+    },
+    "wsl2_optimized": {
+      "bash_script": "#!/bin/bash\n# .claude/hooks/sound-notification.sh\n# Recibe información del hook via stdin\nread -r hook_data\nTOOL_NAME=$(echo \"$hook_data\" | jq -r '.tool_name')\n\ncase $TOOL_NAME in\n  \"Edit\"|\"Write\")\n    powershell.exe -c \"[System.Media.SystemSounds]::Asterisk.Play()\"\n    ;;\n  \"Bash\")\n    powershell.exe -c \"[console]::beep(1500,250)\"\n    ;;\n  \"TodoWrite\")\n    powershell.exe -c \"[System.Media.SystemSounds]::Question.Play()\"\n    ;;\n  *)\n    powershell.exe -c \"[console]::beep(1000,200)\"\n    ;;\nesac",
+      "settings_json": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"*\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/sound-notification.sh\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+      "description": "Script optimizado para WSL2 con sonidos contextuales usando datos JSON del hook"
+    },
+    "powershell_sound_options": {
+      "console_beep": "powershell.exe -c \"[console]::beep(frequency, duration)\"",
+      "system_sounds": {
+        "asterisk": "powershell.exe -c \"[System.Media.SystemSounds]::Asterisk.Play()\"",
+        "beep": "powershell.exe -c \"[System.Media.SystemSounds]::Beep.Play()\"",
+        "exclamation": "powershell.exe -c \"[System.Media.SystemSounds]::Exclamation.Play()\"",
+        "hand": "powershell.exe -c \"[System.Media.SystemSounds]::Hand.Play()\"",
+        "question": "powershell.exe -c \"[System.Media.SystemSounds]::Question.Play()\""
+      },
+      "wav_files": "powershell.exe -c \"(New-Object Media.SoundPlayer 'path/to/sound.wav').PlaySync()\"",
+      "description": "Opciones completas de sonido disponibles via PowerShell desde WSL2"
+    }
+  },
+  "ready_to_use_configurations": {
+    "minimal_setup": {
+      "file_path": ".claude/settings.json",
+      "content": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write|MultiEdit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[console]::beep(1200,300)'\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+      "description": "Configuración mínima para beep en operaciones de archivos"
+    },
+    "complete_setup": {
+      "file_path": ".claude/settings.json", 
+      "content": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write|MultiEdit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[System.Media.SystemSounds]::Asterisk.Play()'\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Bash\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[console]::beep(1500,200)'\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"TodoWrite\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[System.Media.SystemSounds]::Question.Play()'\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"matcher\": \"\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"powershell.exe -c '[console]::beep(800,500)'\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+      "description": "Configuración completa con sonidos diferenciados por herramienta y beep final"
+    }
+  }
 }

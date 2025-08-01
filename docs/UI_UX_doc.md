@@ -137,6 +137,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
+  font-family: inherit;
 }
 
 .btn--primary {
@@ -161,10 +162,58 @@
   color: var(--white);
 }
 
+.btn--simulator {
+  background: var(--gradient-accent);
+  color: var(--white);
+  box-shadow: var(--shadow-accent);
+  font-weight: var(--font-semibold);
+}
+
+.btn--simulator:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(255, 107, 53, 0.4);
+}
+
+.btn--whatsapp {
+  background: #25D366;
+  color: var(--white);
+  box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.25);
+}
+
+.btn--whatsapp:hover {
+  background: #20BD5A;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(37, 211, 102, 0.3);
+}
+
+.btn--call {
+  background: var(--gradient-primary);
+  color: var(--white);
+  box-shadow: var(--shadow-primary);
+}
+
+.btn--call:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(0, 100, 102, 0.3);
+}
+
 .btn--accent {
   background: var(--gradient-accent);
   color: var(--white);
   box-shadow: var(--shadow-accent);
+}
+
+.btn--accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(255, 107, 53, 0.3);
+}
+
+/* Hero Actions - Botones uniformes */
+.hero__actions .btn {
+  min-width: 180px;
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
 }
 ```
 
@@ -273,22 +322,44 @@
   padding: var(--space-24) 0;
   text-align: center;
   position: relative;
+  overflow: hidden;
+  min-height: 100vh;
 }
 
 .hero__title {
-  font-size: var(--text-5xl);
+  font-size: var(--text-6xl);
   font-weight: var(--font-bold);
+  color: var(--white);
   margin-bottom: var(--space-6);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.7);
   line-height: 1.2;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  padding: var(--space-6) var(--space-8);
+  border-radius: var(--border-radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero__subtitle {
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
+  color: var(--white);
   margin-bottom: var(--space-8);
-  opacity: 0.9;
-  max-width: 600px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  line-height: 1.5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  font-weight: var(--font-medium);
 }
 ```
 
@@ -404,4 +475,95 @@
 - **Ofertas/promociones**: `--accent-color`
 - **Elementos premium**: `--accent-gold`
 
---
+---
+
+## Jerarquía de Botones INGLAT
+
+### Guía de Uso de Botones
+
+#### 🟢 `.btn--primary` - Verde INGLAT
+**Uso:** CTAs principales, navegación principal, acciones primarias
+**Color:** `var(--gradient-primary)` (#006466 → #144552)
+**Ejemplo:** "Ver Proyectos", "Enviar Consulta", botones de formulario
+
+#### 🟠 `.btn--simulator` - Naranja Destacado  
+**Uso:** Simulador solar y funciones especiales destacadas
+**Color:** `var(--gradient-accent)` (#FF6B35 → #FFB627)
+**Ejemplo:** "Simulador Solar", CTAs de conversión especiales
+
+#### ⚪ `.btn--secondary` - Borde Verde
+**Uso:** Acciones secundarias, navegación alternativa
+**Color:** Transparente con borde `var(--primary-color)`
+**Ejemplo:** "Conocer Servicios", "Cancelar", acciones opcionales
+
+#### 💚 `.btn--whatsapp` - Verde WhatsApp
+**Uso:** Exclusivo para enlaces de WhatsApp
+**Color:** `#25D366` (color oficial WhatsApp)
+**Ejemplo:** Botones de contacto WhatsApp
+
+#### 📞 `.btn--call` - Verde INGLAT  
+**Uso:** Enlaces de llamada telefónica
+**Color:** `var(--gradient-primary)` (igual que primary)
+**Ejemplo:** Botones "Llamar"
+
+#### ✨ `.btn--accent` - Gradiente Naranja
+**Uso:** Promociones especiales, ofertas destacadas
+**Color:** `var(--gradient-accent)` (#FF6B35 → #FFB627)
+**Ejemplo:** "Oferta Especial", promociones limitadas
+
+### Modificadores Adicionales
+```css
+.btn--small { padding: var(--space-2) var(--space-4); font-size: var(--text-sm); }
+.btn--large { padding: var(--space-4) var(--space-8); font-size: var(--text-lg); }
+```
+
+---
+
+## Accesibilidad y Contraste
+
+### Texto sobre Imágenes en Movimiento
+Para garantizar la legibilidad del texto sobre fondos dinámicos o imágenes:
+
+```css
+/* Fondo semitransparente con blur para texto sobre imágenes */
+.text-over-image {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Text shadows para mejorar legibilidad */
+.text-shadow-strong {
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.7);
+}
+```
+
+### Principios de Contraste INGLAT
+- **Ratio mínimo**: 4.5:1 para texto normal
+- **Ratio mínimo**: 3:1 para texto grande (>18px)
+- **Texto blanco sobre fondo oscuro**: Siempre usar text-shadow para mayor legibilidad
+- **Backdrop-filter**: Usar blur(8px-10px) para fondos semitransparentes
+- **Fallbacks**: Proporcionar fondos sólidos alternativos para navegadores que no soporten backdrop-filter
+
+### Responsive de Hero Section
+```css
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: var(--text-4xl);
+    padding: var(--space-4) var(--space-6);
+    max-width: 95%;
+  }
+  
+  .hero__subtitle {
+    font-size: var(--text-lg);
+    padding: var(--space-4) var(--space-5);
+    max-width: 95%;
+  }
+}
+```
+
+---
