@@ -146,3 +146,170 @@
     text-decoration: none !important;
     z-index: 10000 !important;
 }
+
+/* ======================================
+   LOGO ANIMADO INGLAT - ELECTRONES
+   ====================================== */
+
+.logo-container {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.logo-text {
+    position: relative;
+    z-index: 10;
+    display: inline-block;
+}
+
+/* Electrones base */
+.electron {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Colores de electrones */
+.electron--purple {
+    background-color: #312244; /* --dark-purple */
+    box-shadow: 0 0 4px rgba(49, 34, 68, 0.6);
+}
+
+.electron--gold {
+    background-color: #FFB627; /* --accent-gold */
+    box-shadow: 0 0 4px rgba(255, 182, 39, 0.6);
+}
+
+/* Órbita 1 - Más pequeña, cerca del texto */
+.electron--orbit-1 {
+    animation-duration: 8s; /* Púrpura lento */
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    top: 50%;
+    left: 50%;
+    margin-top: -3px;
+    margin-left: -3px;
+    transform-origin: 0 0;
+}
+
+.electron--orbit-1.electron--gold {
+    animation-duration: 4s; /* Dorado rápido */
+}
+
+.electron--orbit-1.electron--pos-1 {
+    animation-name: orbit-small;
+    animation-delay: 0s;
+}
+
+.electron--orbit-1.electron--pos-2 {
+    animation-name: orbit-small;
+    animation-delay: -2s; /* Desfase para distribución */
+}
+
+/* Órbita 2 - Mediana */
+.electron--orbit-2 {
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    top: 50%;
+    left: 50%;
+    margin-top: -3px;
+    margin-left: -3px;
+    transform-origin: 0 0;
+}
+
+.electron--orbit-2.electron--gold {
+    animation-duration: 4s;
+}
+
+.electron--orbit-2.electron--pos-1 {
+    animation-name: orbit-medium;
+    animation-delay: -1s;
+}
+
+.electron--orbit-2.electron--pos-2 {
+    animation-name: orbit-medium;
+    animation-delay: -3s;
+}
+
+/* Órbita 3 - Más grande */
+.electron--orbit-3 {
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    top: 50%;
+    left: 50%;
+    margin-top: -3px;
+    margin-left: -3px;
+    transform-origin: 0 0;
+}
+
+.electron--orbit-3.electron--gold {
+    animation-duration: 4s;
+}
+
+.electron--orbit-3.electron--pos-1 {
+    animation-name: orbit-large;
+    animation-delay: -0.5s;
+}
+
+.electron--orbit-3.electron--pos-2 {
+    animation-name: orbit-large;
+    animation-delay: -2.5s;
+}
+
+/* Animaciones de órbitas */
+@keyframes orbit-small {
+    0% { transform: rotate(0deg) translateX(35px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(35px) rotate(-360deg); }
+}
+
+@keyframes orbit-medium {
+    0% { transform: rotate(0deg) translateX(45px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(45px) rotate(-360deg); }
+}
+
+@keyframes orbit-large {
+    0% { transform: rotate(0deg) translateX(55px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(55px) rotate(-360deg); }
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .electron {
+        width: 4px;
+        height: 4px;
+        margin-top: -2px;
+        margin-left: -2px;
+    }
+    
+    @keyframes orbit-small {
+        0% { transform: rotate(0deg) translateX(25px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateX(25px) rotate(-360deg); }
+    }
+    
+    @keyframes orbit-medium {
+        0% { transform: rotate(0deg) translateX(32px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateX(32px) rotate(-360deg); }
+    }
+    
+    @keyframes orbit-large {
+        0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+    }
+}
+
+/* Opcional: Efecto hover para pausar */
+.header__logo:hover .electron {
+    animation-play-state: paused;
+}
+
+/* Optimización para performance */
+.electron {
+    will-change: transform;
+    backface-visibility: hidden;
+}

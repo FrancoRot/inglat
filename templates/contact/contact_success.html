@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Mensaje Enviado - INGLAT{% endblock %}
+{% block description %}Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo en las próximas 24 horas.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="success-page">
+    <div class="container">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle text-success"></i>
+            </div>
+            
+            <h1 class="success-title">¡Mensaje Enviado Correctamente!</h1>
+            
+            <p class="success-message">
+                Gracias por contactar con INGLAT. Hemos recibido tu consulta y nos pondremos en contacto contigo 
+                <strong>en las próximas 24 horas</strong> para ofrecerte una propuesta personalizada.
+            </p>
+            
+            <div class="next-steps">
+                <h3>¿Qué viene ahora?</h3>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Análisis de tu consulta</h4>
+                            <p>Revisaremos los detalles de tu proyecto para preparar una propuesta inicial.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Primera llamada</h4>
+                            <p>Te contactaremos para aclarar dudas y agendar una visita técnica si es necesario.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Propuesta personalizada</h4>
+                            <p>Recibirás un presupuesto detallado adaptado a tus necesidades específicas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="success-actions">
+                <h3>Mientras tanto, puedes:</h3>
+                
+                <div class="action-buttons">
+                    <a href="{% url 'core:simulador' %}" class="btn btn--simulator">
+                        <i class="fas fa-calculator"></i>
+                        Probar el Simulador Solar
+                    </a>
+                    
+                    <a href="/proyectos/" class="btn btn--secondary">
+                        <i class="fas fa-images"></i>
+                        Ver Nuestros Proyectos
+                    </a>
+                    
+                    <a href="https://wa.me/541167214369?text=Hola%20INGLAT,%20acabo%20de%20enviar%20un%20formulario%20de%20contacto" 
+                       class="btn btn--whatsapp" 
+                       target="_blank" 
+                       rel="noopener">
+                        <i class="fab fa-whatsapp"></i>
+                        Contacto Inmediato
+                    </a>
+                </div>
+            </div>
+            
+            <div class="contact-reminder">
+                <div class="reminder-card">
+                    <h4>¿Necesitas contacto inmediato?</h4>
+                    <p>Si tu proyecto es urgente, puedes llamarnos directamente:</p>
+                    <div class="contact-options">
+                        <a href="tel:+541167214369" class="contact-option">
+                            <i class="fas fa-phone"></i>
+                            <span>+34 XXX XXX XXX</span>
+                        </a>
+                        <a href="mailto:info@inglat.com" class="contact-option">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@inglat.com</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="return-home">
+                <a href="{% url 'core:home' %}" class="btn btn--primary">
+                    <i class="fas fa-home"></i>
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

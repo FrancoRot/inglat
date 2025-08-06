@@ -1,0 +1,254 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Contacto - INGLAT{% endblock %}
+{% block description %}Contacta con INGLAT para tu proyecto solar. Te ayudamos a encontrar la mejor soluci�n energ�tica personalizada para tu hogar o negocio.{% endblock %}
+{% block keywords %}contacto INGLAT, consulta proyecto solar, instalaci�n placas solares, presupuesto energ�a solar{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero hero--contact">
+    <div class="container">
+        <div class="hero__content">
+            <h1 class="hero__title">Contacta con INGLAT</h1>
+            <p class="hero__subtitle">Tu proyecto solar empieza aqu�. Hablemos sobre tu futuro energ�tico.</p>
+            
+            <!-- Botones de Acci�n Directa -->
+            <div class="hero__actions">
+                <a href="https://wa.me/541167214369?text=Hola%20INGLAT,%20me%20interesa%20conocer%20m�s%20sobre%20las%20instalaciones%20solares" 
+                   class="btn btn--whatsapp" 
+                   target="_blank" 
+                   rel="noopener">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp
+                </a>
+                
+                <a href="tel:+541167214369" class="btn btn--call">
+                    <i class="fas fa-phone"></i>
+                    Llamar Ahora
+                </a>
+                
+                <a href="{% url 'core:simulador' %}" class="btn btn--simulator">
+                    <i class="fas fa-calculator"></i>
+                    Simulador Solar
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Secci�n Principal de Contacto -->
+<section class="contact-main">
+    <div class="container">
+        <div class="contact-main__grid">
+            <!-- Formulario de Contacto -->
+            <div class="contact-main__form-section">
+                <div class="card">
+                    <div class="card__content">
+                        <h2 class="card__title">Cu�ntanos sobre tu proyecto</h2>
+                        <p class="text-gray-700">Completa el formulario y te contactaremos en menos de 24 horas con una propuesta personalizada.</p>
+                        
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert--{{ message.tags }}">
+                                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="post" id="contact-form" class="contact-form" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="{{ form.nombre.id_for_label }}" class="form-label">
+                                        {{ form.nombre.label }}
+                                    </label>
+                                    {{ form.nombre }}
+                                    {% if form.nombre.errors %}
+                                        <div class="form-error">
+                                            {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                                        {{ form.email.label }}
+                                    </label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="form-error">
+                                            {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="{{ form.telefono.id_for_label }}" class="form-label">
+                                        {{ form.telefono.label }}
+                                    </label>
+                                    {{ form.telefono }}
+                                    {% if form.telefono.errors %}
+                                        <div class="form-error">
+                                            {% for error in form.telefono.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.tipo_proyecto.id_for_label }}" class="form-label">
+                                        {{ form.tipo_proyecto.label }}
+                                    </label>
+                                    {{ form.tipo_proyecto }}
+                                    {% if form.tipo_proyecto.errors %}
+                                        <div class="form-error">
+                                            {% for error in form.tipo_proyecto.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.mensaje.id_for_label }}" class="form-label">
+                                    {{ form.mensaje.label }}
+                                </label>
+                                {{ form.mensaje }}
+                                <div class="form-hint">
+                                    Cu�ntanos sobre tu ubicaci�n, consumo energ�tico actual, tipo de tejado, etc.
+                                </div>
+                                {% if form.mensaje.errors %}
+                                    <div class="form-error">
+                                        {% for error in form.mensaje.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            {% if form.non_field_errors %}
+                                <div class="form-error">
+                                    {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                            <button type="submit" class="btn btn--primary btn--large" id="submit-button">
+                                <span class="submit-text">Enviar Consulta</span>
+                                <span class="loading-text" style="display: none;">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    Enviando...
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Informaci�n de Contacto -->
+            <div class="contact-main__info-section">
+                <div class="contact-info">
+                    <h3 class="contact-info__title">Informaci�n de Contacto</h3>
+                    
+                    <div class="contact-info__item">
+                        <i class="fas fa-map-marker-alt text-primary"></i>
+                        <div>
+                            <h4>Nuestra Oficina</h4>
+                            <p>Direcci�n Completa<br>
+                            Ciudad, Provincia, CP</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info__item">
+                        <i class="fas fa-phone text-primary"></i>
+                        <div>
+                            <h4>Tel�fono</h4>
+                            <p><a href="tel:+541167214369">+54 11 6721-4369</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info__item">
+                        <i class="fas fa-envelope text-primary"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p><a href="mailto:info@inglat.com">info@inglat.com</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info__item">
+                        <i class="fas fa-clock text-primary"></i>
+                        <div>
+                            <h4>Horario de Atenci�n</h4>
+                            <p>Lunes a Viernes: 9:00 - 18:00<br>
+                            S�bados: 10:00 - 14:00</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enlaces R�pidos -->
+                <div class="quick-links">
+                    <h3 class="quick-links__title">Enlaces R�pidos</h3>
+                    <div class="quick-links__grid">
+                        <a href="{% url 'core:simulador' %}" class="quick-link">
+                            <i class="fas fa-calculator"></i>
+                            <span>Simulador Solar</span>
+                        </a>
+                        
+                        <a href="{% url 'core:home' %}#servicios" class="quick-link">
+                            <i class="fas fa-tools"></i>
+                            <span>Nuestros Servicios</span>
+                        </a>
+                        
+                        <a href="/proyectos/" class="quick-link">
+                            <i class="fas fa-image"></i>
+                            <span>Proyectos</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Solar -->
+<section class="faq-solar">
+    <div class="container">
+        <h2 class="faq-solar__title">Preguntas Frecuentes</h2>
+        
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3 class="faq-item__question">�Cu�nto tiempo tarda una instalaci�n solar?</h3>
+                <p class="faq-item__answer">Una instalaci�n residencial t�pica se completa en 1-3 d�as. El proceso completo desde la consulta hasta la puesta en marcha puede tomar 4-8 semanas.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-item__question">�Qu� garant�a ofrecen?</h3>
+                <p class="faq-item__answer">Ofrecemos 25 a�os de garant�a en paneles solares, 12 a�os en inversores y 10 a�os en mano de obra. Adem�s, mantenimiento preventivo incluido.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-item__question">�Necesito bater�as?</h3>
+                <p class="faq-item__answer">Las bater�as son opcionales. Recomendamos evaluarlo seg�n tu patr�n de consumo y objetivos de independencia energ�tica. Nuestro simulador te ayudar� a decidir.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-item__question">�Puedo vender energ�a a la red?</h3>
+                <p class="faq-item__answer">S�, con el sistema de compensaci�n de excedentes puedes verter energ�a a la red y recibir compensaci�n en tu factura el�ctrica.</p>
+            </div>
+        </div>
+        
+        <div class="faq-cta">
+            <p>�Tienes m�s preguntas?</p>
+            <a href="#contact-form" class="btn btn--secondary">Contacta con Nosotros</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/contact.js' %}"></script>
+{% endblock %}

@@ -3,7 +3,12 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:www.haihai.ai)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(python manage.py:*)",
+      "Bash(python3 manage.py makemigrations:*)",
+      "Bash(source:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

@@ -4,6 +4,9 @@ from . import views
 app_name = 'contact'
 
 urlpatterns = [
-    # P�gina de contacto - placeholder
-    path('', views.contact, name='contact'),
+    # Página de contacto principal
+    path('', views.ContactView.as_view(), name='contact'),
+    
+    # Página de éxito después del envío
+    path('enviado/', views.contact_success, name='contact_success'),
 ]
