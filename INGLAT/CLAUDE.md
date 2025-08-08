@@ -9,10 +9,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Backend**: Django 5.2.4 + Python 3.11+
 - **Database**: PostgreSQL  
 - **Frontend**: HTML + CSS + JavaScript (Vanilla)
+- **WhatsApp Integration**: Smart device detection with fallback
 - **Version Control**: Git
 
 ### Current Project Phase:
-Corporate website with project portfolio, blog, contact systems, and solar energy simulator. Future dashboard functionality for client monitoring.
+Corporate website with comprehensive solar energy simulator, project portfolio, WhatsApp-integrated contact system, and blog. Features Argentina-specific solar irradiation data and cost calculations. Future dashboard functionality for client monitoring planned.
 
 ---
 
@@ -39,8 +40,15 @@ python manage.py shell
 
 ### Testing Commands:
 ```bash
-# No test framework currently configured
-# Tests should be added using Django's built-in testing or pytest-django
+# Django built-in testing
+python manage.py test
+python manage.py test apps.core
+python manage.py test apps.core.tests.TestModelName
+
+# Run with coverage (if installed)
+python manage.py test --coverage
+
+# Recommend adding pytest-django for advanced testing
 ```
 
 ### Database Operations:
@@ -62,7 +70,25 @@ source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
 # Install dependencies
+pip install -r requirements/base.txt        # Production dependencies
+pip install -r requirements/development.txt # Development dependencies
+pip install -r requirements/production.txt  # Production-specific dependencies
+
+# Or install all at once
 pip install -r requirements.txt
+```
+
+### Code Quality & Linting:
+```bash
+# Recommended to add and run regularly:
+# flake8 .                    # Python linting
+# black .                     # Code formatting  
+# isort .                     # Import sorting
+# pylint apps/                # Code analysis
+
+# Django system checks
+python manage.py check
+python manage.py check --deploy  # Production readiness
 ```
 
 ---
@@ -73,7 +99,7 @@ pip install -r requirements.txt
 - **apps/core**: Main application - homepage, about, services, and project models
 - **apps/projects**: Project portfolio management (uses models from core app)
 - **apps/blog**: News and articles system (models not yet implemented)
-- **apps/contact**: Contact forms and WhatsApp integration (models not yet implemented)
+- **apps/contact**: Contact forms with smart WhatsApp integration (device-aware)
 - **apps/dashboard**: Future client dashboard functionality
 
 ### Key Models (apps/core/models.py):
@@ -170,8 +196,10 @@ The project includes a comprehensive solar energy calculator with the following 
 
 ### Configuration:
 - `INGLAT/settings.py` - Main Django settings
-- `requirements.txt` - Main dependencies file
-- `requirements/` - Environment-specific requirements
+- `requirements/base.txt` - Core dependencies
+- `requirements/development.txt` - Development dependencies  
+- `requirements/production.txt` - Production dependencies
+- `requirements.txt` - Main requirements file
 
 ### Documentation:
 - `docs/PRD.md` - Product requirements and business rules
@@ -179,6 +207,7 @@ The project includes a comprehensive solar energy calculator with the following 
 - `docs/UI_UX_doc.md` - Design guidelines and UI specifications
 - `docs/Bug_tracking.md` - Known issues and bug reports
 - `docs/Implementation.md` - Implementation guidelines
+- `docs/WhatsApp_Integration.md` - WhatsApp integration documentation
 
 ### Key Apps:
 - `apps/core/models.py` - Project model definition (main business logic)
@@ -194,6 +223,7 @@ The project includes a comprehensive solar energy calculator with the following 
 2. Check `docs/Bug_tracking.md` for known issues
 3. Review `docs/UI_UX_doc.md` for design guidelines
 4. Understand business rules in `docs/PRD.md`
+5. For WhatsApp features, consult `docs/WhatsApp_Integration.md`
 
 ### Security Considerations:
 - Check `docs/Bug_tracking.md` for critical security issues
@@ -235,7 +265,10 @@ The project includes a comprehensive solar energy calculator with the following 
 
 ### Dependencies:
 - `python-decouple` installed but not used (consider using for better environment variable handling)
+- `django-environ` available for environment variable management
 - No testing framework configured (recommend adding pytest-django)
+- PostgreSQL adapter: `psycopg2-binary` for database connectivity
+- Pillow for image handling in project portfolio
 
 ### Regional Settings:
 - Project targets Argentine market (provinces, phone numbers)

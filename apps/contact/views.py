@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.utils.html import strip_tags
 from .forms import ContactForm
 from .models import ContactMessage
 import logging
@@ -47,8 +48,11 @@ class ContactView(TemplateView):
             # Guardar el mensaje
             contact_message.save()
             
-            # Enviar email de notificación
+            # Enviar email de notificación a la empresa
             self._enviar_email_notificacion(contact_message, request)
+            
+            # Enviar email de confirmación al cliente
+            self._enviar_email_confirmacion_cliente(contact_message, request)
             
             # Mensaje de éxito
             messages.success(
@@ -135,6 +139,41 @@ INGLAT - Sistema de Notificaciones
             
         except Exception as e:
             logger.error(f'Error enviando email de notificación: {e}')
+            # No interrumpir el flujo si falla el email
+    
+    def _enviar_email_confirmacion_cliente(self, contact_message, request):
+        """Enviar email de confirmación al cliente"""
+        try:
+            # Preparar contexto para el email del cliente
+            context = {
+                'contact_message': contact_message,
+                'site_url': request.build_absolute_uri('/'),
+                'email_subject': 'Hemos recibido tu mensaje en INGLAT'
+            }
+            
+            # Renderizar template HTML
+            html_content = render_to_string('emails/customer_confirmation.html', context)
+            text_content = strip_tags(html_content)
+            
+            # Asunto del email
+            asunto = f"Hemos recibido tu mensaje en INGLAT ☀️"
+            
+            # Crear mensaje multipart (HTML + texto plano)
+            msg = EmailMultiAlternatives(
+                subject=asunto,
+                body=text_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[contact_message.email],
+            )
+            msg.attach_alternative(html_content, "text/html")
+            
+            # Enviar email
+            msg.send()
+            
+            logger.info(f'Email de confirmación enviado a {contact_message.email}')
+            
+        except Exception as e:
+            logger.error(f'Error enviando email de confirmación al cliente: {e}')
             # No interrumpir el flujo si falla el email
 
 

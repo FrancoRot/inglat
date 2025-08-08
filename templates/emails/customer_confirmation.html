@@ -1,0 +1,68 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+<h2>¡Hola {{ contact_message.nombre }}! 👋</h2>
+
+<p>
+    <strong>Gracias por contactarte con INGLAT.</strong> Hemos recibido tu consulta sobre 
+    <strong>{{ contact_message.get_tipo_proyecto_display }}</strong> y muy pronto uno de nuestros 
+    asesores especializados se pondrá en contacto contigo para resolver todas tus dudas 😊
+</p>
+
+<div class="highlight-box">
+    <h3>📋 Resumen de tu consulta:</h3>
+    <p><strong>Nombre:</strong> {{ contact_message.nombre }}</p>
+    <p><strong>Email:</strong> {{ contact_message.email }}</p>
+    {% if contact_message.telefono %}
+    <p><strong>Teléfono:</strong> {{ contact_message.telefono }}</p>
+    {% endif %}
+    <p><strong>Tipo de proyecto:</strong> {{ contact_message.get_tipo_proyecto_display }}</p>
+    <p><strong>Fecha de consulta:</strong> {{ contact_message.fecha_creacion|date:"d/m/Y H:i" }} hs</p>
+</div>
+
+<p>
+    <strong>¿Qué sigue ahora?</strong><br>
+    Nuestro equipo técnico revisará tu consulta y te contactaremos en un plazo máximo de 
+    <span style="color: #FF6B35; font-weight: 600;">24 horas hábiles</span> para brindarte 
+    una propuesta personalizada y resolver todas tus preguntas.
+</p>
+
+<div class="btn-container">
+    <a href="{{ site_url }}contacto/#faq-solar" class="btn btn-secondary">
+        ❓ Ver Preguntas Frecuentes
+    </a>
+    <a href="{{ site_url }}simulador/" class="btn">
+        ⚡ Probá nuestro Simulador Solar
+    </a>
+</div>
+
+<p>
+    Mientras tanto, podés explorar más sobre nuestros servicios en nuestra web o 
+    <a href="https://wa.me/541167214369?text=Hola%20INGLAT,%20consulté%20por%20{{ contact_message.get_tipo_proyecto_display|urlencode }}%20y%20me%20gustaría%20más%20información" class="inline-link">
+        contactarnos por WhatsApp
+    </a> si tenés alguna pregunta urgente.
+</p>
+
+<div style="background: linear-gradient(135deg, #E8F6F6 0%, #B3E0E1 100%); padding: 20px; border-radius: 8px; margin: 25px 0; text-align: center;">
+    <p style="margin: 0; font-size: 16px; color: #006466;">
+        <strong>🌱 ¡Gracias por elegir energía renovable!</strong><br>
+        <span style="font-size: 14px;">Juntos construimos un futuro más sustentable</span>
+    </p>
+</div>
+
+<p style="font-size: 14px; color: #666;">
+    <em>
+        Si necesitás contacto inmediato, podés llamarnos al 
+        <strong style="color: #FF6B35;">+54 11 6721-4369</strong> 
+        o escribirnos por WhatsApp. Estamos acá para ayudarte.
+    </em>
+</p>
+{% endblock %}
+
+{% block footer_extra %}
+<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+    <p style="font-size: 12px; color: #999; margin: 0;">
+        <strong>Referencia de consulta:</strong> #{{ contact_message.id }} - {{ contact_message.fecha_creacion|date:"d/m/Y" }}
+    </p>
+</div>
+{% endblock %}

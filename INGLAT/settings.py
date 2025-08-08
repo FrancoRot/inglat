@@ -148,3 +148,45 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email Configuration - SpaceMail SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = get_env_variable('EMAIL_HOST', 'mail.spacemail.com')
+EMAIL_PORT = int(get_env_variable('EMAIL_PORT', '465'))
+EMAIL_USE_SSL = get_env_variable('EMAIL_USE_SSL', 'True').lower() == 'true'
+EMAIL_USE_TLS = False  # Must be False when using SSL on port 465
+EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER', 'info@inglat.com')
+EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = get_env_variable('DEFAULT_FROM_EMAIL', 'info@inglat.com')
+
+# Email Recipients
+NOTIFICATION_EMAIL = get_env_variable('NOTIFICATION_EMAIL', 'contacto@inglat.com')
+
+# Logging Configuration for Debugging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.mail': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'apps.contact': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

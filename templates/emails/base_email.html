@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INGLAT - {{ email_subject|default:"Mensaje Automático" }}</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f8f9fa;
+        }
+        
+        /* Container principal */
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Header INGLAT */
+        .email-header {
+            background: linear-gradient(135deg, #006466 0%, #144552 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .email-header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        
+        .email-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .solar-icon {
+            font-size: 24px;
+            margin-right: 8px;
+            color: #FFB627;
+        }
+        
+        /* Contenido principal */
+        .email-content {
+            padding: 40px 30px;
+        }
+        
+        .email-content h2 {
+            color: #006466;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .email-content p {
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+        
+        /* Destacados */
+        .highlight-box {
+            background: linear-gradient(135deg, #B3E0E1 0%, #E8F6F6 100%);
+            border-left: 4px solid #006466;
+            padding: 20px;
+            margin: 24px 0;
+            border-radius: 8px;
+        }
+        
+        .highlight-box h3 {
+            color: #006466;
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        /* Botones */
+        .btn-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B35 0%, #FFB627 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 8px 12px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #006466 0%, #144552 100%);
+            box-shadow: 0 4px 15px rgba(0, 100, 102, 0.3);
+        }
+        
+        /* Enlaces inline */
+        .inline-link {
+            color: #FF6B35;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #FF6B35;
+        }
+        
+        /* Footer */
+        .email-footer {
+            background-color: #f8f9fa;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .email-footer p {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 8px;
+        }
+        
+        .contact-info {
+            margin: 20px 0;
+        }
+        
+        .contact-info a {
+            color: #006466;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .social-links {
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 8px;
+            color: #006466;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .email-header {
+                padding: 25px 15px;
+            }
+            
+            .email-header h1 {
+                font-size: 24px;
+            }
+            
+            .email-content {
+                padding: 30px 20px;
+            }
+            
+            .email-content h2 {
+                font-size: 20px;
+            }
+            
+            .btn {
+                display: block;
+                margin: 12px 0;
+                padding: 16px 20px;
+            }
+            
+            .highlight-box {
+                padding: 15px;
+                margin: 20px 0;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .email-container {
+                background-color: #1a1a1a;
+            }
+            
+            .email-content {
+                background-color: #1a1a1a;
+                color: #e0e0e0;
+            }
+            
+            .email-footer {
+                background-color: #2d2d2d;
+                color: #cccccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <h1><span class="solar-icon">☀️</span>INGLAT</h1>
+            <p>Instalaciones Eléctricas y Energías Renovables</p>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div class="email-content">
+            {% block content %}
+            <!-- El contenido específico de cada email va aquí -->
+            {% endblock %}
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <div class="contact-info">
+                <p><strong>📧 Email:</strong> <a href="mailto:info@inglat.com">info@inglat.com</a></p>
+                <p><strong>📱 WhatsApp:</strong> <a href="https://wa.me/541167214369">+54 11 6721-4369</a></p>
+                <p><strong>🌐 Website:</strong> <a href="https://www.inglat.com">www.inglat.com</a></p>
+            </div>
+            
+            <p>&copy; 2024 INGLAT. Todos los derechos reservados.</p>
+            <p style="font-size: 12px; color: #999;">
+                Este es un mensaje automático, por favor no responder a este email.
+            </p>
+            
+            {% block footer_extra %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

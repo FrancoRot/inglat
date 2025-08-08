@@ -94,7 +94,7 @@ async function handleFormSubmit(event) {
         
     } catch (error) {
         console.error('Error al enviar el formulario:', error);
-        showMessage('Hubo un problema al enviar el formulario. Por favor, int�ntalo de nuevo.', 'error');
+        showMessage('Hubo un problema al enviar el formulario. Por favor, inténtalo de nuevo.', 'error');
     } finally {
         setButtonLoading(submitButton, false);
     }
@@ -473,48 +473,123 @@ window.contactUtils = {
 };
 
 /**
- * Inicializar funcionalidad del acordeón FAQ
+ * Inicializar funcionalidad del acordeón FAQ mejorado
  */
 function initFaqAccordion() {
+    const faqItems = document.querySelectorAll('.faq-item');
     const faqQuestions = document.querySelectorAll('.faq-question');
     
+    // Configurar estado inicial para todas las preguntas
+    faqQuestions.forEach((question, index) => {
+        question.setAttribute('aria-expanded', 'false');
+        question.setAttribute('tabindex', '0');
+        question.setAttribute('role', 'button');
+        question.setAttribute('aria-controls', `faq-answer-${index}`);
+        
+        const answer = question.nextElementSibling;
+        if (answer) {
+            answer.setAttribute('id', `faq-answer-${index}`);
+            answer.setAttribute('role', 'region');
+            answer.setAttribute('aria-labelledby', `faq-question-${index}`);
+        }
+        
+        question.setAttribute('id', `faq-question-${index}`);
+    });
+    
     faqQuestions.forEach(question => {
+        // Click handler
         question.addEventListener('click', function() {
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            const answer = this.nextElementSibling;
-            
-            // Cerrar todos los otros elementos
-            faqQuestions.forEach(otherQuestion => {
-                if (otherQuestion !== this) {
-                    otherQuestion.setAttribute('aria-expanded', 'false');
-                    const otherAnswer = otherQuestion.nextElementSibling;
-                    if (otherAnswer) {
-                        otherAnswer.classList.remove('active');
-                    }
-                }
-            });
-            
-            // Toggle el elemento actual
-            if (isExpanded) {
-                this.setAttribute('aria-expanded', 'false');
-                answer.classList.remove('active');
-            } else {
-                this.setAttribute('aria-expanded', 'true');
-                answer.classList.add('active');
-                
-                // Scroll suave al elemento expandido después de la animación
-                setTimeout(() => {
-                    this.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }, 300);
+            toggleFaqItem(this);
+        });
+        
+        // Keyboard support
+        question.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleFaqItem(this);
             }
         });
         
-        // Configurar estado inicial
-        question.setAttribute('aria-expanded', 'false');
+        // Enhanced hover effects
+        question.addEventListener('mouseenter', function() {
+            if (this.getAttribute('aria-expanded') !== 'true') {
+                this.style.transform = 'translateX(2px)';
+            }
+        });
+        
+        question.addEventListener('mouseleave', function() {
+            if (this.getAttribute('aria-expanded') !== 'true') {
+                this.style.transform = '';
+            }
+        });
     });
+    
+    /**
+     * Toggle functionality for FAQ items
+     */
+    function toggleFaqItem(questionElement) {
+        const isExpanded = questionElement.getAttribute('aria-expanded') === 'true';
+        const answer = questionElement.nextElementSibling;
+        const faqItem = questionElement.closest('.faq-item');
+        
+        if (!answer || !faqItem) return;
+        
+        // Close all other items (accordion behavior)
+        faqItems.forEach(item => {
+            if (item !== faqItem) {
+                const otherQuestion = item.querySelector('.faq-question');
+                const otherAnswer = item.querySelector('.faq-answer');
+                
+                if (otherQuestion && otherAnswer) {
+                    otherQuestion.setAttribute('aria-expanded', 'false');
+                    otherAnswer.classList.remove('active');
+                    item.classList.remove('active');
+                }
+            }
+        });
+        
+        // Toggle current item
+        if (isExpanded) {
+            // Close current item
+            questionElement.setAttribute('aria-expanded', 'false');
+            answer.classList.remove('active');
+            faqItem.classList.remove('active');
+        } else {
+            // Open current item
+            questionElement.setAttribute('aria-expanded', 'true');
+            answer.classList.add('active');
+            faqItem.classList.add('active');
+            
+            // Smooth scroll to opened item after animation
+            setTimeout(() => {
+                questionElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }, 200);
+            
+            // Add focus outline for accessibility
+            questionElement.focus();
+        }
+        
+        // Analytics tracking (optional)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'faq_interaction', {
+                'event_category': 'engagement',
+                'event_label': questionElement.textContent.trim(),
+                'value': isExpanded ? 0 : 1
+            });
+        }
+    }
+    
+    // Auto-expand first FAQ item on page load (optional)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('expand_faq') === 'true' && faqQuestions.length > 0) {
+        setTimeout(() => {
+            toggleFaqItem(faqQuestions[0]);
+        }, 500);
+    }
 }
 
 // A�adir estilos para errores de campo

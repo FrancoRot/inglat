@@ -155,7 +155,7 @@
     position: relative;
     display: inline-block;
     z-index: 1;
-    padding: 5px 15px;
+    padding: 8px 25px;
 }
 
 .logo-text {
@@ -183,10 +183,10 @@
 }
 
 /* Colores de electrones */
-.electron--purple {
-    background-color: #312244; /* --dark-purple */
-    box-shadow: 0 0 3px rgba(49, 34, 68, 0.5);
-    animation-duration: 6s; /* Púrpura lento */
+.electron--blue {
+    background-color: #212f45; /* --prussian-blue */
+    box-shadow: 0 0 3px rgba(33, 47, 69, 0.5);
+    animation-duration: 6s; /* Azul lento */
 }
 
 .electron--gold {
@@ -195,77 +195,109 @@
     animation-duration: 3s; /* Dorado rápido */
 }
 
+/* Efectos de destello */
+@keyframes glow-blue {
+    0%, 100% { box-shadow: 0 0 3px rgba(33, 47, 69, 0.5); }
+    50% { box-shadow: 0 0 8px rgba(33, 47, 69, 0.9), 0 0 12px rgba(33, 47, 69, 0.6); }
+}
+
+@keyframes glow-gold {
+    0%, 100% { box-shadow: 0 0 3px rgba(255, 182, 39, 0.5); }
+    50% { box-shadow: 0 0 8px rgba(255, 182, 39, 0.9), 0 0 12px rgba(255, 182, 39, 0.6); }
+}
+
 /* Patrón 1: Movimiento ondulado horizontal (horario) */
 .electron--wave-1 {
-    animation-name: wave-horizontal;
+    animation-name: wave-horizontal, glow-gold;
     animation-delay: 0s;
+    animation-duration: 3s, 2s;
 }
 
 @keyframes wave-horizontal {
-    0% { transform: translate(-15px, -8px); }
-    25% { transform: translate(-5px, 8px); }
-    50% { transform: translate(15px, -8px); }
-    75% { transform: translate(5px, 8px); }
-    100% { transform: translate(-15px, -8px); }
+    0% { transform: translate(-30px, -12px); }
+    25% { transform: translate(-10px, 12px); }
+    50% { transform: translate(30px, -12px); }
+    75% { transform: translate(10px, 12px); }
+    100% { transform: translate(-30px, -12px); }
 }
 
 /* Patrón 2: Movimiento zigzag diagonal (antihorario) */
 .electron--zigzag-1 {
-    animation-name: zigzag-diagonal;
+    animation-name: zigzag-diagonal, glow-blue;
     animation-delay: -1s;
     animation-direction: reverse;
+    animation-duration: 6s, 2s;
 }
 
 @keyframes zigzag-diagonal {
-    0% { transform: translate(-12px, -10px); }
-    20% { transform: translate(-8px, 10px); }
-    40% { transform: translate(8px, -10px); }
-    60% { transform: translate(12px, 10px); }
-    80% { transform: translate(0px, -5px); }
-    100% { transform: translate(-12px, -10px); }
+    0% { transform: translate(-25px, -15px); }
+    20% { transform: translate(-15px, 15px); }
+    40% { transform: translate(15px, -15px); }
+    60% { transform: translate(25px, 15px); }
+    80% { transform: translate(0px, -8px); }
+    100% { transform: translate(-25px, -15px); }
 }
 
 /* Patrón 3: Movimiento elíptico vertical (horario) */
 .electron--ellipse-1 {
-    animation-name: ellipse-vertical;
+    animation-name: ellipse-vertical, glow-gold;
     animation-delay: -0.5s;
+    animation-duration: 3s, 2s;
 }
 
 @keyframes ellipse-vertical {
-    0% { transform: translate(0px, -12px); }
-    25% { transform: translate(8px, 0px); }
-    50% { transform: translate(0px, 12px); }
-    75% { transform: translate(-8px, 0px); }
-    100% { transform: translate(0px, -12px); }
+    0% { transform: translate(0px, -18px); }
+    25% { transform: translate(20px, 0px); }
+    50% { transform: translate(0px, 18px); }
+    75% { transform: translate(-20px, 0px); }
+    100% { transform: translate(0px, -18px); }
 }
 
 /* Patrón 4: Movimiento en "S" (antihorario) */
 .electron--curve-s {
-    animation-name: curve-s;
+    animation-name: curve-s, glow-blue;
     animation-delay: -2s;
     animation-direction: reverse;
+    animation-duration: 6s, 2s;
 }
 
 @keyframes curve-s {
-    0% { transform: translate(-10px, -10px); }
-    25% { transform: translate(10px, -5px); }
-    50% { transform: translate(-10px, 5px); }
-    75% { transform: translate(10px, 10px); }
-    100% { transform: translate(-10px, -10px); }
+    0% { transform: translate(-22px, -16px); }
+    25% { transform: translate(22px, -8px); }
+    50% { transform: translate(-22px, 8px); }
+    75% { transform: translate(22px, 16px); }
+    100% { transform: translate(-22px, -16px); }
 }
 
 /* Patrón 5: Movimiento rectangular pequeño (horario) */
 .electron--rectangle {
-    animation-name: rectangle-small;
+    animation-name: rectangle-small, glow-gold;
     animation-delay: -3s;
+    animation-duration: 3s, 2s;
 }
 
 @keyframes rectangle-small {
-    0% { transform: translate(-8px, -6px); }
-    25% { transform: translate(8px, -6px); }
-    50% { transform: translate(8px, 6px); }
-    75% { transform: translate(-8px, 6px); }
-    100% { transform: translate(-8px, -6px); }
+    0% { transform: translate(-18px, -10px); }
+    25% { transform: translate(18px, -10px); }
+    50% { transform: translate(18px, 10px); }
+    75% { transform: translate(-18px, 10px); }
+    100% { transform: translate(-18px, -10px); }
+}
+
+/* Patrón 6: Movimiento en espiral (antihorario) */
+.electron--spiral {
+    animation-name: spiral-motion, glow-blue;
+    animation-delay: -4s;
+    animation-direction: reverse;
+    animation-duration: 6s, 2s;
+}
+
+@keyframes spiral-motion {
+    0% { transform: translate(-5px, -5px) scale(1); }
+    25% { transform: translate(15px, -15px) scale(1.2); }
+    50% { transform: translate(25px, 10px) scale(0.8); }
+    75% { transform: translate(-15px, 15px) scale(1.1); }
+    100% { transform: translate(-5px, -5px) scale(1); }
 }
 
 /* Responsive para tablets */

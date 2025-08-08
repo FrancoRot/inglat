@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
+  <defs>
+    <!-- Filtros para efectos de destello -->
+    <filter id="glowGold" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="glowBlue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Texto INGLAT -->
+  <text x="100" y="35" 
+        font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" 
+        font-size="24" 
+        font-weight="700" 
+        text-anchor="middle" 
+        fill="#006466">INGLAT</text>
+  
+  <!-- Electrón 1: Dorado - Movimiento ondulado horizontal -->
+  <circle cx="100" cy="30" r="2" fill="#FFB627" filter="url(#glowGold)">
+    <animateTransform attributeName="transform" 
+                      type="translate" 
+                      values="70 18; 90 42; 130 18; 110 42; 70 18"
+                      dur="3s" 
+                      repeatCount="indefinite"/>
+    <animate attributeName="filter" 
+             values="url(#glowGold); url(#glowGold); url(#glowGold)"
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Electrón 2: Azul - Movimiento zigzag diagonal -->
+  <circle cx="100" cy="30" r="2" fill="#212f45" filter="url(#glowBlue)">
+    <animateTransform attributeName="transform" 
+                      type="translate" 
+                      values="75 15; 85 45; 115 15; 125 45; 100 22; 75 15"
+                      dur="6s" 
+                      repeatCount="indefinite"
+                      begin="-1s"/>
+    <animate attributeName="filter" 
+             values="url(#glowBlue); url(#glowBlue); url(#glowBlue)"
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Electrón 3: Dorado - Movimiento elíptico vertical -->
+  <circle cx="100" cy="30" r="2" fill="#FFB627" filter="url(#glowGold)">
+    <animateTransform attributeName="transform" 
+                      type="translate" 
+                      values="100 12; 120 30; 100 48; 80 30; 100 12"
+                      dur="3s" 
+                      repeatCount="indefinite"
+                      begin="-0.5s"/>
+    <animate attributeName="filter" 
+             values="url(#glowGold); url(#glowGold); url(#glowGold)"
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Electrón 4: Azul - Movimiento en "S" -->
+  <circle cx="100" cy="30" r="2" fill="#212f45" filter="url(#glowBlue)">
+    <animateTransform attributeName="transform" 
+                      type="translate" 
+                      values="78 14; 122 22; 78 38; 122 46; 78 14"
+                      dur="6s" 
+                      repeatCount="indefinite"
+                      begin="-2s"/>
+    <animate attributeName="filter" 
+             values="url(#glowBlue); url(#glowBlue); url(#glowBlue)"
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Electrón 5: Dorado - Movimiento rectangular -->
+  <circle cx="100" cy="30" r="2" fill="#FFB627" filter="url(#glowGold)">
+    <animateTransform attributeName="transform" 
+                      type="translate" 
+                      values="82 20; 118 20; 118 40; 82 40; 82 20"
+                      dur="3s" 
+                      repeatCount="indefinite"
+                      begin="-3s"/>
+    <animate attributeName="filter" 
+             values="url(#glowGold); url(#glowGold); url(#glowGold)"
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Electrón 6: Azul - Movimiento espiral -->
+  <circle cx="100" cy="30" r="2" fill="#212f45" filter="url(#glowBlue)">
+    <animateTransform attributeName="transform" 
+                      type="translate" 
+                      values="95 25; 115 15; 125 40; 85 45; 95 25"
+                      dur="6s" 
+                      repeatCount="indefinite"
+                      begin="-4s"/>
+    <animateTransform attributeName="transform" 
+                      type="scale" 
+                      values="1; 1.2; 0.8; 1.1; 1"
+                      dur="6s" 
+                      repeatCount="indefinite"
+                      begin="-4s"
+                      additive="sum"/>
+    <animate attributeName="filter" 
+             values="url(#glowBlue); url(#glowBlue); url(#glowBlue)"
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </circle>
+</svg>

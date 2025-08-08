@@ -13,7 +13,10 @@
       "Bash(./venv/Scripts/python manage.py collectstatic:*)",
       "mcp__firecrawl__firecrawl_scrape",
       "WebFetch(domain:octopusenergy.es)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "mcp__firecrawl__firecrawl_search",
+      "Bash(mkdir:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   }
