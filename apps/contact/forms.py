@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from .models import ContactMessage, TipoProyecto
 
@@ -36,7 +37,7 @@ class ContactForm(forms.ModelForm):
             
             'mensaje': forms.Textarea(attrs={
                 'class': 'form-input form-textarea',
-                'placeholder': 'Cuentanos sobre tu proyecto: ubicacion, consumo actual, tipo de instalacion deseada, etc.',
+                'placeholder': 'Contanos sobre tu proyecto: ubicación, consumo actual, tipo de instalación deseada, etc.',
                 'rows': 5,
                 'required': True,
                 'maxlength': 1000
@@ -46,7 +47,7 @@ class ContactForm(forms.ModelForm):
         labels = {
             'nombre': 'Nombre completo *',
             'email': 'Email *',
-            'telefono': 'Telefono',
+            'telefono': 'Teléfono',
             'tipo_proyecto': 'Tipo de proyecto *',
             'mensaje': 'Tu mensaje *'
         }
@@ -54,21 +55,21 @@ class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # Personalizar choices del tipo_proyecto con descripcion
+        # Personalizar choices del tipo_proyecto con descripción
         self.fields['tipo_proyecto'].choices = [
-            ('', 'Selecciona el tipo de proyecto...'),
-            (TipoProyecto.RESIDENCIAL, 'Instalacion Residencial'),
-            (TipoProyecto.COMERCIAL, 'Instalacion Comercial'),
-            (TipoProyecto.INDUSTRIAL, 'Instalacion Industrial'),
+            ('', 'Seleccioná el tipo de proyecto...'),
+            (TipoProyecto.RESIDENCIAL, 'Instalación Residencial'),
+            (TipoProyecto.COMERCIAL, 'Instalación Comercial'),
+            (TipoProyecto.INDUSTRIAL, 'Instalación Industrial'),
             (TipoProyecto.AUTOCONSUMO, 'Sistema de Autoconsumo'),
-            (TipoProyecto.BATERIAS, 'Sistema con Baterias'),
+            (TipoProyecto.BATERIAS, 'Sistema con Baterías'),
             (TipoProyecto.MANTENIMIENTO, 'Mantenimiento'),
-            (TipoProyecto.CONSULTORIA, 'Consultoria Energetica'),
+            (TipoProyecto.CONSULTORIA, 'Consultoría Energética'),
             (TipoProyecto.OTRO, 'Otro')
         ]
 
     def clean_nombre(self):
-        """Validacion personalizada para el nombre"""
+        """Validación personalizada para el nombre"""
         nombre = self.cleaned_data.get('nombre', '').strip()
         
         if not nombre:
@@ -77,14 +78,14 @@ class ContactForm(forms.ModelForm):
         if len(nombre) < 2:
             raise forms.ValidationError('El nombre debe tener al menos 2 caracteres.')
             
-        # Verificar que no sea solo numeros o caracteres especiales
+        # Verificar que no sea solo números o caracteres especiales
         if not any(c.isalpha() for c in nombre):
             raise forms.ValidationError('El nombre debe contener al menos una letra.')
             
         return nombre.title()
 
     def clean_email(self):
-        """Validacion personalizada para el email"""
+        """Validación personalizada para el email"""
         email = self.cleaned_data.get('email', '').strip().lower()
         
         if not email:
@@ -101,33 +102,33 @@ class ContactForm(forms.ModelForm):
         for incorrecto, correcto in dominios_comunes.items():
             if email.endswith(incorrecto):
                 raise forms.ValidationError(
-                    f'Quisiste escribir {correcto}? Por favor verifica tu email.'
+                    f'¿Quisiste escribir {correcto}? Por favor verificá tu email.'
                 )
         
         return email
 
     def clean_telefono(self):
-        """Validacion personalizada para el telefono (opcional)"""
+        """Validación personalizada para el teléfono (opcional)"""
         telefono = self.cleaned_data.get('telefono', '').strip()
         
         if telefono:
-            # Limpiar caracteres no numericos excepto + y espacios
+            # Limpiar caracteres no numéricos excepto + y espacios
             telefono_limpio = ''.join(c for c in telefono if c.isdigit() or c in '+- ()')
             
-            # Verificar longitud minima para numeros argentinos
+            # Verificar longitud mínima para números argentinos
             numeros_solo = ''.join(c for c in telefono_limpio if c.isdigit())
             if len(numeros_solo) < 9:
-                raise forms.ValidationError('El telefono debe tener al menos 9 digitos.')
+                raise forms.ValidationError('El teléfono debe tener al menos 9 dígitos.')
                 
             if len(numeros_solo) > 15:
-                raise forms.ValidationError('El telefono no puede tener mas de 15 digitos.')
+                raise forms.ValidationError('El teléfono no puede tener más de 15 dígitos.')
                 
             return telefono_limpio
         
         return telefono
 
     def clean_mensaje(self):
-        """Validacion personalizada para el mensaje"""
+        """Validación personalizada para el mensaje"""
         mensaje = self.cleaned_data.get('mensaje', '').strip()
         
         if not mensaje:
@@ -139,8 +140,8 @@ class ContactForm(forms.ModelForm):
         if len(mensaje) > 1000:
             raise forms.ValidationError('El mensaje no puede exceder los 1000 caracteres.')
             
-        # Verificar que no sea spam basico
-        palabras_spam = ['click aqui', 'oferta especial', 'gratis', 'dinero facil']
+        # Verificar que no sea spam básico
+        palabras_spam = ['click aquí', 'oferta especial', 'gratis', 'dinero fácil']
         mensaje_lower = mensaje.lower()
         
         for palabra_spam in palabras_spam:
@@ -150,16 +151,16 @@ class ContactForm(forms.ModelForm):
         return mensaje
 
     def clean(self):
-        """Validacion general del formulario"""
+        """Validación general del formulario"""
         cleaned_data = super().clean()
         
-        # Verificar que al menos tenga telefono o email valido
+        # Verificar que al menos tenga teléfono o email válido
         email = cleaned_data.get('email')
         telefono = cleaned_data.get('telefono')
         
         if not email and not telefono:
             raise forms.ValidationError(
-                'Debe proporcionar al menos un email o telefono para poder contactarte.'
+                'Debés proporcionar al menos un email o teléfono para poder contactarte.'
             )
         
         return cleaned_data

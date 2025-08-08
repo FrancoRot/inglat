@@ -1,23 +1,24 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.utils import timezone
 
 
 class TipoProyecto(models.TextChoices):
     """Tipos de proyecto para instalaciones solares"""
-    RESIDENCIAL = 'residencial', 'Instalacion Residencial'
-    COMERCIAL = 'comercial', 'Instalacion Comercial'  
-    INDUSTRIAL = 'industrial', 'Instalacion Industrial'
+    RESIDENCIAL = 'residencial', 'Instalación Residencial'
+    COMERCIAL = 'comercial', 'Instalación Comercial'  
+    INDUSTRIAL = 'industrial', 'Instalación Industrial'
     AUTOCONSUMO = 'autoconsumo', 'Sistema de Autoconsumo'
-    BATERIAS = 'baterias', 'Sistema con Baterias'
+    BATERIAS = 'baterias', 'Sistema con Baterías'
     MANTENIMIENTO = 'mantenimiento', 'Mantenimiento'
-    CONSULTORIA = 'consultoria', 'Consultoria Energetica'
+    CONSULTORIA = 'consultoria', 'Consultoría Energética'
     OTRO = 'otro', 'Otro'
 
 
 class ContactMessage(models.Model):
     """Modelo para almacenar mensajes de contacto desde el formulario web"""
     
-    # Informacion personal
+    # Información personal
     nombre = models.CharField(
         max_length=100,
         verbose_name="Nombre completo"
@@ -31,11 +32,11 @@ class ContactMessage(models.Model):
         max_length=20,
         blank=True,
         null=True,
-        verbose_name="Telefono",
+        verbose_name="Teléfono",
         help_text="Opcional - formato: +54 XX XXXX XXXX"
     )
     
-    # Informacion del proyecto
+    # Información del proyecto
     tipo_proyecto = models.CharField(
         max_length=20,
         choices=TipoProyecto.choices,
@@ -45,25 +46,25 @@ class ContactMessage(models.Model):
     
     mensaje = models.TextField(
         verbose_name="Mensaje",
-        help_text="Cuentanos sobre tu proyecto o consulta"
+        help_text="Contanos sobre tu proyecto o consulta"
     )
     
     # Metadata
     fecha_creacion = models.DateTimeField(
         default=timezone.now,
-        verbose_name="Fecha de creacion"
+        verbose_name="Fecha de creación"
     )
     
     ip_address = models.GenericIPAddressField(
         blank=True,
         null=True,
-        verbose_name="Direccion IP"
+        verbose_name="Dirección IP"
     )
     
     # Control interno
     leido = models.BooleanField(
         default=False,
-        verbose_name="Leido"
+        verbose_name="Leído"
     )
     
     respondido = models.BooleanField(
@@ -87,7 +88,7 @@ class ContactMessage(models.Model):
         return f"{self.nombre} - {self.get_tipo_proyecto_display()} ({self.fecha_creacion.strftime('%d/%m/%Y')})"
 
     def marcar_como_leido(self):
-        """Marca el mensaje como leido"""
+        """Marca el mensaje como leído"""
         self.leido = True
         self.save(update_fields=['leido'])
 

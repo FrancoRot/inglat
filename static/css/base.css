@@ -175,12 +175,10 @@ body {
 .header__logo {
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--caribbean-current);
   text-decoration: none;
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .header__logo:hover {

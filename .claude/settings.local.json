@@ -8,7 +8,12 @@
       "Bash(python3 manage.py makemigrations:*)",
       "Bash(source:*)",
       "Bash(find:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(python3 manage.py collectstatic:*)",
+      "Bash(./venv/Scripts/python manage.py collectstatic:*)",
+      "mcp__firecrawl__firecrawl_scrape",
+      "WebFetch(domain:octopusenergy.es)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

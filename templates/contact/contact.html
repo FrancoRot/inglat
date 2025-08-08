@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block title %}Contacto - INGLAT{% endblock %}
-{% block description %}Contacta con INGLAT para tu proyecto solar. Te ayudamos a encontrar la mejor soluci�n energ�tica personalizada para tu hogar o negocio.{% endblock %}
-{% block keywords %}contacto INGLAT, consulta proyecto solar, instalaci�n placas solares, presupuesto energ�a solar{% endblock %}
+{% block description %}Contactá con INGLAT para tu proyecto solar. Te ayudamos a encontrar la mejor solución energética personalizada para tu hogar o negocio.{% endblock %}
+{% block keywords %}contacto INGLAT, consulta proyecto solar, instalación placas solares, presupuesto energía solar{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/contact.css' %}">
@@ -14,12 +14,12 @@
 <section class="hero hero--contact">
     <div class="container">
         <div class="hero__content">
-            <h1 class="hero__title">Contacta con INGLAT</h1>
-            <p class="hero__subtitle">Tu proyecto solar empieza aqu�. Hablemos sobre tu futuro energ�tico.</p>
+            <h1 class="hero__title">Contactá con INGLAT</h1>
+            <p class="hero__subtitle">Tu proyecto solar empieza acá. Hablemos sobre tu futuro energético.</p>
             
-            <!-- Botones de Acci�n Directa -->
+            <!-- Botones de Acción Directa -->
             <div class="hero__actions">
-                <a href="https://wa.me/541167214369?text=Hola%20INGLAT,%20me%20interesa%20conocer%20m�s%20sobre%20las%20instalaciones%20solares" 
+                <a href="https://wa.me/541167214369?text=Hola%20INGLAT,%20me%20interesa%20conocer%20más%20sobre%20las%20instalaciones%20solares" 
                    class="btn btn--whatsapp" 
                    target="_blank" 
                    rel="noopener">
@@ -41,7 +41,7 @@
     </div>
 </section>
 
-<!-- Secci�n Principal de Contacto -->
+<!-- Sección Principal de Contacto -->
 <section class="contact-main">
     <div class="container">
         <div class="contact-main__grid">
@@ -49,8 +49,8 @@
             <div class="contact-main__form-section">
                 <div class="card">
                     <div class="card__content">
-                        <h2 class="card__title">Cu�ntanos sobre tu proyecto</h2>
-                        <p class="text-gray-700">Completa el formulario y te contactaremos en menos de 24 horas con una propuesta personalizada.</p>
+                        <h2 class="card__title">Contanos sobre tu proyecto</h2>
+                        <p class="text-gray-700">Completá el formulario y te contactaremos en menos de 24 horas con una propuesta personalizada.</p>
                         
                         {% if messages %}
                             {% for message in messages %}
@@ -122,7 +122,7 @@
                                 </label>
                                 {{ form.mensaje }}
                                 <div class="form-hint">
-                                    Cu�ntanos sobre tu ubicaci�n, consumo energ�tico actual, tipo de tejado, etc.
+                                    Contanos sobre tu ubicación, consumo energético actual, tipo de tejado, etc.
                                 </div>
                                 {% if form.mensaje.errors %}
                                     <div class="form-error">
@@ -149,24 +149,33 @@
                 </div>
             </div>
             
-            <!-- Informaci�n de Contacto -->
+            <!-- Información de Contacto -->
             <div class="contact-main__info-section">
                 <div class="contact-info">
-                    <h3 class="contact-info__title">Informaci�n de Contacto</h3>
+                    <h3 class="contact-info__title">Información de Contacto</h3>
                     
-                    <div class="contact-info__item">
-                        <i class="fas fa-map-marker-alt text-primary"></i>
-                        <div>
-                            <h4>Nuestra Oficina</h4>
-                            <p>Direcci�n Completa<br>
-                            Ciudad, Provincia, CP</p>
-                        </div>
+                    <!-- Mapa de Google Maps -->
+                    <div class="contact-info__map">
+                        <h4>Nuestra Oficina</h4>
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.6954!2d-58.3973485!3d-34.6131457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccaef68e4e4a3%3A0x0!2sPichincha+1400%2C+Buenos+Aires!5e0!3m2!1sen!2sar!4v1691234567890"
+                            width="100%" 
+                            height="250" 
+                            style="border:0; border-radius: var(--border-radius);" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                        <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--gray-600);">
+                            Pichincha 1400, Ciudad de Buenos Aires<br>
+                            Buenos Aires, Argentina
+                        </p>
                     </div>
                     
                     <div class="contact-info__item">
                         <i class="fas fa-phone text-primary"></i>
                         <div>
-                            <h4>Tel�fono</h4>
+                            <h4>Teléfono</h4>
                             <p><a href="tel:+541167214369">+54 11 6721-4369</a></p>
                         </div>
                     </div>
@@ -175,23 +184,23 @@
                         <i class="fas fa-envelope text-primary"></i>
                         <div>
                             <h4>Email</h4>
-                            <p><a href="mailto:info@inglat.com">info@inglat.com</a></p>
+                            <p><a href="mailto:contacto@inglat.com">contacto@inglat.com</a></p>
                         </div>
                     </div>
                     
                     <div class="contact-info__item">
                         <i class="fas fa-clock text-primary"></i>
                         <div>
-                            <h4>Horario de Atenci�n</h4>
+                            <h4>Horario de Atención</h4>
                             <p>Lunes a Viernes: 9:00 - 18:00<br>
-                            S�bados: 10:00 - 14:00</p>
+                            Sábados: 10:00 - 14:00</p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Enlaces R�pidos -->
+                <!-- Enlaces Rápidos -->
                 <div class="quick-links">
-                    <h3 class="quick-links__title">Enlaces R�pidos</h3>
+                    <h3 class="quick-links__title">Enlaces Rápidos</h3>
                     <div class="quick-links__grid">
                         <a href="{% url 'core:simulador' %}" class="quick-link">
                             <i class="fas fa-calculator"></i>
@@ -203,7 +212,7 @@
                             <span>Nuestros Servicios</span>
                         </a>
                         
-                        <a href="/proyectos/" class="quick-link">
+                        <a href="{% url 'core:home' %}#proyectos" class="quick-link">
                             <i class="fas fa-image"></i>
                             <span>Proyectos</span>
                         </a>
@@ -219,31 +228,201 @@
     <div class="container">
         <h2 class="faq-solar__title">Preguntas Frecuentes</h2>
         
-        <div class="faq-grid">
-            <div class="faq-item">
-                <h3 class="faq-item__question">�Cu�nto tiempo tarda una instalaci�n solar?</h3>
-                <p class="faq-item__answer">Una instalaci�n residencial t�pica se completa en 1-3 d�as. El proceso completo desde la consulta hasta la puesta en marcha puede tomar 4-8 semanas.</p>
+        <div class="faq-accordion">
+            <!-- Instalaciones Solares -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Instalaciones Solares</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Es rentable instalar paneles solares en Argentina?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutamente sí. En Argentina, instalar paneles solares es una de las inversiones más rentables que podés hacer. Los ahorros pueden alcanzar hasta el 80% de tu factura eléctrica actual, y con los incentivos fiscales del gobierno nacional, el período de recuperación de la inversión es de 3 a 5 años. Además, contás con una vida útil de más de 25 años.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Cuántos paneles solares necesito para mi casa?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>La cantidad de paneles depende de varios factores: tu consumo energético mensual, el espacio disponible en tu techo, si es tu vivienda principal o secundaria, y tu ubicación en Argentina. En INGLAT hacemos un estudio personalizado gratuito donde analizamos tu factura eléctrica y las características de tu propiedad para dimensionar el sistema perfecto para vos.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="faq-item">
-                <h3 class="faq-item__question">�Qu� garant�a ofrecen?</h3>
-                <p class="faq-item__answer">Ofrecemos 25 a�os de garant�a en paneles solares, 12 a�os en inversores y 10 a�os en mano de obra. Adem�s, mantenimiento preventivo incluido.</p>
+            <!-- Autoconsumo -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Autoconsumo</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Qué es el autoconsumo solar y cómo funciona?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>El autoconsumo solar es la generación de energía eléctrica mediante paneles solares instalados en tu hogar o empresa para consumo propio. Durante el día, tus paneles generan electricidad que podés usar directamente, y los excedentes se inyectan a la red eléctrica. En Argentina, la Ley 27.424 te permite vender estos excedentes a la distribuidora local, obteniendo un beneficio adicional.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Los paneles solares funcionan en días nublados o con lluvia?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, los paneles solares siguen generando energía en días nublados. Aunque la producción sea menor que en días soleados, todavía aprovechan la luz difusa del ambiente. En Argentina, incluso en las zonas con mayor nubosidad, la radiación solar es suficiente para que tu inversión sea rentable durante todo el año.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="faq-item">
-                <h3 class="faq-item__question">�Necesito bater�as?</h3>
-                <p class="faq-item__answer">Las bater�as son opcionales. Recomendamos evaluarlo seg�n tu patr�n de consumo y objetivos de independencia energ�tica. Nuestro simulador te ayudar� a decidir.</p>
+            <!-- Baterías -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Baterías Solares</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Necesito baterías para mi sistema de paneles solares?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No necesariamente. Si tu hogar está conectado a la red eléctrica, podés optar por un sistema conectado a red sin baterías, que es más económico. Las baterías son recomendables si querés tener respaldo durante cortes de luz o si vivís en una zona rural sin acceso a la red. En INGLAT te asesoramos sobre la mejor opción según tus necesidades y presupuesto.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Cuál es la vida útil de las baterías solares?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Las baterías solares modernas que instalamos en INGLAT tienen una vida útil de 8 a 15 años, dependiendo de la tecnología. Las baterías de litio que recomendamos vienen con garantías de hasta 10 años o 6.000 ciclos de carga-descarga, lo que te asegura una excelente relación costo-beneficio.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="faq-item">
-                <h3 class="faq-item__question">�Puedo vender energ�a a la red?</h3>
-                <p class="faq-item__answer">S�, con el sistema de compensaci�n de excedentes puedes verter energ�a a la red y recibir compensaci�n en tu factura el�ctrica.</p>
+            <!-- Mantenimiento -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Mantenimiento</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Qué mantenimiento necesitan los paneles solares?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Los paneles solares requieren muy poco mantenimiento. La limpieza básica con agua una o dos veces al año es suficiente en la mayoría de los casos. En INGLAT incluimos en nuestro servicio un programa de mantenimiento preventivo anual donde revisamos el sistema completo, limpiamos los paneles y verificamos que todo funcione al 100% de su capacidad.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Qué pasa si se daña un panel solar?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Todos nuestros paneles vienen con garantía de producto de 12 años y garantía de rendimiento de 25 años. Si un panel se daña por defecto de fabricación, lo reemplazamos sin costo. Para daños accidentales, podés contratar nuestro seguro opcional. Además, el sistema sigue funcionando aunque un panel esté dañado, ya que están conectados de forma independiente.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trámites -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Permisos y Trámites</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Qué trámites y permisos necesito para instalar paneles solares?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>En Argentina, los trámites dependen del tamaño de tu instalación. Para sistemas residenciales menores a 10 kW (la mayoría de las casas), solo necesitás una Memoria Técnica Descriptiva. En INGLAT nos encargamos de todos los trámites por vos: habilitación municipal, conexión con la distribuidora, instalación del medidor bidireccional y registro en la plataforma nacional. Vos no te preocupás por nada.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Cuánto tiempo tarda la instalación completa?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Desde que firmás el contrato hasta que tenés tu sistema funcionando, el proceso tarda aproximadamente 3-4 semanas. Esto incluye los trámites administrativos, la fabricación de las estructuras a medida y la instalación física, que se completa en un solo día. Te mantenemos informado en cada etapa del proceso.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Costos -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Costos y Financiamiento</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Cuánto cuesta instalar paneles solares en Argentina?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>El costo varía según el tamaño del sistema que necesités. Para una casa tipo que paga entre $15.000 y $25.000 mensuales de luz, una instalación de 3 kW cuesta aproximadamente entre $1.500.000 y $2.200.000. Ofrecemos planes de financiación a medida y podés aprovechar los beneficios fiscales del gobierno que reducen significativamente el costo final.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Puedo financiar la instalación de paneles solares?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, tenemos múltiples opciones de financiamiento. Podés pagar en cuotas fijas mensuales que son menores al ahorro en tu factura eléctrica, por lo que prácticamente la instalación se paga sola. También trabajamos con bancos que ofrecen líneas de crédito especiales para energías renovables con tasas preferenciales.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Garantías -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Garantías</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Qué garantías ofrecen en INGLAT?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Ofrecemos garantía completa: 12 años de garantía de producto en paneles, 25 años de garantía de rendimiento (mínimo 80% de producción), 5 años en inversores, y 10 años en baterías (si las incluís). Además, te damos 2 años de garantía en mano de obra. Somos una empresa argentina con 15 años en el mercado, así que podés estar tranquilo que estaremos acá para cualquier inconveniente.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Eficiencia -->
+            <div class="faq-category">
+                <h3 class="faq-category__title">Eficiencia Energética</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Cuál es la mejor orientación para instalar paneles solares en Argentina?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>En Argentina, la orientación ideal es hacia el norte (no hacia el sur como en Europa), con una inclinación aproximada a la latitud de tu ubicación. Por ejemplo, en Buenos Aires la inclinación óptima es de 34°. Sin embargo, los sistemas funcionan muy bien con orientaciones este-oeste y diferentes inclinaciones. Nuestros ingenieros hacen un estudio específico de tu techo para maximizar la producción.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Cuánta energía producen los paneles solares en Argentina?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Argentina tiene una excelente radiación solar. Cada kW instalado produce entre 1.400 y 1.800 kWh por año, dependiendo de tu ubicación. Por ejemplo, en Buenos Aires, un sistema de 3 kW produce aproximadamente 4.200 kWh anuales, suficiente para cubrir el consumo de una familia tipo. En el norte del país, la producción es aún mayor.</p>
+                    </div>
+                </div>
             </div>
         </div>
         
         <div class="faq-cta">
-            <p>�Tienes m�s preguntas?</p>
-            <a href="#contact-form" class="btn btn--secondary">Contacta con Nosotros</a>
+            <p>¿Tenés más preguntas?</p>
+            <a href="#contact-form" class="btn btn--secondary">Contactá con Nosotros</a>
         </div>
     </div>
 </section>

@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initContactForm();
     initSmoothScrolling();
     initFormEnhancements();
+    initFaqAccordion();
 });
 
 /**
@@ -470,6 +471,51 @@ window.contactUtils = {
         return message;
     }
 };
+
+/**
+ * Inicializar funcionalidad del acordeón FAQ
+ */
+function initFaqAccordion() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            const answer = this.nextElementSibling;
+            
+            // Cerrar todos los otros elementos
+            faqQuestions.forEach(otherQuestion => {
+                if (otherQuestion !== this) {
+                    otherQuestion.setAttribute('aria-expanded', 'false');
+                    const otherAnswer = otherQuestion.nextElementSibling;
+                    if (otherAnswer) {
+                        otherAnswer.classList.remove('active');
+                    }
+                }
+            });
+            
+            // Toggle el elemento actual
+            if (isExpanded) {
+                this.setAttribute('aria-expanded', 'false');
+                answer.classList.remove('active');
+            } else {
+                this.setAttribute('aria-expanded', 'true');
+                answer.classList.add('active');
+                
+                // Scroll suave al elemento expandido después de la animación
+                setTimeout(() => {
+                    this.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 300);
+            }
+        });
+        
+        // Configurar estado inicial
+        question.setAttribute('aria-expanded', 'false');
+    });
+}
 
 // A�adir estilos para errores de campo
 const style = document.createElement('style');

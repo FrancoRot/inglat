@@ -26,7 +26,6 @@ urlpatterns = [
     path('', include('apps.core.urls')),
     
     # URLs para otras aplicaciones
-    path('proyectos/', include('apps.projects.urls')),
     path('blog/', include('apps.blog.urls')),
     path('contacto/', include('apps.contact.urls')),
 ]

@@ -10,8 +10,6 @@ urlpatterns = [
     # Página de inicio alternativa - usando vista basada en clase
     # path('', views.HomeView.as_view(), name='home'),
     
-    # Página Nosotros
-    path('nosotros/', views.AboutView.as_view(), name='about'),
     
     # Página Servicios
     path('servicios/', views.ServicesView.as_view(), name='services'),
