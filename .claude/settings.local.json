@@ -16,7 +16,8 @@
       "Bash(rm:*)",
       "mcp__firecrawl__firecrawl_search",
       "Bash(mkdir:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
