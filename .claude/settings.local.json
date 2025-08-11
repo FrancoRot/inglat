@@ -17,7 +17,10 @@
       "mcp__firecrawl__firecrawl_search",
       "Bash(mkdir:*)",
       "Bash(mkdir:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(touch:*)",
+      "Bash(python3 manage.py check:*)",
+      "Bash(python3:*)"
     ],
     "deny": []
   }

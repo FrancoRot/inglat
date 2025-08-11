@@ -83,11 +83,12 @@ class ProjectAdmin(admin.ModelAdmin):
         """Optimizar las consultas para el listado del admin"""
         return super().get_queryset(request).select_related()
     
-    class Media:
-        css = {
-            'all': ('admin/css/custom-project-admin.css',)
-        }
-        js = ('admin/js/custom-project-admin.js',)
+    # Media files comentados - no existen los archivos CSS/JS personalizados
+    # class Media:
+    #     css = {
+    #         'all': ('admin/css/custom-project-admin.css',)
+    #     }
+    #     js = ('admin/js/custom-project-admin.js',)
 
 
 # ======================================

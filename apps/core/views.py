@@ -33,25 +33,6 @@ class HomeView(TemplateView):
         return context
 
 
-def index(request):
-    """Vista función para la página de inicio"""
-    
-    # Obtener proyectos destacados para mostrar en el home
-    featured_projects = Project.objects.filter(
-        is_featured=True, 
-        is_active=True
-    ).order_by('-date_completed')[:6]  # Máximo 6 proyectos destacados
-    
-    context = {
-        'current_year': datetime.now().year,
-        'page_title': 'INGLAT - Líderes en Energía Renovable',
-        'meta_description': 'INGLAT es líder en instalaciones de energía fotovoltaica y renovable. Especialistas en paneles solares, mantenimiento y monitorización en tiempo real.',
-        'hero_title': 'Liderando la Transición Energética con Instalaciones Solares Inteligentes',
-        'hero_subtitle': 'Monitorización avanzada, control total y soluciones a medida para tu independencia energética.',
-        'featured_projects': featured_projects,
-    }
-    return render(request, 'core/home.html', context)
-
 
 class AboutView(TemplateView):
     """Vista de la página Nosotros"""
@@ -100,15 +81,38 @@ class SimuladorSolarView(TemplateView):
         try:
             data = json.loads(request.body)
             
-            # Extraer datos del formulario
-            consumo_anual = float(data.get('consumo_anual', 0))
+            # Validar y extraer datos del formulario con validaciones robustas
+            try:
+                consumo_anual = float(data.get('consumo_anual', 0))
+                if consumo_anual < 0 or consumo_anual > 100000:
+                    raise ValueError("Consumo anual debe estar entre 0 y 100,000 kWh")
+            except (ValueError, TypeError):
+                return JsonResponse({'success': False, 'error': 'Consumo anual inválido'}, status=400)
+            
+            try:
+                superficie = float(data.get('superficie', 0))
+                if superficie < 0 or superficie > 10000:
+                    raise ValueError("Superficie debe estar entre 0 y 10,000 m²")
+            except (ValueError, TypeError):
+                return JsonResponse({'success': False, 'error': 'Superficie inválida'}, status=400)
+            
+            try:
+                inclinacion = float(data.get('inclinacion', 30))
+                if inclinacion < 0 or inclinacion > 90:
+                    raise ValueError("Inclinación debe estar entre 0 y 90 grados")
+            except (ValueError, TypeError):
+                return JsonResponse({'success': False, 'error': 'Inclinación inválida'}, status=400)
+            
+            # Variables booleanas y de texto
             coche_electrico = bool(data.get('coche_electrico', False))
             bateria = bool(data.get('bateria', False))
-            ubicacion = data.get('ubicacion', '')
-            orientacion = data.get('orientacion', 'S')
-            inclinacion = float(data.get('inclinacion', 30))
-            superficie = float(data.get('superficie', 0))
-            tipo_tejado = data.get('tipo_tejado', 'dos_aguas')  # Valor por defecto
+            ubicacion = str(data.get('ubicacion', '')).strip()
+            orientacion = str(data.get('orientacion', 'S')).strip()
+            tipo_tejado = str(data.get('tipo_tejado', 'dos_aguas')).strip()
+            
+            # Validar ubicación no vacía
+            if not ubicacion:
+                return JsonResponse({'success': False, 'error': 'Ubicación es requerida'}, status=400)
             
             # Realizar cálculos
             resultados = self.calcular_simulacion(

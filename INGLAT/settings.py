@@ -14,14 +14,23 @@ import os
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 
-def get_env_variable(var_name, default=None):
-    try:
-        return os.environ[var_name]
-    except KeyError:
+# Usar python-decouple para mejor manejo de variables de entorno
+try:
+    from decouple import config
+    def get_env_variable(var_name, default=None):
         if default is not None:
-            return default
-        error_msg = f"Set the {var_name} environment variable"
-        raise ImproperlyConfigured(error_msg)
+            return config(var_name, default=default)
+        return config(var_name)
+except ImportError:
+    # Fallback a implementación manual si decouple no está disponible
+    def get_env_variable(var_name, default=None):
+        try:
+            return os.environ[var_name]
+        except KeyError:
+            if default is not None:
+                return default
+            error_msg = f"Set the {var_name} environment variable"
+            raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,10 +40,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env_variable('SECRET_KEY', 'django-insecure-d60r9p8sk!d#7=f%8_7^l*a21$*n@s8rjk&kepfr0+ve8r%9j9')
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_env_variable('DEBUG', 'False').lower() in ['true', '1', 'yes', 'on']
 
 ALLOWED_HOSTS = get_env_variable('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -92,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': get_env_variable('DB_NAME', 'inglat_db'),
         'USER': get_env_variable('DB_USER', 'postgres'),
-        'PASSWORD': get_env_variable('DB_PASSWORD', 'franco4369'),
+        'PASSWORD': get_env_variable('DB_PASSWORD'),
         'HOST': get_env_variable('DB_HOST', 'localhost'),
         'PORT': get_env_variable('DB_PORT', '5432'),
     }
@@ -121,9 +130,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 USE_I18N = True
 
@@ -156,20 +165,25 @@ EMAIL_PORT = int(get_env_variable('EMAIL_PORT', '465'))
 EMAIL_USE_SSL = get_env_variable('EMAIL_USE_SSL', 'True').lower() == 'true'
 EMAIL_USE_TLS = False  # Must be False when using SSL on port 465
 EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER', 'info@inglat.com')
-EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD', 'Inglat4369!')
+# Configuración de EMAIL_HOST_PASSWORD con manejo de errores
+try:
+    EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
+except ImproperlyConfigured:
+    if DEBUG:
+        EMAIL_HOST_PASSWORD = ''
+        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+        print("⚠️  ADVERTENCIA: EMAIL_HOST_PASSWORD no configurado. Usando backend de consola para desarrollo.")
+    else:
+        raise ImproperlyConfigured("EMAIL_HOST_PASSWORD es requerido en producción")
+
 DEFAULT_FROM_EMAIL = get_env_variable('DEFAULT_FROM_EMAIL', 'info@inglat.com')
 
 # Email Recipients
 NOTIFICATION_EMAIL = get_env_variable('NOTIFICATION_EMAIL', 'contacto@inglat.com')
 
 # Email Debugging - Configuración adicional para debugging
-EMAIL_TIMEOUT = 30  # Timeout en segundos para conexiones SMTP
+EMAIL_TIMEOUT = 10  # Reducido de 30s a 10s para mejor rendimiento
 EMAIL_USE_LOCALTIME = True
-
-# Configuración alternativa para desarrollo (usar console backend en desarrollo)
-if DEBUG and not EMAIL_HOST_PASSWORD:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    print("⚠️  ADVERTENCIA: EMAIL_HOST_PASSWORD no configurado. Usando backend de consola para desarrollo.")
 
 # Logging Configuration for Debugging
 LOGGING = {

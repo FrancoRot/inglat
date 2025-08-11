@@ -97,12 +97,24 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         """Generar slug automaticamente desde el titulo"""
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = self._generate_unique_slug()
         super().save(*args, **kwargs)
     
+    def _generate_unique_slug(self):
+        """Generar un slug único basado en el título"""
+        base_slug = slugify(self.title)
+        unique_slug = base_slug
+        counter = 1
+        
+        while Project.objects.filter(slug=unique_slug).exclude(pk=self.pk).exists():
+            unique_slug = f"{base_slug}-{counter}"
+            counter += 1
+            
+        return unique_slug
+    
     def get_absolute_url(self):
-        """URL del proyecto individual (para futuras implementaciones)"""
-        return reverse('core:project_detail', kwargs={'slug': self.slug})
+        """URL del proyecto individual"""
+        return reverse('projects:detail', kwargs={'slug': self.slug})
 
 
 # ===========================
