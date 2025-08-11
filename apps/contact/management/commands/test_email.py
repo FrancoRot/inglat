@@ -1,106 +1,144 @@
 # -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+from django.core.mail import send_mail
 from django.conf import settings
-import logging
+import smtplib
+import ssl
 
-logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    help = 'Test email functionality for INGLAT contact system'
+    help = 'Probar la configuración de email de Django'
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--email',
+            '--to',
             type=str,
-            help='Email address to send test to',
-            default='test@example.com'
-        )
-        parser.add_argument(
-            '--type',
-            type=str,
-            choices=['simple', 'html'],
-            help='Type of test email',
-            default='html'
+            default='test@example.com',
+            help='Email de destino para la prueba'
         )
 
     def handle(self, *args, **options):
-        email_to = options['email']
-        email_type = options['type']
+        self.stdout.write(self.style.SUCCESS('🔍 Iniciando prueba de configuración de email...'))
         
-        self.stdout.write(
-            self.style.SUCCESS(f'Testing INGLAT email system...')
-        )
+        # Verificar configuración
+        self._verificar_configuracion()
         
-        # Mostrar configuración actual
-        self.stdout.write(f'Email Host: {settings.EMAIL_HOST}')
-        self.stdout.write(f'Email Port: {settings.EMAIL_PORT}')
-        self.stdout.write(f'Email Use SSL: {settings.EMAIL_USE_SSL}')
-        self.stdout.write(f'From Email: {settings.DEFAULT_FROM_EMAIL}')
+        # Probar conexión SMTP
+        self._probar_conexion_smtp()
         
-        try:
-            if email_type == 'simple':
-                self._send_simple_test(email_to)
-            else:
-                self._send_html_test(email_to)
-                
-            self.stdout.write(
-                self.style.SUCCESS(f'✅ Test email sent successfully to {email_to}')
-            )
-        except Exception as e:
-            self.stdout.write(
-                self.style.ERROR(f'❌ Error sending test email: {e}')
-            )
-            logger.error(f'Email test failed: {e}')
+        # Probar envío de email
+        self._probar_envio_email(options['to'])
 
-    def _send_simple_test(self, email_to):
-        """Send simple text email"""
-        from django.core.mail import send_mail
+    def _verificar_configuracion(self):
+        """Verificar que todas las configuraciones necesarias estén presentes"""
+        self.stdout.write('\n📋 Verificando configuración...')
         
-        send_mail(
-            subject='Test Email - INGLAT System',
-            message='This is a test email from INGLAT contact system. If you receive this, email configuration is working correctly!',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[email_to],
-            fail_silently=False,
-        )
-
-    def _send_html_test(self, email_to):
-        """Send HTML email using templates"""
-        
-        # Mock contact message data for testing
-        mock_contact = type('MockContact', (), {
-            'id': 999,
-            'nombre': 'Test User',
-            'email': email_to,
-            'telefono': '+54 11 1234-5678',
-            'get_tipo_proyecto_display': lambda: 'Instalación Residencial',
-            'fecha_creacion': type('MockDate', (), {
-                'strftime': lambda fmt: '08/08/2024 15:30'
-            })()
-        })()
-        
-        # Prepare context
-        context = {
-            'contact_message': mock_contact,
-            'site_url': 'https://www.inglat.com/',
-            'email_subject': 'Test Email - INGLAT System'
+        configuraciones = {
+            'EMAIL_HOST': settings.EMAIL_HOST,
+            'EMAIL_PORT': settings.EMAIL_PORT,
+            'EMAIL_HOST_USER': settings.EMAIL_HOST_USER,
+            'EMAIL_HOST_PASSWORD': '***' if settings.EMAIL_HOST_PASSWORD else 'NO CONFIGURADO',
+            'DEFAULT_FROM_EMAIL': settings.DEFAULT_FROM_EMAIL,
+            'EMAIL_USE_SSL': settings.EMAIL_USE_SSL,
+            'EMAIL_USE_TLS': settings.EMAIL_USE_TLS,
         }
         
-        # Render HTML content
-        html_content = render_to_string('emails/customer_confirmation.html', context)
-        text_content = strip_tags(html_content)
+        for key, value in configuraciones.items():
+            if value:
+                self.stdout.write(f'✅ {key}: {value}')
+            else:
+                self.stdout.write(self.style.ERROR(f'❌ {key}: NO CONFIGURADO'))
         
-        # Create multipart message
-        msg = EmailMultiAlternatives(
-            subject='Test Email - INGLAT System ☀️',
-            body=text_content,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[email_to],
-        )
-        msg.attach_alternative(html_content, "text/html")
+        # Verificar si la contraseña está configurada
+        if not settings.EMAIL_HOST_PASSWORD:
+            self.stdout.write(self.style.WARNING(
+                '\n⚠️  ADVERTENCIA: EMAIL_HOST_PASSWORD no está configurado. '
+                'Necesitas configurar esta variable de entorno.'
+            ))
+
+    def _probar_conexion_smtp(self):
+        """Probar la conexión SMTP directamente"""
+        self.stdout.write('\n🔌 Probando conexión SMTP...')
         
-        # Send email
-        msg.send()
+        try:
+            # Crear contexto SSL si es necesario
+            if settings.EMAIL_USE_SSL:
+                context = ssl.create_default_context()
+                server = smtplib.SMTP_SSL(
+                    settings.EMAIL_HOST, 
+                    settings.EMAIL_PORT, 
+                    timeout=30,
+                    context=context
+                )
+            else:
+                server = smtplib.SMTP(
+                    settings.EMAIL_HOST, 
+                    settings.EMAIL_PORT, 
+                    timeout=30
+                )
+                if settings.EMAIL_USE_TLS:
+                    server.starttls()
+            
+            # Intentar login
+            server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+            
+            self.stdout.write(self.style.SUCCESS('✅ Conexión SMTP exitosa'))
+            self.stdout.write(f'   Servidor: {settings.EMAIL_HOST}:{settings.EMAIL_PORT}')
+            self.stdout.write(f'   Usuario: {settings.EMAIL_HOST_USER}')
+            
+            # Cerrar conexión
+            server.quit()
+            
+        except smtplib.SMTPAuthenticationError as e:
+            self.stdout.write(self.style.ERROR(f'❌ Error de autenticación SMTP: {e}'))
+            self.stdout.write(self.style.WARNING(
+                '💡 Verifica que el usuario y contraseña sean correctos'
+            ))
+        except smtplib.SMTPConnectError as e:
+            self.stdout.write(self.style.ERROR(f'❌ Error de conexión SMTP: {e}'))
+            self.stdout.write(self.style.WARNING(
+                '💡 Verifica que el host y puerto sean correctos'
+            ))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f'❌ Error inesperado: {e}'))
+
+    def _probar_envio_email(self, to_email):
+        """Probar el envío de un email de prueba"""
+        self.stdout.write(f'\n📧 Probando envío de email a {to_email}...')
+        
+        try:
+            # Enviar email de prueba
+            send_mail(
+                subject='Prueba de configuración - INGLAT',
+                message=f"""
+Este es un email de prueba para verificar la configuración de email de INGLAT.
+
+Configuración actual:
+- Host: {settings.EMAIL_HOST}
+- Puerto: {settings.EMAIL_PORT}
+- SSL: {settings.EMAIL_USE_SSL}
+- TLS: {settings.EMAIL_USE_TLS}
+- Usuario: {settings.EMAIL_HOST_USER}
+
+Si recibes este email, la configuración está funcionando correctamente.
+
+---
+INGLAT - Sistema de Email
+                """,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[to_email],
+                fail_silently=False,
+            )
+            
+            self.stdout.write(self.style.SUCCESS('✅ Email de prueba enviado correctamente'))
+            self.stdout.write(f'   De: {settings.DEFAULT_FROM_EMAIL}')
+            self.stdout.write(f'   Para: {to_email}')
+            
+        except smtplib.SMTPAuthenticationError as e:
+            self.stdout.write(self.style.ERROR(f'❌ Error de autenticación: {e}'))
+        except smtplib.SMTPException as e:
+            self.stdout.write(self.style.ERROR(f'❌ Error SMTP: {e}'))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f'❌ Error inesperado: {e}'))
+        
+        self.stdout.write('\n🎯 Prueba completada.')

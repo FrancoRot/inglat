@@ -37,7 +37,7 @@ function initContactForm() {
 }
 
 /**
- * Manejar el env�o del formulario (AJAX)
+ * Manejar el envío del formulario (AJAX)
  */
 async function handleFormSubmit(event) {
     event.preventDefault();
@@ -47,13 +47,13 @@ async function handleFormSubmit(event) {
     const submitText = submitButton.querySelector('.submit-text');
     const loadingText = submitButton.querySelector('.loading-text');
     
-    // Validar formulario antes del env�o
+    // Validar formulario antes del envío
     if (!validateForm(form)) {
         showMessage('Por favor, corrige los errores en el formulario.', 'error');
         return;
     }
     
-    // Cambiar estado del bot�n
+    // Cambiar estado del botón
     setButtonLoading(submitButton, true);
     
     try {
@@ -68,14 +68,20 @@ async function handleFormSubmit(event) {
             }
         });
         
+        // Verificar si la respuesta es JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('Respuesta del servidor no es JSON válido');
+        }
+        
         const data = await response.json();
         
         if (data.success) {
-            // �xito - redirigir o mostrar mensaje
-            showMessage(data.message || '�Mensaje enviado correctamente!', 'success');
+            // Éxito - redirigir o mostrar mensaje
+            showMessage(data.message || '¡Mensaje enviado correctamente!', 'success');
             form.reset();
             
-            // Redirigir despu�s de un breve delay
+            // Redirigir después de un breve delay
             setTimeout(() => {
                 if (data.redirect_url) {
                     window.location.href = data.redirect_url;
@@ -94,7 +100,22 @@ async function handleFormSubmit(event) {
         
     } catch (error) {
         console.error('Error al enviar el formulario:', error);
-        showMessage('Hubo un problema al enviar el formulario. Por favor, inténtalo de nuevo.', 'error');
+        
+        // Mostrar mensaje de error más específico
+        let errorMessage = 'Hubo un problema al enviar el formulario. ';
+        
+        if (error.name === 'TypeError' && error.message.includes('JSON')) {
+            errorMessage += 'El servidor no respondió correctamente. Por favor, inténtalo de nuevo.';
+        } else if (error.name === 'NetworkError' || error.message.includes('fetch')) {
+            errorMessage += 'Problema de conexión. Verifica tu internet e inténtalo de nuevo.';
+        } else {
+            errorMessage += 'Por favor, inténtalo de nuevo o contactanos por WhatsApp.';
+        }
+        
+        showMessage(errorMessage, 'error');
+        
+        // Mostrar botón de WhatsApp como alternativa
+        showWhatsAppAlternative();
     } finally {
         setButtonLoading(submitButton, false);
     }
@@ -592,7 +613,74 @@ function initFaqAccordion() {
     }
 }
 
-// A�adir estilos para errores de campo
+/**
+ * Mostrar alternativa de WhatsApp cuando hay errores
+ */
+function showWhatsAppAlternative() {
+    // Buscar o crear contenedor de WhatsApp
+    let whatsappContainer = document.querySelector('.whatsapp-alternative');
+    
+    if (!whatsappContainer) {
+        whatsappContainer = document.createElement('div');
+        whatsappContainer.className = 'whatsapp-alternative';
+        whatsappContainer.style.cssText = `
+            margin-top: var(--space-4);
+            padding: var(--space-4);
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            border-radius: var(--border-radius);
+            text-align: center;
+            color: white;
+        `;
+        
+        // Obtener datos del formulario
+        const form = document.getElementById('contact-form');
+        const formData = new FormData(form);
+        const data = {
+            nombre: formData.get('nombre'),
+            email: formData.get('email'),
+            telefono: formData.get('telefono'),
+            tipo_proyecto: formData.get('tipo_proyecto'),
+            mensaje: formData.get('mensaje')
+        };
+        
+        // Crear mensaje para WhatsApp
+        let whatsappMessage = 'Hola INGLAT, he intentado enviar un mensaje desde la web pero tuve problemas. Aquí está mi información:\n\n';
+        whatsappMessage += `Nombre: ${data.nombre}\n`;
+        whatsappMessage += `Email: ${data.email}\n`;
+        if (data.telefono) whatsappMessage += `Teléfono: ${data.telefono}\n`;
+        whatsappMessage += `Tipo de proyecto: ${data.tipo_proyecto}\n`;
+        whatsappMessage += `Mensaje: ${data.mensaje}`;
+        
+        const whatsappUrl = `https://wa.me/541167214369?text=${encodeURIComponent(whatsappMessage)}`;
+        
+        whatsappContainer.innerHTML = `
+            <h4 style="margin: 0 0 var(--space-2) 0; font-size: 18px;">
+                <i class="fab fa-whatsapp"></i> ¿No funciona el formulario?
+            </h4>
+            <p style="margin: 0 0 var(--space-3) 0; font-size: 14px; opacity: 0.9;">
+                Contactanos directamente por WhatsApp con tu consulta
+            </p>
+            <a href="${whatsappUrl}" 
+               target="_blank" 
+               rel="noopener"
+               class="btn btn--whatsapp"
+               style="background: white; color: #25D366; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; display: inline-block;">
+                <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
+            </a>
+        `;
+        
+        // Insertar después del formulario
+        const formSection = document.querySelector('.contact-main__form-section');
+        if (formSection) {
+            formSection.appendChild(whatsappContainer);
+        }
+    }
+    
+    // Hacer scroll al contenedor
+    whatsappContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Aadir estilos para errores de campo
 const style = document.createElement('style');
 style.textContent = `
     .field-error {

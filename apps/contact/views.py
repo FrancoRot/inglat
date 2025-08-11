@@ -12,6 +12,8 @@ from django.utils.html import strip_tags
 from .forms import ContactForm
 from .models import ContactMessage
 import logging
+import smtplib
+from email.mime.text import MIMEText
 
 logger = logging.getLogger(__name__)
 
@@ -48,18 +50,43 @@ class ContactView(TemplateView):
             # Guardar el mensaje
             contact_message.save()
             
-            # Enviar email de notificación a la empresa
-            self._enviar_email_notificacion(contact_message, request)
+            # Verificar configuración de email antes de enviar
+            email_config_ok = self._verificar_configuracion_email()
             
-            # Enviar email de confirmación al cliente
-            self._enviar_email_confirmacion_cliente(contact_message, request)
-            
-            # Mensaje de éxito
-            messages.success(
-                request, 
-                f'Gracias {contact_message.nombre}! Tu mensaje ha sido enviado correctamente. '
-                'Nos pondremos en contacto contigo en las próximas 24 horas.'
-            )
+            if not email_config_ok:
+                # Si la configuración de email no está correcta, solo guardar el mensaje
+                messages.warning(
+                    request, 
+                    f'Gracias {contact_message.nombre}! Tu mensaje ha sido guardado correctamente. '
+                    'Nos pondremos en contacto contigo pronto. (Nota: El envío automático de emails está temporalmente deshabilitado)'
+                )
+            else:
+                # Enviar emails si la configuración está correcta
+                email_errors = []
+                
+                # Enviar email de notificación a la empresa
+                if not self._enviar_email_notificacion(contact_message, request):
+                    email_errors.append("Error al enviar notificación a la empresa")
+                
+                # Enviar email de confirmación al cliente
+                if not self._enviar_email_confirmacion_cliente(contact_message, request):
+                    email_errors.append("Error al enviar confirmación al cliente")
+                
+                if email_errors:
+                    # Si hay errores de email, mostrar mensaje específico
+                    messages.warning(
+                        request, 
+                        f'Gracias {contact_message.nombre}! Tu mensaje ha sido guardado correctamente. '
+                        f'Hubo problemas con el envío automático de emails: {", ".join(email_errors)}. '
+                        'Nos pondremos en contacto contigo pronto.'
+                    )
+                else:
+                    # Éxito completo
+                    messages.success(
+                        request, 
+                        f'Gracias {contact_message.nombre}! Tu mensaje ha sido enviado correctamente. '
+                        'Nos pondremos en contacto contigo en las próximas 24 horas.'
+                    )
             
             # Verificar si es una petición AJAX
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -91,6 +118,35 @@ class ContactView(TemplateView):
         context = self.get_context_data()
         context['form'] = form
         return self.render_to_response(context)
+    
+    def _verificar_configuracion_email(self):
+        """Verificar que la configuración de email esté correcta"""
+        try:
+            # Verificar que las variables necesarias estén configuradas
+            required_settings = [
+                'EMAIL_HOST',
+                'EMAIL_PORT', 
+                'EMAIL_HOST_USER',
+                'EMAIL_HOST_PASSWORD',
+                'DEFAULT_FROM_EMAIL'
+            ]
+            
+            for setting in required_settings:
+                value = getattr(settings, setting, None)
+                if not value:
+                    logger.error(f'Configuración de email faltante: {setting}')
+                    return False
+            
+            # Verificar que la contraseña no esté vacía
+            if not settings.EMAIL_HOST_PASSWORD:
+                logger.error('EMAIL_HOST_PASSWORD está vacío')
+                return False
+                
+            return True
+            
+        except Exception as e:
+            logger.error(f'Error verificando configuración de email: {e}')
+            return False
     
     def _enviar_email_notificacion(self, contact_message, request):
         """Enviar email de notificación cuando se recibe un mensaje de contacto"""
@@ -126,20 +182,38 @@ Para responder, visitá: {context['admin_url']}{contact_message.id}/
 INGLAT - Sistema de Notificaciones
 """
             
-            # Enviar email
-            send_mail(
+            # Crear mensaje con headers adicionales para mejorar la entrega
+            from django.core.mail import EmailMessage
+            
+            email = EmailMessage(
                 subject=asunto,
-                message=mensaje_texto,
-                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@inglat.com'),
-                recipient_list=['contacto@inglat.com'],
-                fail_silently=False,
+                body=mensaje_texto,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=['info@inglat.com', 'contacto@inglat.com'],  # Enviar a ambas cuentas
+                headers={
+                    'X-Priority': '1',  # Alta prioridad
+                    'X-MSMail-Priority': 'High',
+                    'Importance': 'high',
+                    'X-Mailer': 'INGLAT Contact System',
+                    'Reply-To': contact_message.email,  # Para responder directamente al cliente
+                }
             )
             
-            logger.info(f'Email de notificación enviado para mensaje de {contact_message.nombre}')
+            # Enviar email
+            email.send()
             
+            logger.info(f'Email de notificación enviado para mensaje de {contact_message.nombre}')
+            return True
+            
+        except smtplib.SMTPAuthenticationError as e:
+            logger.error(f'Error de autenticación SMTP: {e}')
+            return False
+        except smtplib.SMTPException as e:
+            logger.error(f'Error SMTP: {e}')
+            return False
         except Exception as e:
             logger.error(f'Error enviando email de notificación: {e}')
-            # No interrumpir el flujo si falla el email
+            return False
     
     def _enviar_email_confirmacion_cliente(self, contact_message, request):
         """Enviar email de confirmación al cliente"""
@@ -171,10 +245,17 @@ INGLAT - Sistema de Notificaciones
             msg.send()
             
             logger.info(f'Email de confirmación enviado a {contact_message.email}')
+            return True
             
+        except smtplib.SMTPAuthenticationError as e:
+            logger.error(f'Error de autenticación SMTP al cliente: {e}')
+            return False
+        except smtplib.SMTPException as e:
+            logger.error(f'Error SMTP al cliente: {e}')
+            return False
         except Exception as e:
             logger.error(f'Error enviando email de confirmación al cliente: {e}')
-            # No interrumpir el flujo si falla el email
+            return False
 
 
 def contact_success(request):
