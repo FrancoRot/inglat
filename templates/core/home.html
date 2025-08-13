@@ -158,6 +158,99 @@
     </div>
 </section>
 
+<!-- Sección Noticias Destacadas -->
+{% if noticias_destacadas %}
+<section id="noticias" class="noticias-destacadas-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Últimas Noticias</h2>
+            <p class="section-subtitle">
+                Mantente al día con las últimas novedades del sector de energías renovables
+            </p>
+        </div>
+        
+        <div class="noticias-destacadas-grid">
+            {% for noticia in noticias_destacadas %}
+            <article class="noticia-destacada-card">
+                <a href="{{ noticia.get_absolute_url }}" class="noticia-link">
+                    <div class="noticia-media">
+                        {% if noticia.tipo_multimedia == 'imagen' and noticia.imagen %}
+                            <img src="{{ noticia.imagen.url }}" 
+                                 alt="{{ noticia.titulo }}" 
+                                 class="noticia-imagen"
+                                 loading="lazy">
+                        {% elif noticia.tipo_multimedia == 'video' %}
+                            <div class="noticia-video-preview" data-video-autoplay="true">
+                                {% if noticia.video_thumbnail_url %}
+                                    <img src="{{ noticia.video_thumbnail_url }}" 
+                                         alt="{{ noticia.titulo }}" 
+                                         class="noticia-imagen"
+                                         loading="lazy">
+                                {% elif noticia.video_vimeo_id %}
+                                    <img src="https://vumbnail.com/{{ noticia.video_vimeo_id }}.jpg" 
+                                         alt="{{ noticia.titulo }}" 
+                                         class="noticia-imagen"
+                                         loading="lazy">
+                                {% else %}
+                                    <div class="video-placeholder">
+                                        <i class="fas fa-play-circle fa-3x"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="video-overlay">
+                                    <i class="fas fa-play-circle fa-2x"></i>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="noticia-placeholder">
+                                <i class="fas fa-newspaper fa-2x"></i>
+                            </div>
+                        {% endif %}
+                        
+                        {% if noticia.categoria %}
+                        <div class="noticia-categoria-badge" style="background-color: {{ noticia.categoria.color }};">
+                            <i class="{{ noticia.categoria.icono }}"></i>
+                            {{ noticia.categoria.nombre }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="noticia-content">
+                        <div class="noticia-meta">
+                            <time class="noticia-fecha">
+                                <i class="fas fa-calendar-alt"></i>
+                                {{ noticia.fecha_formateada }}
+                            </time>
+                            <span class="noticia-lectura">
+                                <i class="fas fa-clock"></i>
+                                {{ noticia.tiempo_lectura }}
+                            </span>
+                        </div>
+                        
+                        <h3 class="noticia-titulo">{{ noticia.titulo }}</h3>
+                        <p class="noticia-descripcion">{{ noticia.descripcion_corta|truncatechars:120 }}</p>
+                        
+                        <div class="noticia-cta">
+                            <span class="leer-mas">
+                                Leer más
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+        
+        <div class="noticias-cta">
+            <a href="{% url 'blog:lista' %}" class="btn btn--primary">
+                <i class="fas fa-newspaper"></i>
+                Ver Todas las Noticias
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 <!-- Sección Quiénes Somos -->
 <section id="nosotros" class="about-section">
     <div class="container">

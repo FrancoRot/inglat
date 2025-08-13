@@ -1,153 +1,196 @@
-# CLAUDE.md
+# CLAUDE.md - Guía Completa para Claude Code
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Este archivo proporciona orientación completa a Claude Code (claude.ai/code) cuando trabaja con el código en este repositorio.
 
-## Project Context
-**INGLAT** - Renewable energy installations and monitoring company (photovoltaic)
+## 📋 Contexto del Proyecto
 
-### Technology Stack:
+**INGLAT** - Empresa de instalaciones y monitorización de energía renovable (fotovoltaica)
+
+### 🏗️ Stack Tecnológico Actualizado
 - **Backend**: Django 5.2.4 + Python 3.11+
-- **Database**: PostgreSQL  
-- **Frontend**: HTML + CSS + JavaScript (Vanilla)
-- **WhatsApp Integration**: Smart device detection with fallback
-- **Version Control**: Git
+- **Base de Datos**: PostgreSQL con configuración segura
+- **Frontend**: HTML + CSS + JavaScript (Vanilla) con diseño responsive
+- **Integración WhatsApp**: Detección inteligente de dispositivos con fallback
+- **Email**: SpaceMail SMTP con configuración robusta
+- **Control de Versiones**: Git
 
-### Current Project Phase:
-Corporate website with comprehensive solar energy simulator, project portfolio, WhatsApp-integrated contact system, and blog. Features Argentina-specific solar irradiation data and cost calculations. Future dashboard functionality for client monitoring planned.
+### 🎯 Fase Actual del Proyecto
+Sitio web corporativo completo con simulador de energía solar avanzado, portfolio de proyectos, sistema de contacto integrado con WhatsApp, blog de noticias con categorías, y funcionalidades de SEO optimizadas. Datos específicos de irradiación solar argentina y cálculos de costos regionales. Funcionalidad de dashboard para monitorización de clientes planificada para el futuro.
 
 ---
 
-## Development Commands
+## 📚 Documentación de Referencia - Cuándo Usar Cada Documento
 
-### Django Management:
+### 🎨 **UI_UX_doc.md** - Guía de Diseño y Experiencia de Usuario
+**📖 Cuándo consultar**: Modificaciones de diseño, CSS, experiencia de usuario, componentes visuales
+**📋 Contenido**: Paleta de colores INGLAT, tipografía, componentes base, responsive design, accesibilidad
+**💡 Ejemplo de uso**: "Si necesitas cambiar colores, crear nuevos componentes, modificar el diseño responsive o implementar nuevas funcionalidades visuales"
+**🔗 Ubicación**: `docs/UI_UX_doc.md`
+
+### 🐛 **Bug_tracking.md** - Seguimiento de Errores y Debugging
+**📖 Cuándo consultar**: Documentar bugs, reparar código, debugging, problemas de seguridad
+**📋 Contenido**: Bugs activos, soluciones aplicadas, debugging tips, errores comunes, checklist pre-commit
+**💡 Ejemplo de uso**: "Antes de hacer cambios, revisa si hay bugs conocidos. Al encontrar un problema, documenta la solución aquí"
+**🔗 Ubicación**: `docs/Bug_tracking.md`
+
+### 🏗️ **Project_structure.md** - Arquitectura y Estructura del Proyecto
+**📖 Cuándo consultar**: Entender la arquitectura, agregar nuevas apps, modificar estructura de directorios
+**📋 Contenido**: Stack tecnológico, estructura de directorios, convenciones de código, configuración por entornos
+**💡 Ejemplo de uso**: "Para entender cómo está organizado el proyecto, dónde agregar nuevas funcionalidades o modificar la arquitectura"
+**🔗 Ubicación**: `docs/Project_structure.md`
+
+### 📋 **PRD.md** - Product Requirements Document
+**📖 Cuándo consultar**: Entender requisitos del negocio, funcionalidades del producto, roadmap
+**📋 Contenido**: Visión del producto, funcionalidades por fase, criterios de éxito, roadmap de desarrollo
+**💡 Ejemplo de uso**: "Para entender qué funcionalidades implementar, prioridades del negocio o criterios de aceptación"
+**🔗 Ubicación**: `docs/PRD.md`
+
+### ⚙️ **Implementation.md** - Guía de Implementación
+**📖 Cuándo consultar**: Implementar nuevas funcionalidades, entender el estado actual, convenciones de desarrollo
+**📋 Contenido**: Estado del proyecto, estructura de apps, URLs principales, convenciones CSS/JS
+**💡 Ejemplo de uso**: "Para entender qué está implementado, cómo agregar nuevas funcionalidades o seguir las convenciones del proyecto"
+**🔗 Ubicación**: `docs/Implementation.md`
+
+---
+
+## 🚀 Comandos de Desarrollo
+
+### Django Management
 ```bash
-# Run development server
+# Servidor de desarrollo
 python manage.py runserver
 
-# Create and apply migrations
+# Crear y aplicar migraciones
 python manage.py makemigrations
 python manage.py migrate
 
-# Create superuser for admin
+# Crear superusuario para admin
 python manage.py createsuperuser
 
-# Collect static files
+# Recolectar archivos estáticos
 python manage.py collectstatic
 
-# Shell access
+# Acceso al shell
 python manage.py shell
 ```
 
-### Testing Commands:
+### Testing
 ```bash
-# Django built-in testing
+# Testing de Django integrado
 python manage.py test
 python manage.py test apps.core
 python manage.py test apps.core.tests.TestModelName
 
-# Run with coverage (if installed)
+# Con coverage (si está instalado)
 python manage.py test --coverage
 
-# Recommend adding pytest-django for advanced testing
+# Recomendado agregar pytest-django para testing avanzado
 ```
 
-### Database Operations:
+### Operaciones de Base de Datos
 ```bash
-# Reset database (development only)
+# Reset de base de datos (solo desarrollo)
 python manage.py flush
 
-# Load fixtures
+# Cargar fixtures
 python manage.py loaddata <fixture_name>
 
-# Database shell
+# Shell de base de datos
 python manage.py dbshell
 ```
 
-### Virtual Environment:
+### Entorno Virtual
 ```bash
-# Activate virtual environment
+# Activar entorno virtual
 source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
-# Install dependencies
-pip install -r requirements/base.txt        # Production dependencies
-pip install -r requirements/development.txt # Development dependencies
-pip install -r requirements/production.txt  # Production-specific dependencies
+# Instalar dependencias
+pip install -r requirements/base.txt        # Dependencias de producción
+pip install -r requirements/development.txt # Dependencias de desarrollo
+pip install -r requirements/production.txt  # Dependencias específicas de producción
 
-# Or install all at once
+# O instalar todo de una vez
 pip install -r requirements.txt
 ```
 
-### Code Quality & Linting:
+### Calidad de Código y Linting
 ```bash
-# Recommended to add and run regularly:
-# flake8 .                    # Python linting
-# black .                     # Code formatting  
-# isort .                     # Import sorting
-# pylint apps/                # Code analysis
+# Recomendado agregar y ejecutar regularmente:
+# flake8 .                    # Linting de Python
+# black .                     # Formateo de código  
+# isort .                     # Ordenamiento de imports
+# pylint apps/                # Análisis de código
 
-# Django system checks
+# Verificaciones del sistema Django
 python manage.py check
-python manage.py check --deploy  # Production readiness
+python manage.py check --deploy  # Preparación para producción
 ```
 
 ---
 
-## Architecture Overview
+## 🏗️ Arquitectura del Proyecto
 
-### Django Apps Structure:
-- **apps/core**: Main application - homepage, about, services, and project models
-- **apps/projects**: Project portfolio management (uses models from core app)
-- **apps/blog**: News and articles system (models not yet implemented)
-- **apps/contact**: Contact forms with smart WhatsApp integration (device-aware)
-- **apps/dashboard**: Future client dashboard functionality
+### Estructura de Apps Django
+- **apps/core**: Aplicación principal - página de inicio, nosotros, servicios, simulador solar y modelos de configuración
+- **apps/projects**: Gestión de portfolio de proyectos (usa modelos de core app)
+- **apps/blog**: Sistema completo de noticias con categorías, multimedia y SEO
+- **apps/contact**: Sistema de contacto multicanal con integración WhatsApp inteligente
+- **apps/dashboard**: Funcionalidad futura de dashboard para clientes
 
-### Key Models (apps/core/models.py):
-- **Project**: Solar installation projects with images, descriptions, and technical specs
-- **SimuladorConfig**: Global configuration for the solar energy simulator
-- **CostoInstalacion**: Installation cost ranges by power capacity
-- **FactorUbicacion**: Solar irradiation factors by Argentine provinces
-- **FactorOrientacion**: Efficiency factors by roof orientation
-- **TipoTejado**: Roof types with complexity factors
-- **AnguloTejado**: Roof inclination angles with efficiency factors
+### Modelos Principales (apps/core/models.py)
+- **Project**: Proyectos de instalación solar con imágenes, descripciones y especificaciones técnicas
+- **SimuladorConfig**: Configuración global del simulador de energía solar
+- **CostoInstalacion**: Rangos de costos de instalación por capacidad de potencia
+- **FactorUbicacion**: Factores de irradiación solar por provincias argentinas
+- **FactorOrientacion**: Factores de eficiencia por orientación del tejado
+- **TipoTejado**: Tipos de tejado con factores de complejidad
+- **AnguloTejado**: Ángulos de inclinación con factores de eficiencia
 
-### URL Structure:
-- `/` - Homepage (core app)
-- `/proyectos/` - Projects portfolio
-- `/simulador/` - Solar energy simulator
-- `/blog/` - Blog/news section  
-- `/contacto/` - Contact page
-- `/admin/` - Django admin panel
+### Modelos de Blog (apps/blog/models.py)
+- **Categoria**: Categorías de noticias con iconos, colores y orden
+- **Noticia**: Artículos completos con multimedia (imagen/video), SEO y metadatos
 
-### Static Files Organization:
-- **CSS**: `static/css/` - Separated by functionality (base.css, header.css, footer.css, home.css, simulador.css)
-- **JavaScript**: `static/js/` - Modular structure (base.js, home.js, contact.js, whatsapp.js, simulador.js)
-- **Images**: `static/images/` - Organized by type, includes simulator SVG icons
-- **Media**: `media/` - User uploaded files (projects, blog)
+### Modelos de Contacto (apps/contact/models.py)
+- **ContactMessage**: Mensajes de contacto con tipos de proyecto y seguimiento interno
+
+### Estructura de URLs
+- `/` - Página de inicio (core app)
+- `/proyectos/` - Portfolio de proyectos
+- `/simulador/` - Simulador de energía solar
+- `/noticias/` - Blog de noticias (también `/blog/` por compatibilidad)
+- `/contacto/` - Página de contacto
+- `/admin/` - Panel de administración de Django
+
+### Organización de Archivos Estáticos
+- **CSS**: `static/css/` - Separado por funcionalidad (base.css, header.css, footer.css, home.css, simulador.css, noticias.css)
+- **JavaScript**: `static/js/` - Estructura modular (base.js, home.js, contact.js, whatsapp.js, simulador.js, noticias.js)
+- **Imágenes**: `static/images/` - Organizado por tipo, incluye iconos SVG del simulador
+- **Media**: `media/` - Archivos subidos por usuarios (proyectos, blog)
 
 ---
 
-## Code Conventions
+## 🎨 Convenciones de Código
 
-### Python/Django:
-- Follow PEP 8 standards
-- Spanish comments and docstrings for team collaboration
-- Use Django's MVT pattern consistently
-- Environment variables for sensitive settings via `get_env_variable()`
-- Models use Spanish verbose names for admin interface
-- Proper field validation and help text in Spanish
+### Python/Django
+- Seguir estándares PEP 8
+- Comentarios y docstrings en español para colaboración del equipo
+- Usar patrón MVT de Django consistentemente
+- Variables de entorno para configuraciones sensibles via `get_env_variable()`
+- Modelos con nombres verbose en español para interfaz de admin
+- Validación apropiada de campos y texto de ayuda en español
 
-### Templates:
-- Extend from `templates/base/base.html`
-- Use `{% load static %}` for all static file references
-- Organize templates by app in `templates/<app_name>/`
-- Reusable components in `templates/base/`
+### Templates
+- Extender desde `templates/base/base.html`
+- Usar `{% load static %}` para todas las referencias a archivos estáticos
+- Organizar templates por app en `templates/<app_name>/`
+- Componentes reutilizables en `templates/base/`
 
-### CSS/JavaScript:
-- **NO inline styles or scripts in templates**
-- Use separate CSS/JS files per page/functionality
-- Global styles in `base.css`, specific styles in dedicated files
-- Reference in templates with proper static tags:
+### CSS/JavaScript
+- **NO estilos o scripts inline en templates**
+- Usar archivos CSS/JS separados por página/funcionalidad
+- Estilos globales en `base.css`, estilos específicos en archivos dedicados
+- Referenciar en templates con etiquetas static apropiadas:
 ```django
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -156,121 +199,197 @@ python manage.py check --deploy  # Production readiness
 <script src="{% static 'js/home.js' %}"></script>
 ```
 
-### Database:
-- PostgreSQL configuration via environment variables
-- Models with Spanish verbose names for admin interface
-- Use slugs for SEO-friendly URLs
-- Automatic timestamping with created_at/updated_at
+### Base de Datos
+- Configuración PostgreSQL via variables de entorno
+- Modelos con nombres verbose en español para interfaz de admin
+- Usar slugs para URLs amigables para SEO
+- Timestamping automático con created_at/updated_at
 
 ---
 
-## Solar Energy Simulator
+## ⚡ Simulador de Energía Solar
 
-The project includes a comprehensive solar energy calculator with the following components:
+El proyecto incluye un simulador de energía solar comprehensivo con los siguientes componentes:
 
-### Simulator Models:
-- **SimuladorConfig**: Global settings for calculations (efficiency, prices, autoconsumo factors)
-- **CostoInstalacion**: Installation costs by power range (0-3kW, 3-5kW, 5-10kW, 10+kW)
-- **FactorUbicacion**: Solar irradiation by Argentine provinces
-- **FactorOrientacion**: Efficiency by roof orientation (N, NE, E, SE, S, SO, O, NO)
-- **TipoTejado**: Roof types with complexity factors
-- **AnguloTejado**: Inclination angles with efficiency factors
+### Modelos del Simulador
+- **SimuladorConfig**: Configuración global para cálculos (eficiencia, precios, factores de autoconsumo)
+- **CostoInstalacion**: Costos de instalación por rango de potencia (0-3kW, 3-5kW, 5-10kW, 10+kW)
+- **FactorUbicacion**: Irradiación solar por provincias argentinas
+- **FactorOrientacion**: Eficiencia por orientación del tejado (N, NE, E, SE, S, SO, O, NO)
+- **TipoTejado**: Tipos de tejado con factores de complejidad
+- **AnguloTejado**: Ángulos de inclinación con factores de eficiencia
 
-### Simulator Features:
-- Annual consumption calculation
-- Optimal power sizing
-- Installation cost estimation
-- Battery system options
-- Electric vehicle integration
-- ROI and payback calculations
-- Province-specific solar irradiation
-- Roof type and orientation optimization
+### Funcionalidades del Simulador
+- Cálculo de consumo anual
+- Dimensionamiento óptimo de potencia
+- Estimación de costos de instalación
+- Opciones de sistema de baterías
+- Integración de vehículo eléctrico
+- Cálculos de ROI y tiempo de retorno
+- Irradiación solar específica por provincia
+- Optimización por tipo y orientación de tejado
 
-### Simulator URL:
-- `/simulador/` - Interactive solar calculator
-- AJAX endpoint: `/calcular-solar/` (POST)
-
----
-
-## Important File Locations
-
-### Configuration:
-- `INGLAT/settings.py` - Main Django settings
-- `requirements/base.txt` - Core dependencies
-- `requirements/development.txt` - Development dependencies  
-- `requirements/production.txt` - Production dependencies
-- `requirements.txt` - Main requirements file
-
-### Documentation:
-- `docs/PRD.md` - Product requirements and business rules
-- `docs/Project_structure.md` - Detailed architecture documentation
-- `docs/UI_UX_doc.md` - Design guidelines and UI specifications
-- `docs/Bug_tracking.md` - Known issues and bug reports
-- `docs/Implementation.md` - Implementation guidelines
-- `docs/WhatsApp_Integration.md` - WhatsApp integration documentation
-
-### Key Apps:
-- `apps/core/models.py` - Project model definition (main business logic)
-- `apps/core/views.py` - Homepage and core functionality
-- `INGLAT/urls.py` - Main URL routing configuration
+### URLs del Simulador
+- `/simulador/` - Calculadora solar interactiva
+- Endpoint AJAX: `/calcular-solar/` (POST)
 
 ---
 
-## Development Workflow
+## 📧 Sistema de Email y Contacto
 
-### Before Making Changes:
-1. Read relevant documentation from `docs/` directory
-2. Check `docs/Bug_tracking.md` for known issues
-3. Review `docs/UI_UX_doc.md` for design guidelines
-4. Understand business rules in `docs/PRD.md`
-5. For WhatsApp features, consult `docs/WhatsApp_Integration.md`
+### Configuración de Email
+- **Proveedor**: SpaceMail SMTP
+- **Configuración**: SSL en puerto 465, timeout optimizado
+- **Fallback**: Backend de consola en desarrollo si no hay credenciales
+- **Destinatarios**: Configuración flexible via variables de entorno
 
-### Security Considerations:
-- Check `docs/Bug_tracking.md` for critical security issues
-- Never commit sensitive data (passwords, keys) with default values
-- Validate all user inputs in calculator endpoints
-- Use environment variables for all sensitive settings
-
-### CSS/JS Development:
-- Always use separate files, never inline
-- Update `base.css` for global styles and CSS variables
-- Create page-specific files for unique functionality
-- Test responsive design across devices
-- Follow INGLAT color scheme and branding
-
-### Django Development:
-- Use Django admin for content management
-- Follow MVT pattern strictly
-- Spanish field names and help text for admin users
-- Proper URL naming and reverse lookups
-- Optimize for SEO and performance
-
-### Testing:
-- Test all forms and user interactions
-- Verify responsive design on mobile/tablet
-- Check Django admin functionality for content management
-- Validate SEO meta tags and schema markup
-- Test solar calculator with various input combinations
-- Verify AJAX endpoints return valid JSON responses
+### Sistema de Contacto
+- **Formulario inteligente**: Detección de dispositivo para integración WhatsApp
+- **Tipos de proyecto**: Residencial, comercial, industrial, autoconsumo, baterías, mantenimiento, consultoría
+- **Seguimiento interno**: Marcado de leído/respondido, notas internas
+- **Validación**: Server-side con manejo de errores robusto
 
 ---
 
-## Known Issues & Considerations
+## 📰 Sistema de Blog/Noticias
 
-### Critical Issues (see docs/Bug_tracking.md):
-- Blog and Contact apps have empty models but are in INSTALLED_APPS
-- Some URL patterns may reference non-existent views
-- MEDIA_URL/MEDIA_ROOT configuration required for ImageField
-- Input validation missing in calculator endpoints
+### Funcionalidades Completas
+- **Categorías**: Con iconos, colores y orden personalizable
+- **Multimedia**: Soporte para imágenes y videos de Vimeo
+- **SEO**: Meta descripciones, keywords, URLs amigables
+- **Contenido**: Artículos destacados, tiempo de lectura estimado
+- **Relacionados**: Noticias relacionadas por categoría
+- **Admin**: Gestión completa via Django admin
 
-### Dependencies:
-- `python-decouple` installed but not used (consider using for better environment variable handling)
-- `django-environ` available for environment variable management
-- No testing framework configured (recommend adding pytest-django)
-- PostgreSQL adapter: `psycopg2-binary` for database connectivity
-- Pillow for image handling in project portfolio
+### URLs del Blog
+- `/noticias/` - Lista de noticias (principal)
+- `/blog/` - Redirección por compatibilidad
+- `/noticias/categoria/<slug>/` - Noticias por categoría
+- `/noticias/<slug>/` - Detalle de noticia
 
-### Regional Settings:
-- Project targets Argentine market (provinces, phone numbers)
-- Solar irradiation data specific to Argentina
-- Currency calculations in USD
+---
+
+## 🔧 Ubicaciones de Archivos Importantes
+
+### Configuración
+- `INGLAT/settings.py` - Configuración principal de Django
+- `requirements/base.txt` - Dependencias principales
+- `requirements/development.txt` - Dependencias de desarrollo  
+- `requirements/production.txt` - Dependencias de producción
+- `requirements.txt` - Archivo principal de requirements
+
+### Documentación
+- `docs/PRD.md` - Requisitos del producto y reglas de negocio
+- `docs/Project_structure.md` - Documentación detallada de arquitectura
+- `docs/UI_UX_doc.md` - Guías de diseño y especificaciones de UI
+- `docs/Bug_tracking.md` - Problemas conocidos y reportes de bugs
+- `docs/Implementation.md` - Guías de implementación
+- `docs/WhatsApp_Integration.md` - Documentación de integración WhatsApp
+
+### Apps Principales
+- `apps/core/models.py` - Definición de modelos principales (lógica de negocio principal)
+- `apps/core/views.py` - Página de inicio y funcionalidad principal
+- `apps/blog/models.py` - Modelos completos del sistema de noticias
+- `apps/contact/models.py` - Modelos del sistema de contacto
+- `INGLAT/urls.py` - Configuración principal de enrutamiento de URLs
+
+---
+
+## 🔄 Flujo de Desarrollo
+
+### Antes de Hacer Cambios
+1. Leer documentación relevante desde directorio `docs/`
+2. Verificar `docs/Bug_tracking.md` para problemas conocidos
+3. Revisar `docs/UI_UX_doc.md` para guías de diseño
+4. Entender reglas de negocio en `docs/PRD.md`
+5. Para funcionalidades WhatsApp, consultar `docs/WhatsApp_Integration.md`
+
+### Consideraciones de Seguridad
+- Verificar `docs/Bug_tracking.md` para problemas críticos de seguridad
+- Nunca commitear datos sensibles (passwords, keys) con valores por defecto
+- Validar todas las entradas de usuario en endpoints del calculador
+- Usar variables de entorno para todas las configuraciones sensibles
+
+### Desarrollo CSS/JS
+- Siempre usar archivos separados, nunca inline
+- Actualizar `base.css` para estilos globales y variables CSS
+- Crear archivos específicos por página para funcionalidad única
+- Probar diseño responsive en todos los dispositivos
+- Seguir esquema de colores y branding de INGLAT
+
+### Desarrollo Django
+- Usar Django admin para gestión de contenido
+- Seguir patrón MVT estrictamente
+- Nombres de campos en español y texto de ayuda para usuarios de admin
+- Nombrado apropiado de URLs y reverse lookups
+- Optimizar para SEO y performance
+
+### Testing
+- Probar todos los formularios e interacciones de usuario
+- Verificar diseño responsive en móvil/tablet
+- Verificar funcionalidad de Django admin para gestión de contenido
+- Validar meta tags SEO y schema markup
+- Probar calculador solar con varias combinaciones de entrada
+- Verificar que endpoints AJAX retornen respuestas JSON válidas
+
+---
+
+## ⚠️ Problemas Conocidos y Consideraciones
+
+### Problemas Críticos (ver docs/Bug_tracking.md)
+- Configuración DEBUG debe ser False en producción
+- Credenciales de base de datos deben estar en variables de entorno
+- SECRET_KEY debe ser configurada sin valor por defecto
+- Configuración de MEDIA_URL/MEDIA_ROOT requerida para ImageField
+- Validación de entrada faltante en endpoints del calculador
+
+### Dependencias
+- `python-decouple` instalado pero no usado (considerar usar para mejor manejo de variables de entorno)
+- `django-environ` disponible para gestión de variables de entorno
+- No hay framework de testing configurado (recomendar agregar pytest-django)
+- Adaptador PostgreSQL: `psycopg2-binary` para conectividad de base de datos
+- Pillow para manejo de imágenes en portfolio de proyectos
+
+### Configuración Regional
+- Proyecto orientado al mercado argentino (provincias, números de teléfono)
+- Datos de irradiación solar específicos de Argentina
+- Cálculos de moneda en USD
+- Configuración de zona horaria: America/Argentina/Buenos_Aires
+
+---
+
+## 🎯 Funcionalidades Implementadas vs Planificadas
+
+### ✅ Completado
+- Setup inicial Django 5.2.4+
+- Estructura de apps completa
+- Sistema de proyectos con portfolio
+- Simulador de energía solar avanzado
+- Sistema de contacto con WhatsApp
+- Blog de noticias completo con categorías
+- Configuración de email robusta
+- Documentación completa
+
+### 🔄 En Desarrollo
+- Optimización de performance
+- Testing automatizado
+- Mejoras de SEO
+
+### ⏳ Pendiente
+- Dashboard de clientes
+- Sistema de monitorización
+- App móvil complementaria
+- Deploy en producción
+
+---
+
+## 📞 Información de Contacto del Proyecto
+
+- **Email**: info@inglat.com
+- **WhatsApp**: +54 11 6721-4369
+- **Ubicación**: Argentina
+- **Tecnologías**: Django, PostgreSQL, JavaScript, CSS3
+
+---
+
+**Nota**: Este archivo se actualiza regularmente. Siempre consultar la documentación específica en `docs/` para información detallada y actualizada.

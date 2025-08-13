@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,8 +28,12 @@ urlpatterns = [
     
     # URLs para otras aplicaciones
     path('proyectos/', include('apps.projects.urls')),
-    path('blog/', include('apps.blog.urls')),
+    path('noticias/', include('apps.blog.urls')),
     path('contacto/', include('apps.contact.urls')),
+    
+    # Redirecciones de compatibilidad para URLs antiguas
+    path('blog/', lambda request: redirect('/noticias/', permanent=True)),
+    path('blog/<path:path>', lambda request, path: redirect(f'/noticias/{path}', permanent=True)),
 ]
 
 # Servir archivos estáticos y media en desarrollo

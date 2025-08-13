@@ -1,0 +1,309 @@
+{
+  "analysis_date": "2025-08-11",
+  "research_summary": "Comprehensive research for INGLAT's blog system covering modern blog design trends 2024-2025, Argentina's renewable energy sector developments, UI/UX components, and SEO specifications. Data includes real market statistics, design patterns, technical implementations, and content strategy for renewable energy sector.",
+  
+  "layout_analysis": {
+    "modern_blog_trends": "2024-2025 blog design emphasizes card-based layouts with minimalist aesthetics, responsive grid systems, and performance-optimized designs. Key trends include asymmetric grids, dynamic content structures, and mobile-first approaches with strategic whitespace usage.",
+    "card_designs": {
+      "structure": "Modern cards feature clean layouts with hierarchical content organization: featured image, category tag, headline, excerpt, author/date metadata, and subtle hover interactions",
+      "hover_effects": "Refined animations with subtle scale transformations (1.02-1.05), shadow elevation changes, image overlay effects, and smooth transitions (300-500ms duration)",
+      "responsive_behavior": "Cards adapt from single column on mobile (320px+), 2 columns on tablet (768px+), to 3-4 columns on desktop (1024px+) using CSS Grid with auto-fit and minmax functions"
+    },
+    "grid_systems": "CSS Grid Layout with asymmetric designs, mobile-first breakpoints, and fluid responsive behavior. Grid-template-columns using repeat(auto-fit, minmax(300px, 1fr)) for optimal card distribution",
+    "navigation_patterns": "Breadcrumb navigation with structured data markup, category filtering with AJAX loading, pagination with infinite scroll options, and sticky filter sidebar for desktop views"
+  },
+  
+  "ui_components": {
+    "buttons": {
+      "primary_style": "Background: INGLAT blue (#1e40af), padding: 12px 24px, border-radius: 8px, font-weight: 600, text-transform: uppercase, letter-spacing: 0.5px",
+      "secondary_style": "Border: 2px solid INGLAT blue, background: transparent, color: INGLAT blue, same padding and typography as primary",
+      "hover_states": "Primary: background darkens by 10%, slight scale(1.02). Secondary: background fills with INGLAT blue, text turns white",
+      "sizing_variants": "Small: 8px 16px, Medium: 12px 24px (default), Large: 16px 32px with proportional font sizes"
+    },
+    "typography": {
+      "headings": "H1: 2.5rem (mobile) / 3.5rem (desktop), H2: 2rem / 2.75rem, H3: 1.5rem / 2rem, H4: 1.25rem / 1.5rem, all with font-weight: 700",
+      "body_text": "Font-size: 1rem, line-height: 1.6, font-weight: 400, max-width: 65ch for optimal readability",
+      "metadata": "Font-size: 0.875rem, font-weight: 500, color: #6b7280, uppercase author names, formatted dates",
+      "font_recommendations": "Primary: Inter or System UI stack for headers, Secondary: Georgia or serif for article body text to enhance readability"
+    },
+    "filters": {
+      "category_interface": "Horizontal scrollable tags on mobile, vertical sidebar on desktop, with active state highlighting and count badges",
+      "date_filtering": "Date range picker with preset options (Last week, Last month, Last year) and custom range selection",
+      "search_functionality": "Full-text search with autocomplete suggestions, search within category options, and highlighted search terms in results"
+    }
+  },
+  
+  "animations": {
+    "card_interactions": "transform: translateY(-4px) on hover, box-shadow elevation change from 2px to 8px, image slight scale (1.05) with overflow hidden",
+    "scroll_effects": "Intersection Observer API for fade-in animations on scroll, staggered animation delays for card grids (100ms increments)",
+    "transitions": "All transitions use cubic-bezier(0.4, 0, 0.2, 1) for natural feel, 300ms duration for hovers, 500ms for page transitions",
+    "loading_states": "Skeleton loading cards with shimmer effect, progressive image loading with blur-to-sharp transition"
+  },
+  
+  "code_specifications": {
+    "css_patterns": {
+      "card_css": ".blog-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease; overflow: hidden; } .blog-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); } .blog-card img { transition: transform 0.3s ease; } .blog-card:hover img { transform: scale(1.05); }",
+      "button_css": ".btn-primary { background: #1e40af; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease; border: none; cursor: pointer; } .btn-primary:hover { background: #1d4ed8; transform: scale(1.02); }",
+      "grid_css": ".blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 2rem 0; } @media (max-width: 768px) { .blog-grid { grid-template-columns: 1fr; gap: 1.5rem; } }",
+      "filter_css": ".filter-sidebar { position: sticky; top: 2rem; height: fit-content; } .filter-tag { padding: 6px 12px; background: #f3f4f6; border-radius: 20px; font-size: 0.875rem; transition: all 0.2s ease; } .filter-tag.active { background: #1e40af; color: white; }"
+    },
+    "javascript_functionality": {
+      "filtering_logic": "const filterPosts = (category, dateRange) => { const posts = document.querySelectorAll('.blog-card'); posts.forEach(post => { const postCategory = post.dataset.category; const postDate = new Date(post.dataset.date); const matchesCategory = !category || postCategory === category; const matchesDate = !dateRange || (postDate >= dateRange.start && postDate <= dateRange.end); post.style.display = matchesCategory && matchesDate ? 'block' : 'none'; }); };",
+      "animation_triggers": "const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }; const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('animate-fade-in'); } }); }, observerOptions);",
+      "responsive_handlers": "const handleResize = () => { const isMobile = window.innerWidth < 768; const filterSidebar = document.querySelector('.filter-sidebar'); if (isMobile) { filterSidebar.classList.add('mobile-filters'); } else { filterSidebar.classList.remove('mobile-filters'); } }; window.addEventListener('resize', debounce(handleResize, 300));"
+    },
+    "html_structures": {
+      "article_card": "<article class='blog-card' data-category='solar' data-date='2024-08-11'><div class='card-image'><img src='image.jpg' alt='Article title'></div><div class='card-content'><span class='category-tag'>Energía Solar</span><h3 class='card-title'>Article Title</h3><p class='card-excerpt'>Article excerpt...</p><div class='card-meta'><span class='author'>Por INGLAT Team</span><span class='date'>11 Ago 2024</span></div></div></article>",
+      "filter_interface": "<aside class='filter-sidebar'><div class='filter-section'><h4>Categorías</h4><div class='filter-tags'><button class='filter-tag active' data-category='all'>Todas</button><button class='filter-tag' data-category='solar'>Energía Solar</button><button class='filter-tag' data-category='regulacion'>Regulación</button></div></div><div class='filter-section'><h4>Fecha</h4><select class='date-filter'><option value='all'>Todas las fechas</option><option value='week'>Última semana</option><option value='month'>Último mes</option></select></div></aside>",
+      "breadcrumb_nav": "<nav class='breadcrumb' aria-label='breadcrumb'><ol itemscope itemtype='https://schema.org/BreadcrumbList'><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemprop='item' href='/'><span itemprop='name'>Inicio</span></a><meta itemprop='position' content='1'></li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemprop='item' href='/noticias/'><span itemprop='name'>Noticias</span></a><meta itemprop='position' content='2'></li></ol></nav>"
+    }
+  },
+  
+  "argentina_renewable_content": {
+    "recent_news": [
+      {
+        "title": "Argentina instala 307 MW de energía solar en 2024, alcanzando 1.67 GW de capacidad total",
+        "summary": "El país sudamericano continúa su expansión en energía solar con nuevas instalaciones que representan un crecimiento significativo en el sector renovable",
+        "source": "PV Magazine International",
+        "date": "2024-02-07",
+        "category": "Mercado y Estadísticas"
+      },
+      {
+        "title": "Verano Energy inicia construcción de proyecto solar de 200 MW en Argentina occidental",
+        "summary": "La instalación estará completada y conectada antes de fines de 2025, marcando otra inversión significativa en el sector solar argentino",
+        "source": "PV Magazine International",
+        "date": "2024-10-31",
+        "category": "Proyectos"
+      },
+      {
+        "title": "Genneia invierte USD 250 millones en dos proyectos solares en Mendoza",
+        "summary": "Los proyectos totalizan 273 MW de capacidad y suministrarán energía a más de 160,000 hogares, creando aproximadamente 1,200 empleos durante la construcción",
+        "source": "Industry Reports",
+        "date": "2024-06-15",
+        "category": "Inversión y Desarrollo"
+      },
+      {
+        "title": "Argentina establece objetivo de 20% de energía eólica y solar para 2025",
+        "summary": "El gobierno argentino refuerza su compromiso con las energías renovables estableciendo metas ambiciosas para la transición energética",
+        "source": "Government Announcements",
+        "date": "2024-03-10",
+        "category": "Normativas y Regulación"
+      },
+      {
+        "title": "Mercado solar argentino proyecta crecimiento del 13.10% CAGR hasta 2034",
+        "summary": "Análisis de mercado indica expansión sostenida del sector solar con oportunidades significativas de inversión y desarrollo",
+        "source": "Expert Market Research",
+        "date": "2024-01-20",
+        "category": "Análisis de Mercado"
+      }
+    ],
+    "market_statistics": {
+      "solar_capacity": "1.67 GW de capacidad fotovoltaica instalada total a finales de 2024, con 307 MW agregados durante el año",
+      "growth_rate": "CAGR proyectado de 13.10% entre 2025 y 2034, con algunos informes indicando hasta 71% CAGR en generación",
+      "government_targets": "20% de energía eólica y solar para 2025, 57% de energías renovables para 2030, reducción de 19% en emisiones GEI para 2030",
+      "market_share": "Energía solar cubre 3.33% de las necesidades energéticas nacionales, eólica y solar combinadas representan 14% del mix energético",
+      "investment_requirements": "USD 86 mil millones requeridos para acelerar la transición a energía sostenible, USD 70 mil millones para sistemas distribuidos hasta 2050"
+    },
+    "major_projects": [
+      {
+        "name": "Proyecto Solar Verano Energy",
+        "capacity": "200 MW",
+        "location": "Argentina Occidental",
+        "status": "En construcción - Completación prevista fin 2025"
+      },
+      {
+        "name": "Proyectos Solares Genneia Mendoza",
+        "capacity": "273 MW (dos proyectos combinados)",
+        "location": "Provincia de Mendoza",
+        "status": "En desarrollo - Inversión USD 250 millones"
+      },
+      {
+        "name": "Programa RenovAr - Proyectos Solares",
+        "capacity": "2,834 MW potenciales (58 proyectos)",
+        "location": "Nacional",
+        "status": "Planificación - Meta 10,000 MW renovables para 2025"
+      }
+    ]
+  },
+  
+  "visual_resources": {
+    "image_sources": [
+      {
+        "type": "Instalaciones solares argentinas",
+        "sources": "Unsplash (solar panels argentina), Pexels (renewable energy), Getty Images (professional stock)",
+        "keywords": "paneles solares Argentina, energía renovable, instalaciones fotovoltaicas, parques solares, tecnología limpia"
+      },
+      {
+        "type": "Paisajes argentinos con energía solar",
+        "sources": "Adobe Stock, Shutterstock, local photography partnerships",
+        "keywords": "Argentina landscape solar, Mendoza solar farms, Patagonia renewable energy, pampa solar installations"
+      },
+      {
+        "type": "Iconografía técnica",
+        "sources": "FontAwesome Pro, Heroicons, Custom SVG illustrations",
+        "keywords": "solar panel icons, renewable energy symbols, efficiency graphs, technical diagrams"
+      }
+    ],
+    "video_suggestions": [
+      {
+        "platform": "Vimeo",
+        "search_terms": "argentina solar energy education, renewable technology explanation, solar installation process",
+        "duration": "2-5 minutos para contenido educativo, 30-60 segundos para hero sections"
+      },
+      {
+        "platform": "YouTube (embeddable)",
+        "search_terms": "como funcionan paneles solares, beneficios energia solar Argentina, instalacion residencial",
+        "duration": "Videos explicativos de 3-8 minutos, testimoniales de 1-3 minutos"
+      }
+    ],
+    "icon_recommendations": {
+      "categories": {
+        "solar": "fas fa-solar-panel",
+        "efficiency": "fas fa-leaf",
+        "regulation": "fas fa-gavel",
+        "innovation": "fas fa-lightbulb",
+        "projects": "fas fa-building",
+        "market": "fas fa-chart-line",
+        "investment": "fas fa-coins",
+        "technology": "fas fa-microchip",
+        "government": "fas fa-landmark",
+        "environment": "fas fa-globe-americas"
+      },
+      "additional_icons": {
+        "date": "fas fa-calendar-alt",
+        "author": "fas fa-user-edit",
+        "read_time": "fas fa-clock",
+        "share": "fas fa-share-alt",
+        "bookmark": "fas fa-bookmark",
+        "search": "fas fa-search",
+        "filter": "fas fa-filter"
+      }
+    }
+  },
+  
+  "seo_specifications": {
+    "schema_markup": {
+      "article_schema": "{ '@context': 'https://schema.org', '@type': 'NewsArticle', 'headline': 'Article Title', 'image': ['https://inglat.com/image.jpg'], 'datePublished': '2024-08-11T08:00:00+00:00', 'dateModified': '2024-08-11T09:00:00+00:00', 'author': [{'@type': 'Organization', 'name': 'INGLAT', 'url': 'https://inglat.com'}], 'publisher': {'@type': 'Organization', 'name': 'INGLAT', 'logo': {'@type': 'ImageObject', 'url': 'https://inglat.com/logo.png'}}, 'articleSection': 'Energía Renovable', 'keywords': ['energia solar', 'Argentina', 'renovables'] }",
+      "organization_schema": "{ '@context': 'https://schema.org', '@type': 'Organization', 'name': 'INGLAT', 'url': 'https://inglat.com', 'logo': 'https://inglat.com/logo.png', 'description': 'Especialistas en energía solar y soluciones renovables en Argentina', 'address': {'@type': 'PostalAddress', 'addressCountry': 'AR'}, 'sameAs': ['https://linkedin.com/company/inglat', 'https://instagram.com/inglat'] }",
+      "breadcrumb_schema": "{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'Inicio', 'item': 'https://inglat.com'}, {'@type': 'ListItem', 'position': 2, 'name': 'Noticias', 'item': 'https://inglat.com/noticias/'}] }"
+    },
+    "meta_templates": {
+      "title_pattern": "{Article Title} | Noticias Energía Solar | INGLAT",
+      "description_pattern": "{Article Summary} - Mantente informado sobre las últimas noticias de energía solar y renovables en Argentina con INGLAT.",
+      "keywords_pattern": "energia solar, {specific_keywords}, Argentina, renovables, INGLAT, {category_keywords}",
+      "og_title": "{Article Title} - INGLAT Noticias",
+      "og_description": "{Article Summary}",
+      "twitter_card": "summary_large_image"
+    },
+    "url_structure": {
+      "article_urls": "/noticias/{year}/{month}/{slug}/",
+      "category_urls": "/noticias/categoria/{category-slug}/",
+      "author_urls": "/noticias/autor/{author-slug}/",
+      "tag_urls": "/noticias/tag/{tag-slug}/",
+      "archive_urls": "/noticias/archivo/{year}/{month}/"
+    },
+    "sitemap_structure": {
+      "news_sitemap": "Google News sitemap con lastmod, publication date, y keywords para cada artículo",
+      "regular_sitemap": "XML sitemap con prioridades: artículos recientes (0.8), categorías (0.6), archivos (0.4)",
+      "update_frequency": "Daily para página principal de noticias, Weekly para categorías, Monthly para archivos"
+    }
+  },
+  
+  "inglat_integration": {
+    "color_adaptations": "Primary: INGLAT Blue (#1e40af), Secondary: Solar Orange (#f59e0b), Accent: Energy Green (#10b981), Neutral: Cool Gray (#6b7280). Use 60-30-10 rule: 60% neutral whites/grays, 30% INGLAT blue, 10% accent colors",
+    "branding_elements": "INGLAT logo en header de cada artículo, footer con información de contacto, sidebar con call-to-action para servicios, banner de contacto después de cada artículo",
+    "responsive_priorities": "Mobile-first design con breakpoints en 640px, 768px, 1024px, 1280px. Priorizar velocidad de carga en mobile, navegación táctil optimizada, imágenes responsive con lazy loading",
+    "cross_linking": "Enlaces internos a páginas de servicios relacionados, integración con simulador solar, links a casos de estudio relevantes, botones CTA hacia páginas de contacto",
+    "trust_signals": "Certificaciones y badges de autoridad, testimonios de clientes, años de experiencia, proyectos completados, equipo profesional"
+  },
+  
+  "implementation_roadmap": {
+    "phase_1": "Configuración de modelos Django (Article, Category, Tag, Author), admin interface, estructura de URLs, migraciones de base de datos",
+    "phase_2": "Creación de templates HTML con componentes reutilizables, implementación de CSS con design system, responsive design testing",
+    "phase_3": "JavaScript para filtrado y búsqueda, animaciones y transiciones, lazy loading de imágenes, infinite scroll pagination",
+    "phase_4": "Creación de contenido inicial, optimización SEO, schema markup implementation, Google Search Console setup",
+    "phase_5": "Testing de performance, optimización de Core Web Vitals, A/B testing de layouts, analytics implementation"
+  },
+  
+  "performance_specifications": {
+    "core_web_vitals": "LCP < 2.5s, FID < 100ms, CLS < 0.1, implementar resource hints, critical CSS inline, JavaScript lazy loading",
+    "image_optimization": "WebP format con fallbacks, responsive images con srcset, lazy loading con IntersectionObserver, placeholder blur effects",
+    "caching_strategy": "Browser caching para assets estáticos (1 año), CDN para imágenes, Redis para database queries, service worker para offline capability",
+    "bundle_optimization": "CSS y JavaScript minificados, tree shaking, code splitting por rutas, preload de recursos críticos"
+  },
+  
+  "accessibility_guidelines": {
+    "wcag_compliance": "WCAG 2.1 AA compliance, semantic HTML structure, proper heading hierarchy, alt text para todas las imágenes",
+    "keyboard_navigation": "Tab index logical, skip links, focus indicators visibles, keyboard shortcuts para filtros",
+    "screen_readers": "ARIA labels, landmark roles, descriptive link text, structured data para screen readers",
+    "color_contrast": "Contraste mínimo 4.5:1 para texto normal, 3:1 para texto grande, no dependencia solo en color para información"
+  },
+  
+  "sample_articles": [
+    {
+      "title": "Argentina lanza nuevos incentivos fiscales para instalaciones solares residenciales en 2025",
+      "category": "Normativas y Regulación",
+      "slug": "incentivos-fiscales-solares-residenciales-2025",
+      "summary": "El gobierno argentino anuncia nuevos beneficios fiscales que incluyen deducciones de hasta 100% del costo de instalación y exención de impuestos por 10 años para sistemas residenciales.",
+      "content": "El Ministerio de Energía de Argentina anunció oficialmente una serie de incentivos fiscales diseñados para acelerar la adopción de energía solar residencial durante 2025. Estas medidas forman parte del plan nacional para alcanzar el 20% de participación de energías renovables en la matriz energética.\n\nEntre los principales beneficios se incluyen:\n\n**Deducción fiscal completa**: Los propietarios podrán deducir hasta el 100% del costo de instalación de sus impuestos a las ganancias durante los primeros dos años.\n\n**Exención de IVA**: Se elimina el IVA para equipos solares certificados, representando un ahorro del 21% en el costo total del sistema.\n\n**Créditos blandos**: Líneas de financiamiento con tasas preferenciales del 15% anual para sistemas de hasta 10 kW.\n\nEstas medidas se suman al régimen de generación distribuida existente, que permite la inyección de excedentes a la red eléctrica. Según estimaciones del gobierno, estos incentivos podrían resultar en la instalación de 500 MW adicionales en el sector residencial durante 2025.",
+      "image_suggestions": "Paneles solares en techos residenciales argentinos, infografía de beneficios fiscales, familia argentina junto a instalación solar",
+      "video_suggestions": "Explicación animada de los beneficios fiscales, testimonios de propietarios que ya instalaron sistemas solares",
+      "seo_keywords": ["incentivos fiscales energia solar", "beneficios impositivos paneles solares", "deduccion fiscal solar Argentina", "exencion IVA energia renovable"],
+      "internal_links": ["simulador solar INGLAT", "servicios instalacion residencial", "financiamiento proyectos solares"],
+      "cta_suggestions": "Calcula tu ahorro fiscal con nuestro simulador, Consulta gratuita sobre instalación residencial"
+    },
+    {
+      "title": "Tecnología de monitoreo inteligente reduce costos de mantenimiento hasta un 30%",
+      "category": "Tecnología e Innovación",
+      "slug": "monitoreo-inteligente-reduce-costos-mantenimiento",
+      "summary": "Nuevos sistemas de monitoreo con inteligencia artificial permiten detectar fallas antes de que ocurran, optimizando el rendimiento y reduciendo significativamente los costos operativos.",
+      "content": "La implementación de sistemas de monitoreo inteligente en instalaciones solares está revolucionando el mantenimiento predictivo, según un estudio reciente de la Asociación Argentina de Energías Renovables (AADER).\n\n**Tecnología de punta**: Los nuevos sistemas utilizan sensores IoT combinados con algoritmos de machine learning para analizar en tiempo real el rendimiento de cada panel solar individual.\n\n**Detección temprana**: La tecnología puede identificar:\n- Degradación gradual de paneles\n- Problemas de sombreado\n- Fallas en inversores\n- Acumulación de suciedad\n- Conexiones defectuosas\n\n**Beneficios comprobados**:\n- 30% de reducción en costos de mantenimiento\n- 15% de aumento en producción energética\n- Reducción del 80% en visitas de técnicos no programadas\n- Extensión de vida útil de equipos hasta 5 años\n\n**Casos de éxito**: La empresa mendocina SolarTech implementó este sistema en un parque de 50 MW y reportó un ROI del sistema de monitoreo en menos de 18 meses.\n\nExpertos predicen que para 2026, el 90% de las nuevas instalaciones comerciales en Argentina incorporarán algún tipo de monitoreo inteligente.",
+      "image_suggestions": "Dashboard de monitoreo solar, técnico revisando datos en tablet, gráficos de rendimiento energético, instalación solar con sensores",
+      "video_suggestions": "Demo del sistema de monitoreo en tiempo real, entrevista con técnico especializado, comparativa antes/después implementación",
+      "seo_keywords": ["monitoreo inteligente energia solar", "mantenimiento predictivo paneles solares", "IoT energia renovable", "reduccion costos operativos solar"],
+      "internal_links": ["servicios mantenimiento INGLAT", "monitoreo sistemas solares", "tecnologia instalaciones comerciales"],
+      "cta_suggestions": "Solicita demo de nuestro sistema de monitoreo, Consulta sobre upgrade tecnológico"
+    },
+    {
+      "title": "Récord histórico: Argentina supera los 2 GW de capacidad solar instalada",
+      "category": "Mercado y Estadísticas",
+      "slug": "argentina-supera-2-gw-capacidad-solar-instalada",
+      "summary": "El país alcanza un hito importante en su transición energética, con un crecimiento del 22% en capacidad solar durante el último año, liderado por proyectos de gran escala.",
+      "content": "Argentina alcanzó oficialmente los 2 GW de capacidad solar fotovoltaica instalada, según datos actualizados de CAMMESA (Compañía Administradora del Mercado Mayorista Eléctrico).\n\n**Crecimiento sostenido**: Este hito representa un crecimiento del 22% respecto al año anterior y posiciona al país como el quinto mercado solar más grande de Latinoamérica.\n\n**Distribución por sectores**:\n- Proyectos de gran escala: 1.3 GW (65%)\n- Generación distribuida: 450 MW (22.5%)\n- Sistemas residenciales: 250 MW (12.5%)\n\n**Provincias líderes**:\n1. **Mendoza**: 380 MW - Aprovecha condiciones climáticas óptimas\n2. **San Juan**: 290 MW - Hub tecnológico solar del país\n3. **Córdoba**: 245 MW - Crecimiento en sector comercial e industrial\n4. **Buenos Aires**: 210 MW - Mayor población, más sistemas distribuidos\n\n**Impacto económico**:\n- Inversión acumulada: USD 2.1 mil millones\n- Empleos directos generados: 8,500\n- Ahorro anual en importación de combustibles: USD 180 millones\n\n**Proyección 2025**: Con los proyectos actualmente en construcción, se espera alcanzar 3.2 GW a fines de 2025, acercándose al objetivo gubernamental del 20% de renovables.\n\nEl récord coincide con la reducción del 35% en costos de instalación comparado con 2020, haciendo más accesible la tecnología solar para todos los segmentos.",
+      "image_suggestions": "Gráfico de crecimiento capacidad solar Argentina, mapa con distribución provincial, parque solar de gran escala, montaje estadístico",
+      "video_suggestions": "Timeline del crecimiento solar argentino, drone shots de grandes parques solares, entrevistas con desarrolladores",
+      "seo_keywords": ["capacidad solar Argentina 2024", "crecimiento energia renovable", "estadisticas mercado solar", "2 GW solar instalados"],
+      "internal_links": ["proyectos gran escala INGLAT", "desarrollo mercado solar", "estadisticas sector renovable"],
+      "cta_suggestions": "Únete al crecimiento del sector solar, Desarrolla tu proyecto con los líderes del mercado"
+    }
+  ],
+  
+  "content_calendar_suggestions": {
+    "weekly_themes": {
+      "monday": "Market Monday - Estadísticas y análisis de mercado",
+      "wednesday": "Tech Wednesday - Innovaciones y nuevas tecnologías",
+      "friday": "Focus Friday - Casos de estudio y proyectos destacados"
+    },
+    "monthly_focus": {
+      "january": "Planificación energética anual y tendencias",
+      "february": "Eficiencia y optimización de sistemas",
+      "march": "Normativas y regulaciones actualizadas",
+      "april": "Tecnologías emergentes e innovación",
+      "may": "Sostenibilidad y impacto ambiental",
+      "june": "Proyectos comerciales e industriales",
+      "july": "Mercado residencial y generación distribuida",
+      "august": "Financiamiento e inversiones",
+      "september": "Mantenimiento y operación de sistemas",
+      "october": "Integración de sistemas y smart grids",
+      "november": "Balance anual y perspectivas",
+      "december": "Casos de éxito y reconocimientos"
+    },
+    "content_types": {
+      "news_articles": "40% - Noticias actuales del sector",
+      "educational_content": "25% - Guías y contenido educativo",
+      "case_studies": "20% - Proyectos y casos de éxito",
+      "market_analysis": "10% - Análisis de mercado y tendencias",
+      "company_updates": "5% - Novedades de INGLAT"
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ categoria_actual.nombre }} - Noticias INGLAT{% endblock %}
+
+{% block meta_description %}{{ categoria_actual.descripcion|default:"Últimas noticias sobre "|add:categoria_actual.nombre|add:" en Argentina. Mantente informado con INGLAT sobre energías renovables." }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/noticias.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section de Categoría -->
+<section class="categoria-hero" style="background: linear-gradient(135deg, {{ categoria_actual.color }}22 0%, {{ categoria_actual.color }}11 100%);">
+    <div class="container">
+        <div class="hero-content">
+            <div class="categoria-info">
+                <div class="categoria-icon" style="color: {{ categoria_actual.color }};">
+                    <i class="{{ categoria_actual.icono }} fa-3x"></i>
+                </div>
+                <div class="categoria-text">
+                    <h1 class="categoria-titulo">{{ categoria_actual.nombre }}</h1>
+                    {% if categoria_actual.descripcion %}
+                    <p class="categoria-descripcion">{{ categoria_actual.descripcion }}</p>
+                    {% endif %}
+                    <div class="categoria-stats">
+                        <span class="stats-item">
+                            <i class="fas fa-newspaper"></i>
+                            {{ noticias|length }} noticia{{ noticias|length|pluralize }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Breadcrumbs -->
+<nav class="breadcrumbs" aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            <li class="breadcrumb-item">
+                <a href="{% url 'core:home' %}">
+                    <i class="fas fa-home"></i>
+                    Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'blog:lista' %}">Noticias</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ categoria_actual.nombre }}
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="categoria-main">
+    <div class="container">
+        <div class="categoria-layout">
+            
+            <!-- Sidebar con Categorías -->
+            <aside class="categoria-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Todas las Categorías</h3>
+                    <ul class="categorias-nav">
+                        <li class="categoria-nav-item">
+                            <a href="{% url 'blog:lista' %}" class="categoria-nav-link">
+                                <i class="fas fa-list"></i>
+                                <span>Todas las Noticias</span>
+                            </a>
+                        </li>
+                        {% for categoria in categorias %}
+                        <li class="categoria-nav-item {% if categoria.slug == categoria_actual.slug %}active{% endif %}">
+                            <a href="{% url 'blog:por_categoria' categoria.slug %}" 
+                               class="categoria-nav-link">
+                                <i class="{{ categoria.icono }}" style="color: {{ categoria.color }};"></i>
+                                <span>{{ categoria.nombre }}</span>
+                                <span class="categoria-count">({{ categoria.noticias_count }})</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <!-- Widget de Contacto -->
+                <div class="sidebar-section">
+                    <div class="contacto-widget">
+                        <h4>¿Te interesa {{ categoria_actual.nombre|lower }}?</h4>
+                        <p>Descubre cómo INGLAT puede ayudarte en esta área.</p>
+                        <div class="contacto-buttons">
+                            <a href="{% url 'core:simulador' %}" class="btn btn--simulator btn--small">
+                                <i class="fas fa-calculator"></i>
+                                Simulador
+                            </a>
+                            <a href="{% url 'contact:contact' %}" class="btn btn--primary btn--small">
+                                <i class="fas fa-envelope"></i>
+                                Consulta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Grid de Noticias -->
+            <section class="categoria-content">
+                {% if noticias %}
+                    <div class="noticias-grid">
+                        {% for noticia in noticias %}
+                            {% include 'blog/components/noticia_card.html' %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-noticias-categoria">
+                        <div class="no-noticias-icon" style="color: {{ categoria_actual.color }};">
+                            <i class="{{ categoria_actual.icono }} fa-4x"></i>
+                        </div>
+                        <h3>No hay noticias en {{ categoria_actual.nombre }}</h3>
+                        <p>Aún no hemos publicado noticias en esta categoría. Te invitamos a explorar otras secciones.</p>
+                        <div class="no-noticias-actions">
+                            <a href="{% url 'blog:lista' %}" class="btn btn--primary">
+                                <i class="fas fa-newspaper"></i>
+                                Ver Todas las Noticias
+                            </a>
+                            <a href="{% url 'core:home' %}" class="btn btn--secondary">
+                                <i class="fas fa-home"></i>
+                                Ir al Inicio
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/noticias.js' %}"></script>
+{% endblock %}

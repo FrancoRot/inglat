@@ -22,6 +22,17 @@ class HomeView(TemplateView):
             is_active=True
         ).order_by('-date_completed')[:6]  # Máximo 6 proyectos destacados
         
+        # Obtener noticias destacadas para mostrar en el home
+        try:
+            from apps.blog.models import Noticia
+            noticias_destacadas = Noticia.objects.filter(
+                destacada=True,
+                activa=True
+            ).select_related('categoria').order_by('-fecha_publicacion')[:3]
+        except ImportError:
+            # Si el modelo no existe aún, continuar sin noticias
+            noticias_destacadas = []
+        
         context.update({
             'current_year': datetime.now().year,
             'page_title': 'INGLAT - Líderes en Energía Renovable',
@@ -29,6 +40,7 @@ class HomeView(TemplateView):
             'hero_title': 'Liderando la Transición Energética con Instalaciones Solares Inteligentes',
             'hero_subtitle': 'Monitorización avanzada, control total y soluciones a medida para tu independencia energética.',
             'featured_projects': featured_projects,
+            'noticias_destacadas': noticias_destacadas,
         })
         return context
 

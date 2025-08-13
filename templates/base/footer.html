@@ -31,12 +31,12 @@
     <div class="footer__section">
         <h3 class="footer__section-title">Servicios</h3>
         <nav class="footer__nav" role="navigation" aria-label="Navegación de servicios">
-            <a href="{% url 'core:services' %}#instalacion" class="footer__link">Instalación Solar</a>
-            <a href="{% url 'core:services' %}#mantenimiento" class="footer__link">Mantenimiento</a>
-            <a href="{% url 'core:services' %}#monitorizacion" class="footer__link">Monitorización</a>
-            <a href="{% url 'core:services' %}#consultoria" class="footer__link">Consultoría Energética</a>
-            <a href="{% url 'core:services' %}#autoconsumo" class="footer__link">Autoconsumo</a>
-            <a href="{% url 'core:services' %}#industrial" class="footer__link">Proyectos Industriales</a>
+            <a href="{% url 'core:home' %}#servicios" class="footer__link">Instalación Solar</a>
+            <a href="{% url 'core:home' %}#servicios" class="footer__link">Mantenimiento</a>
+            <a href="{% url 'core:home' %}#servicios" class="footer__link">Monitorización</a>
+            <a href="{% url 'core:home' %}#servicios" class="footer__link">Consultoría Energética</a>
+            <a href="{% url 'core:home' %}#servicios" class="footer__link">Autoconsumo</a>
+            <a href="{% url 'core:home' %}#servicios" class="footer__link">Proyectos Industriales</a>
         </nav>
     </div>
 
@@ -44,11 +44,10 @@
     <div class="footer__section">
         <h3 class="footer__section-title">Empresa</h3>
         <nav class="footer__nav" role="navigation" aria-label="Navegación de empresa">
-            <a href="#nosotros" class="footer__link">Nosotros</a>
-            <a href="#proyectos" class="footer__link">Proyectos</a>
-            <a href="{% url 'blog:list' %}" class="footer__link">Blog</a>
+            <a href="{% url 'core:home' %}#nosotros" class="footer__link">Nosotros</a>
+            <a href="{% url 'core:home' %}#proyectos" class="footer__link">Proyectos</a>
+            <a href="{% url 'blog:lista' %}" class="footer__link">Noticias</a>
             <a href="{% url 'contact:contact' %}" class="footer__link">Contacto</a>
-            <a href="{% url 'contact:contact' %}" class="footer__link">Solicitar Presupuesto</a>
         </nav>
     </div>
 

@@ -411,9 +411,7 @@
     margin-bottom: var(--space-4);
     padding: var(--space-4) 0;
     border-bottom: 2px solid var(--primary-color);
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--primary-color);
     background-clip: text;
 }
 
@@ -435,7 +433,7 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background: var(--gradient-primary);
+    background: var(--primary-color);
     transform: scaleY(0);
     transform-origin: top;
     transition: transform 0.3s ease;
@@ -467,7 +465,7 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--space-5) var(--space-6);
-    background: linear-gradient(135deg, var(--primary-lightest) 0%, var(--white) 100%);
+    background: var(--gray-100);
     border: none;
     text-align: left;
     font-size: var(--text-lg);
@@ -491,7 +489,7 @@
 }
 
 .faq-question:hover {
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-gold) 100%);
+    background: var(--primary-color);
     color: var(--white);
     transform: translateX(4px);
 }
@@ -506,7 +504,7 @@
 }
 
 .faq-question[aria-expanded="true"] {
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-gold) 100%);
+    background: var(--primary-color);
     color: var(--white);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
@@ -907,6 +905,6 @@
     
     .faq-question:hover {
         transform: none;
-        background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+        background: var(--primary-color);
     }
 }

@@ -1,0 +1,41 @@
+{% if has_video %}
+<div class="video-container" data-platform="{{ platform }}">
+    {% if platform == 'youtube' %}
+        <iframe 
+            class="video-iframe"
+            src="{{ embed_url }}{% if autoplay %}?autoplay=1{% if muted %}&mute=1{% endif %}{% endif %}"
+            title="{{ title }}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    
+    {% elif platform == 'vimeo' %}
+        <iframe 
+            class="video-iframe"
+            src="{{ embed_url }}{% if autoplay %}?autoplay=1{% if muted %}&muted=1{% endif %}{% endif %}"
+            title="{{ title }}"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    
+    {% elif platform == 'direct' or platform == 'gdrive' or platform == 'dropbox' %}
+        <video 
+            class="video-direct"
+            {% if controls %}controls{% endif %}
+            {% if autoplay %}autoplay{% endif %}
+            {% if muted %}muted{% endif %}
+            preload="metadata">
+            <source src="{{ embed_url }}" type="video/mp4">
+            <p>Tu navegador no soporta videos HTML5. <a href="{{ embed_url }}">Descargar video</a></p>
+        </video>
+    
+    {% else %}
+        <div class="video-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>No se puede reproducir este video. <a href="{{ video_url }}" target="_blank">Ver en enlace original</a></p>
+        </div>
+    {% endif %}
+</div>
+{% endif %}

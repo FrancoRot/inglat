@@ -1,0 +1,127 @@
+{% load static %}
+{% load blog_extras %}
+
+<article class="noticia-card" data-categoria="{{ noticia.categoria.slug|default:'sin-categoria' }}">
+    <a href="{{ noticia.get_absolute_url }}" class="card-link">
+        
+        <!-- Multimedia Universal (Imagen o Video Preview) -->
+        <div class="card-media" data-media-type="{{ noticia.multimedia_type|default:'none' }}">
+            {% if noticia.tipo_multimedia == 'imagen' and noticia.imagen %}
+                <!-- Imagen tradicional -->
+                <img src="{{ noticia.imagen.url }}" 
+                     alt="{{ noticia.titulo }}" 
+                     class="card-image"
+                     loading="lazy">
+            
+            {% elif noticia.tipo_multimedia == 'video' %}
+                <!-- Sistema de video universal -->
+                <div class="card-video-preview" data-platform="{{ noticia.video_platform|default:'video' }}">
+                    {% if noticia.video_thumbnail_url %}
+                        <!-- Usar thumbnail generado automáticamente -->
+                        <img src="{{ noticia.video_thumbnail_url }}" 
+                             alt="{{ noticia.titulo }}" 
+                             class="card-image"
+                             loading="lazy">
+                    {% elif noticia.imagen %}
+                        <!-- Fallback a imagen si no hay thumbnail de video -->
+                        <img src="{{ noticia.imagen.url }}" 
+                             alt="{{ noticia.titulo }}" 
+                             class="card-image"
+                             loading="lazy">
+                    {% else %}
+                        <!-- Placeholder para video sin thumbnail -->
+                        <div class="video-placeholder">
+                            <i class="fas fa-play-circle fa-3x"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Overlay con icono de plataforma -->
+                    <div class="video-overlay">
+                        {% if noticia.video_platform == 'youtube' %}
+                            <i class="fab fa-youtube fa-2x" style="color: #FF0000;"></i>
+                        {% elif noticia.video_platform == 'vimeo' %}
+                            <i class="fab fa-vimeo fa-2x" style="color: #1ab7ea;"></i>
+                        {% elif noticia.video_platform == 'gdrive' %}
+                            <i class="fab fa-google-drive fa-2x" style="color: #4285F4;"></i>
+                        {% elif noticia.video_platform == 'dropbox' %}
+                            <i class="fab fa-dropbox fa-2x" style="color: #0061FF;"></i>
+                        {% else %}
+                            <i class="fas fa-play-circle fa-2x" style="color: #28a745;"></i>
+                        {% endif %}
+                    </div>
+                </div>
+                
+            {% elif noticia.video_vimeo_id %}
+                <!-- Fallback legacy para Vimeo existente -->
+                <div class="card-video-preview" data-platform="vimeo-legacy">
+                    <img src="https://vumbnail.com/{{ noticia.video_vimeo_id }}.jpg" 
+                         alt="{{ noticia.titulo }}" 
+                         class="card-image"
+                         loading="lazy">
+                    <div class="video-overlay">
+                        <i class="fab fa-vimeo fa-2x" style="color: #1ab7ea;"></i>
+                    </div>
+                </div>
+            
+            {% else %}
+                <!-- Placeholder cuando no hay multimedia -->
+                <div class="card-placeholder">
+                    <i class="fas fa-newspaper fa-2x"></i>
+                </div>
+            {% endif %}
+            
+            <!-- Badge de Categoría -->
+            {% if noticia.categoria %}
+            <div class="card-categoria-badge" style="background-color: {{ noticia.categoria.color }};">
+                <i class="{{ noticia.categoria.icono }}"></i>
+                {{ noticia.categoria.nombre }}
+            </div>
+            {% endif %}
+            
+            <!-- Badge de Destacada -->
+            {% if noticia.destacada %}
+            <div class="card-destacada-badge">
+                <i class="fas fa-star"></i>
+                Destacada
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Contenido de la Tarjeta -->
+        <div class="card-content">
+            <header class="card-header">
+                <h3 class="card-titulo">{{ noticia.titulo }}</h3>
+                
+                <div class="card-meta">
+                    <time class="card-fecha" datetime="{{ noticia.fecha_publicacion|date:'c' }}">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ noticia.fecha_formateada }}
+                    </time>
+                    
+                    <span class="card-lectura">
+                        <i class="fas fa-clock"></i>
+                        {{ noticia.tiempo_lectura }}
+                    </span>
+                </div>
+            </header>
+            
+            <div class="card-body">
+                <p class="card-descripcion">{{ noticia.descripcion_corta }}</p>
+            </div>
+            
+            <footer class="card-footer">
+                <div class="card-autor">
+                    <i class="fas fa-user"></i>
+                    {{ noticia.autor }}
+                </div>
+                
+                <div class="card-cta">
+                    <span class="leer-mas">
+                        Leer más
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </footer>
+        </div>
+    </a>
+</article>

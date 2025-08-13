@@ -20,7 +20,16 @@
       "Bash(git add:*)",
       "Bash(touch:*)",
       "Bash(python3 manage.py check:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(./venv/Scripts/activate)",
+      "Bash(./venv/Scripts/python manage.py makemigrations:*)",
+      "Bash(./venv/Scripts/python.exe manage.py makemigrations blog)",
+      "Bash(./venv/Scripts/python.exe manage.py migrate blog)",
+      "Bash(./venv/Scripts/python.exe populate_blog.py)",
+      "Bash(./venv/Scripts/python.exe manage.py check)",
+      "Bash(./venv/Scripts/python.exe manage.py runserver:*)",
+      "Bash(./venv/Scripts/python.exe manage.py show_urls)",
+      "Bash(./venv/Scripts/python.exe manage.py showmigrations:*)"
     ],
     "deny": []
   }

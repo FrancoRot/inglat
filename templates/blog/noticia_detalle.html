@@ -1,0 +1,351 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load blog_extras %}
+
+{% block title %}{{ noticia.titulo }} - INGLAT{% endblock %}
+
+{% block meta_description %}{{ noticia.meta_descripcion|default:noticia.descripcion_corta }}{% endblock %}
+
+{% block meta_keywords %}{{ noticia.meta_keywords }}{% endblock %}
+
+{% block extra_meta %}
+<!-- Open Graph -->
+<meta property="og:title" content="{{ noticia.titulo }}">
+<meta property="og:description" content="{{ noticia.descripcion_corta }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% if noticia.imagen %}
+<meta property="og:image" content="{{ request.build_absolute_uri }}{{ noticia.imagen.url }}">
+{% endif %}
+<meta property="article:published_time" content="{{ noticia.fecha_publicacion|date:'c' }}">
+<meta property="article:modified_time" content="{{ noticia.fecha_actualizacion|date:'c' }}">
+<meta property="article:author" content="{{ noticia.autor }}">
+{% if noticia.categoria %}
+<meta property="article:section" content="{{ noticia.categoria.nombre }}">
+{% endif %}
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ noticia.titulo }}">
+<meta name="twitter:description" content="{{ noticia.descripcion_corta }}">
+{% if noticia.imagen %}
+<meta name="twitter:image" content="{{ request.build_absolute_uri }}{{ noticia.imagen.url }}">
+{% endif %}
+
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{{ schema_markup|safe }}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/noticias.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumbs -->
+<nav class="breadcrumbs" aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            <li class="breadcrumb-item">
+                <a href="{% url 'core:home' %}">
+                    <i class="fas fa-home"></i>
+                    Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'blog:lista' %}">Noticias</a>
+            </li>
+            {% if noticia.categoria %}
+            <li class="breadcrumb-item">
+                <a href="{% url 'blog:por_categoria' noticia.categoria.slug %}">
+                    {{ noticia.categoria.nombre }}
+                </a>
+            </li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ noticia.titulo|truncatechars:40 }}
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Main Article -->
+<main class="noticia-detalle">
+    <div class="container">
+        <div class="detalle-layout">
+            
+            <!-- Contenido Principal -->
+            <article class="detalle-content">
+                
+                <!-- Header del Artículo -->
+                <header class="detalle-header">
+                    <div class="header-meta">
+                        {% if noticia.categoria %}
+                        <a href="{% url 'blog:por_categoria' noticia.categoria.slug %}" 
+                           class="categoria-link" 
+                           style="color: {{ noticia.categoria.color }};">
+                            <i class="{{ noticia.categoria.icono }}"></i>
+                            {{ noticia.categoria.nombre }}
+                        </a>
+                        {% endif %}
+                        
+                        {% if noticia.destacada %}
+                        <span class="destacada-badge">
+                            <i class="fas fa-star"></i>
+                            Destacada
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <h1 class="detalle-titulo">{{ noticia.titulo }}</h1>
+                    
+                    <div class="detalle-meta">
+                        <div class="meta-grupo">
+                            <time class="meta-fecha" datetime="{{ noticia.fecha_publicacion|date:'c' }}">
+                                <i class="fas fa-calendar-alt"></i>
+                                {{ noticia.fecha_formateada }}
+                            </time>
+                            
+                            <span class="meta-autor">
+                                <i class="fas fa-user"></i>
+                                {{ noticia.autor }}
+                            </span>
+                            
+                            <span class="meta-lectura">
+                                <i class="fas fa-clock"></i>
+                                {{ noticia.tiempo_lectura }}
+                            </span>
+                        </div>
+                        
+                        <!-- Botones de Compartir -->
+                        <div class="compartir-grupo">
+                            <span class="compartir-label">Compartir:</span>
+                            <a href="https://twitter.com/intent/tweet?text={{ noticia.titulo|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" 
+                               class="compartir-btn twitter"
+                               aria-label="Compartir en Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" 
+                               class="compartir-btn facebook"
+                               aria-label="Compartir en Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" 
+                               class="compartir-btn linkedin"
+                               aria-label="Compartir en LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://wa.me/?text={{ noticia.titulo|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" 
+                               class="compartir-btn whatsapp"
+                               aria-label="Compartir por WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="detalle-descripcion">
+                        {{ noticia.descripcion_corta }}
+                    </div>
+                </header>
+                
+                <!-- Multimedia Principal Universal -->
+                <div class="detalle-multimedia">
+                    {% if noticia.tipo_multimedia == 'imagen' and noticia.imagen %}
+                        <!-- Imagen tradicional -->
+                        <figure class="multimedia-figura">
+                            <img src="{{ noticia.imagen.url }}" 
+                                 alt="{{ noticia.titulo }}" 
+                                 class="multimedia-imagen">
+                        </figure>
+                        
+                    {% elif noticia.tipo_multimedia == 'video' %}
+                        <!-- Video con sistema universal -->
+                        <figure class="multimedia-figura">
+                            {% render_video noticia.video_url title=noticia.titulo autoplay=True muted=True controls=True %}
+                        </figure>
+                        
+                        <!-- Información del video -->
+                        <div class="video-info">
+                            <div class="video-meta">
+                                <span class="video-platform">
+                                    {% if noticia.video_platform == 'youtube' %}
+                                        <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
+                                    {% elif noticia.video_platform == 'vimeo' %}
+                                        <i class="fab fa-vimeo" style="color: #1ab7ea;"></i> Vimeo
+                                    {% elif noticia.video_platform == 'gdrive' %}
+                                        <i class="fab fa-google-drive" style="color: #4285F4;"></i> Google Drive
+                                    {% elif noticia.video_platform == 'dropbox' %}
+                                        <i class="fab fa-dropbox" style="color: #0061FF;"></i> Dropbox
+                                    {% else %}
+                                        <i class="fas fa-video" style="color: #28a745;"></i> Video
+                                    {% endif %}
+                                </span>
+                                
+                                <a href="{{ noticia.video_url }}" target="_blank" class="video-original-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Ver en fuente original
+                                </a>
+                            </div>
+                        </div>
+                        
+                    {% elif noticia.video_vimeo_id %}
+                        <!-- Fallback legacy para Vimeo -->
+                        <figure class="multimedia-figura">
+                            <div class="video-container">
+                                <iframe src="https://player.vimeo.com/video/{{ noticia.video_vimeo_id }}?title=0&byline=0&portrait=0" 
+                                        class="video-iframe"
+                                        frameborder="0" 
+                                        allow="autoplay; fullscreen; picture-in-picture" 
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </figure>
+                        
+                        <!-- Indicador legacy -->
+                        <div class="video-info legacy">
+                            <div class="video-meta">
+                                <span class="video-platform">
+                                    <i class="fab fa-vimeo" style="color: #1ab7ea;"></i> Vimeo (Legacy)
+                                </span>
+                                <a href="{{ noticia.video_vimeo_url }}" target="_blank" class="video-original-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Ver en Vimeo
+                                </a>
+                            </div>
+                        </div>
+                        
+                    {% elif noticia.imagen %}
+                        <!-- Fallback a imagen si no hay video configurado pero hay imagen -->
+                        <figure class="multimedia-figura">
+                            <img src="{{ noticia.imagen.url }}" 
+                                 alt="{{ noticia.titulo }}" 
+                                 class="multimedia-imagen">
+                        </figure>
+                    {% endif %}
+                </div>
+                
+                <!-- Contenido del Artículo -->
+                <div class="detalle-cuerpo">
+                    {{ noticia.contenido|linebreaks }}
+                </div>
+                
+                <!-- Footer del Artículo -->
+                <footer class="detalle-footer">
+                    <div class="footer-meta">
+                        <p class="ultima-actualizacion">
+                            <i class="fas fa-sync-alt"></i>
+                            Última actualización: {{ noticia.fecha_actualizacion|date:"d/m/Y H:i" }}
+                        </p>
+                    </div>
+                    
+                    <!-- Tags/Keywords -->
+                    {% if noticia.meta_keywords %}
+                    <div class="tags-section">
+                        <h4 class="tags-titulo">Etiquetas:</h4>
+                        <div class="tags-lista">
+                            {% for keyword in noticia.meta_keywords|split:"," %}
+                                <span class="tag">{{ keyword|trim }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- CTA Section -->
+                    <div class="cta-section">
+                        <div class="cta-content">
+                            <h3>¿Te interesa la energía solar?</h3>
+                            <p>Descubre cómo INGLAT puede ayudarte a reducir tu factura eléctrica con energía renovable.</p>
+                            <div class="cta-buttons">
+                                <a href="{% url 'core:simulador' %}" class="btn btn--simulator">
+                                    <i class="fas fa-calculator"></i>
+                                    Simulador Solar
+                                </a>
+                                <a href="{% url 'contact:contact' %}" class="btn btn--accent">
+                                    <i class="fas fa-envelope"></i>
+                                    Consulta Gratuita
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+            
+            <!-- Sidebar -->
+            <aside class="detalle-sidebar">
+                
+                <!-- Noticias Relacionadas -->
+                {% if noticias_relacionadas %}
+                <div class="sidebar-section">
+                    <h3 class="sidebar-titulo">Noticias Relacionadas</h3>
+                    <div class="noticias-relacionadas">
+                        {% for relacionada in noticias_relacionadas %}
+                        <article class="relacionada-item">
+                            <a href="{{ relacionada.get_absolute_url }}" class="relacionada-link">
+                                {% if relacionada.imagen %}
+                                <img src="{{ relacionada.imagen.url }}" 
+                                     alt="{{ relacionada.titulo }}" 
+                                     class="relacionada-imagen">
+                                {% endif %}
+                                <div class="relacionada-content">
+                                    <h4 class="relacionada-titulo">{{ relacionada.titulo|truncatechars:80 }}</h4>
+                                    <time class="relacionada-fecha">{{ relacionada.fecha_formateada }}</time>
+                                </div>
+                            </a>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Navegación Rápida -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-titulo">Navegación</h3>
+                    <nav class="nav-rapida">
+                        <a href="{% url 'blog:lista' %}" class="nav-link">
+                            <i class="fas fa-arrow-left"></i>
+                            Volver a Noticias
+                        </a>
+                        {% if noticia.categoria %}
+                        <a href="{% url 'blog:por_categoria' noticia.categoria.slug %}" class="nav-link">
+                            <i class="{{ noticia.categoria.icono }}"></i>
+                            Más de {{ noticia.categoria.nombre }}
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'core:home' %}" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            Inicio
+                        </a>
+                    </nav>
+                </div>
+                
+                <!-- Contacto Sticky -->
+                <div class="sidebar-section sidebar-sticky">
+                    <div class="contacto-widget">
+                        <h4>¿Necesitas más información?</h4>
+                        <p>Nuestros expertos están listos para ayudarte.</p>
+                        <div class="contacto-buttons">
+                            <a href="tel:+541234567890" class="btn btn--call btn--small">
+                                <i class="fas fa-phone"></i>
+                                Llamar
+                            </a>
+                            <a href="https://wa.me/541234567890" class="btn btn--whatsapp btn--small" target="_blank">
+                                <i class="fab fa-whatsapp"></i>
+                                WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/noticias.js' %}"></script>
+{% endblock %}

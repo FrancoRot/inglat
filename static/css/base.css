@@ -295,6 +295,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
   font-size: var(--text-base);
   font-weight: var(--font-medium);
@@ -372,6 +373,18 @@ body {
 .btn--call:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px 0 rgba(0, 100, 102, 0.3);
+}
+
+.btn--footer {
+  background: var(--prussian-blue);
+  color: var(--white);
+  box-shadow: 0 4px 14px 0 rgba(33, 47, 69, 0.25);
+}
+
+.btn--footer:hover {
+  background: var(--charcoal);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(33, 47, 69, 0.4);
 }
 
 /* Cards */

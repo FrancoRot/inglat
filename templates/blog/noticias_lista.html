@@ -1,0 +1,185 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Noticias de Energías Renovables - INGLAT{% endblock %}
+
+{% block meta_description %}Últimas noticias sobre energías renovables, tecnología solar, eficiencia energética y proyectos sustentables en Argentina. Mantente informado con INGLAT.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/noticias.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="noticias-hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Noticias de Energías Renovables</h1>
+            <p class="hero-subtitle">Mantente al día con las últimas novedades del sector energético sustentable en Argentina</p>
+        </div>
+    </div>
+</section>
+
+<!-- Breadcrumbs -->
+<nav class="breadcrumbs" aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            <li class="breadcrumb-item">
+                <a href="{% url 'core:home' %}">
+                    <i class="fas fa-home"></i>
+                    Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Noticias
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="noticias-main">
+    <div class="container">
+        <div class="noticias-layout">
+            
+            <!-- Sidebar con Filtros -->
+            <aside class="noticias-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Filtrar Noticias</h3>
+                    
+                    <!-- Búsqueda -->
+                    <div class="filter-group">
+                        <label class="filter-label" for="search-input">Buscar</label>
+                        <div class="search-container">
+                            <input type="text" 
+                                   id="search-input" 
+                                   class="search-input" 
+                                   placeholder="Buscar noticias..." 
+                                   value="{{ filtro_busqueda }}">
+                            <i class="fas fa-search search-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtro por Categoría -->
+                    <div class="filter-group">
+                        <label class="filter-label" for="categoria-select">Categoría</label>
+                        <select id="categoria-select" class="filter-select">
+                            <option value="todas" {% if filtro_categoria == 'todas' %}selected{% endif %}>
+                                Todas las categorías
+                            </option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.slug }}" 
+                                    {% if filtro_categoria == categoria.slug %}selected{% endif %}>
+                                {{ categoria.nombre }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Filtro por Fecha -->
+                    <div class="filter-group">
+                        <label class="filter-label" for="fecha-select">Período</label>
+                        <select id="fecha-select" class="filter-select">
+                            <option value="todas" {% if filtro_fecha == 'todas' %}selected{% endif %}>
+                                Todas las fechas
+                            </option>
+                            <option value="este-mes" {% if filtro_fecha == 'este-mes' %}selected{% endif %}>
+                                Este mes
+                            </option>
+                            <option value="ultimo-mes" {% if filtro_fecha == 'ultimo-mes' %}selected{% endif %}>
+                                Último mes
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Noticias Destacadas Sidebar -->
+                {% if noticias_destacadas %}
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Noticias Destacadas</h3>
+                    <div class="noticias-destacadas-sidebar">
+                        {% for noticia in noticias_destacadas %}
+                        <article class="noticia-destacada-item">
+                            <a href="{{ noticia.get_absolute_url }}" class="destacada-link">
+                                {% if noticia.imagen %}
+                                <img src="{{ noticia.imagen.url }}" 
+                                     alt="{{ noticia.titulo }}" 
+                                     class="destacada-imagen">
+                                {% endif %}
+                                <div class="destacada-content">
+                                    <h4 class="destacada-titulo">{{ noticia.titulo|truncatechars:60 }}</h4>
+                                    <span class="destacada-fecha">{{ noticia.fecha_formateada }}</span>
+                                </div>
+                            </a>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Categorías con Conteo -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Categorías</h3>
+                    <ul class="categorias-list">
+                        {% for categoria in categorias_con_conteo %}
+                        <li class="categoria-item">
+                            <a href="{% url 'blog:por_categoria' categoria.slug %}" 
+                               class="categoria-link">
+                                <i class="{{ categoria.icono }}" 
+                                   style="color: {{ categoria.color }};"></i>
+                                <span class="categoria-nombre">{{ categoria.nombre }}</span>
+                                <span class="categoria-count">({{ categoria.noticias_count_activas }})</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </aside>
+            
+            <!-- Grid de Noticias -->
+            <section class="noticias-content">
+                <div class="noticias-header">
+                    <h2 class="noticias-titulo">
+                        {% if categoria_actual %}
+                            Noticias de {{ categoria_actual.nombre }}
+                        {% else %}
+                            Todas las Noticias
+                        {% endif %}
+                    </h2>
+                    <div class="noticias-meta">
+                        <span class="noticias-count" id="noticias-count">
+                            {{ noticias|length }} noticia{{ noticias|length|pluralize }}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Loading State -->
+                <div id="loading-state" class="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Cargando noticias...</p>
+                </div>
+                
+                <!-- Grid de Noticias -->
+                <div class="noticias-grid" id="noticias-grid">
+                    {% for noticia in noticias %}
+                        {% include 'blog/components/noticia_card.html' %}
+                    {% empty %}
+                        <div class="no-noticias">
+                            <i class="fas fa-newspaper fa-3x"></i>
+                            <h3>No hay noticias disponibles</h3>
+                            <p>No se encontraron noticias que coincidan con los filtros seleccionados.</p>
+                            <button class="btn btn--primary" onclick="limpiarFiltros()">
+                                Limpiar Filtros
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/noticias.js' %}"></script>
+{% endblock %}
