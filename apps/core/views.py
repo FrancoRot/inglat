@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from datetime import datetime
 import json
 import math
-from .models import Project
+from .models import Project, HomePortada
 
 
 class HomeView(TemplateView):
@@ -33,6 +33,12 @@ class HomeView(TemplateView):
             # Si el modelo no existe aún, continuar sin noticias
             noticias_destacadas = []
         
+        # Obtener configuración de portada activa
+        portada_config = HomePortada.get_activa()
+        video_config = None
+        if portada_config.tipo_multimedia == 'video':
+            video_config = portada_config.get_video_embed_config()
+        
         context.update({
             'current_year': datetime.now().year,
             'page_title': 'INGLAT - Líderes en Energía Renovable',
@@ -41,6 +47,8 @@ class HomeView(TemplateView):
             'hero_subtitle': 'Monitorización avanzada, control total y soluciones a medida para tu independencia energética.',
             'featured_projects': featured_projects,
             'noticias_destacadas': noticias_destacadas,
+            'portada_config': portada_config,
+            'video_config': video_config,
         })
         return context
 

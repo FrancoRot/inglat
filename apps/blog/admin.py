@@ -4,9 +4,9 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django import forms
+from tinymce.widgets import TinyMCE
 from .models import Categoria, Noticia
 from .utils import VideoURLValidator
-from .forms import NoticiaAdminForm
 
 
 @admin.register(Categoria)
@@ -74,6 +74,17 @@ class CategoriaAdmin(admin.ModelAdmin):
     class Media:
         css = {
             'all': ('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',)
+        }
+
+
+class NoticiaAdminForm(forms.ModelForm):
+    """Formulario personalizado para el admin de noticias con TinyMCE"""
+    
+    class Meta:
+        model = Noticia
+        fields = '__all__'
+        widgets = {
+            'contenido': TinyMCE(attrs={'cols': 80, 'rows': 30}),
         }
 
 
@@ -152,38 +163,23 @@ class NoticiaAdmin(admin.ModelAdmin):
     ]
     
     def multimedia_preview(self, obj):
-        """Muestra una preview del multimedia universal"""
+        """Muestra una preview del multimedia universal sin iconos de plataforma"""
         if obj.tipo_multimedia == 'imagen' and obj.imagen:
             return format_html(
                 '<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 4px;" />',
                 obj.imagen.url
             )
         elif obj.tipo_multimedia == 'video':
-            # Nuevo sistema universal de videos
-            if obj.video_url:
-                platform_icons = {
-                    'youtube': ('fab fa-youtube', '#FF0000'),
-                    'vimeo': ('fab fa-vimeo', '#1ab7ea'),
-                    'gdrive': ('fab fa-google-drive', '#4285F4'),
-                    'dropbox': ('fab fa-dropbox', '#0061FF'),
-                    'direct': ('fas fa-video', '#28a745')
-                }
-                icon_class, color = platform_icons.get(obj.video_platform, ('fas fa-video', '#666'))
-                
-                preview_html = f'<i class="{icon_class} fa-2x" style="color: {color};"></i><br>'
-                preview_html += f'<small>{obj.video_platform.upper()}</small>'
-                
-                # Mostrar thumbnail si está disponible
-                if obj.video_thumbnail_url:
-                    preview_html = f'<img src="{obj.video_thumbnail_url}" width="50" height="30" style="object-fit: cover; border-radius: 4px;" /><br>' + preview_html
-                
-                return format_html(preview_html)
-            
-            # Fallback a sistema legacy de Vimeo
-            elif obj.video_vimeo_id:
+            # Mostrar thumbnail si está disponible
+            if obj.video_thumbnail_url:
                 return format_html(
-                    '<i class="fab fa-vimeo fa-2x" style="color: #1ab7ea;"></i><br><small>LEGACY: {}</small>',
-                    obj.video_vimeo_id
+                    '<img src="{}" width="50" height="30" style="object-fit: cover; border-radius: 4px;" /><div style="font-size: 10px; color: #666; margin-top: 2px;">📹 Video</div>',
+                    obj.video_thumbnail_url
+                )
+            # Si no hay thumbnail, mostrar solo indicador de video
+            elif obj.video_url or obj.video_vimeo_id:
+                return format_html(
+                    '<div style="width: 50px; height: 30px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-play" style="color: #666;"></i></div><div style="font-size: 10px; color: #666; margin-top: 2px;">📹 Video</div>'
                 )
         
         return format_html('<i class="fas fa-times" style="color: #999;"></i>')

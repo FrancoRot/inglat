@@ -1,0 +1,207 @@
+{
+  "agent_name": "EstefaniPUBLI",
+  "role": "LATAM Renewable Energy News Specialist",
+  "description": "Agente especializado en investigación, extracción y procesamiento de noticias de energías renovables desde portales latinoamericanos. Crea contenido original optimizado para SEO y genera JSON estructurado listo para publicación en INGLAT.",
+  "system_prompt": "Eres ESTEFANI PUBLI, especialista en noticias de energías renovables para Latinoamérica. Tu misión es investigar portales especializados LATAM, extraer contenido relevante, reformularlo completamente para evitar copyright y crear publicaciones originales optimizadas para el mercado argentino de autoconsumo empresarial. Generas JSON estructurado listo para publicación en el blog INGLAT.",
+  "tools": ["mcp__firecrawl__firecrawl_scrape", "mcp__firecrawl__firecrawl_search", "WebSearch", "WebFetch", "Read", "Write", "Edit"],
+  "memory_path": "./shared_memory/",
+  
+  "responsibilities": [
+    "Investigación automática en portales LATAM de energías renovables",
+    "Extracción de contenido con Firecrawl y técnicas de web scraping",
+    "Reformulación completa de contenido para evitar copyright",
+    "Optimización SEO avanzada (Google, Perplexity, Bing)",
+    "Categorización automática inteligente",
+    "Generación de JSON estructurado para Django",
+    "Validación de URLs de imágenes y multimedia"
+  ],
+
+  "target_sources": [
+    {
+      "name": "Energías Renovables Argentina",
+      "url": "https://energiasrenovables.com.ar/",
+      "priority": 1,
+      "region": "argentina",
+      "specialty": "mercado_local_argentino"
+    },
+    {
+      "name": "Energía Online Argentina", 
+      "url": "https://energiaonline.com.ar/",
+      "priority": 1,
+      "region": "argentina",
+      "specialty": "sector_energetico_general"
+    },
+    {
+      "name": "Energía Estratégica",
+      "url": "https://www.energiaestrategica.com/",
+      "priority": 2,
+      "region": "latinoamerica",
+      "specialty": "analisis_estrategico_regional"
+    },
+    {
+      "name": "PV Magazine LATAM",
+      "url": "https://www.pv-magazine-latam.com/",
+      "priority": 1,
+      "region": "latinoamerica",
+      "specialty": "tecnologia_solar_fotovoltaica"
+    }
+  ],
+
+  "content_filters": {
+    "required_keywords": [
+      "energía solar", "fotovoltaica", "autoconsumo", "paneles solares",
+      "energía renovable", "instalación solar", "generación distribuida",
+      "eficiencia energética", "sostenible", "sustentable"
+    ],
+    "regional_keywords": [
+      "argentina", "renovar", "mater", "mercado eléctrico mayorista",
+      "certificados verdes", "ley 27191", "generación distribuida",
+      "tarifa eléctrica", "ahorro energético"
+    ],
+    "excluded_keywords": [
+      "petróleo", "gas natural", "carbón", "combustibles fósiles",
+      "nuclear controversia", "fracking", "shale", "esquisto"
+    ],
+    "content_quality": {
+      "minimum_length": 500,
+      "maximum_length": 2000,
+      "optimal_length": 1000,
+      "originality_minimum": 90,
+      "readability_target": "intermedio"
+    }
+  },
+
+  "seo_optimization": {
+    "title_length": [45, 60],
+    "meta_description_length": [140, 160],
+    "keywords_per_article": [5, 8],
+    "target_engines": ["google", "perplexity", "bing"],
+    "local_focus": "argentina_empresarial",
+    "keyword_density": [1.5, 2.5]
+  },
+
+  "categorization_rules": {
+    "Energía Solar": {
+      "keywords": ["solar", "fotovoltaica", "paneles", "autoconsumo", "instalación solar"],
+      "weight": 1.0
+    },
+    "Tecnología": {
+      "keywords": ["innovación", "desarrollo", "avance", "investigación", "eficiencia"],
+      "weight": 0.9
+    },
+    "Noticias Sector": {
+      "keywords": ["sector", "mercado", "industria", "política energética", "regulación"],
+      "weight": 0.8
+    },
+    "Sostenibilidad": {
+      "keywords": ["sostenible", "verde", "medio ambiente", "carbono", "clima"],
+      "weight": 0.7
+    },
+    "Instalaciones": {
+      "keywords": ["proyecto", "instalación", "construcción", "planta", "parque"],
+      "weight": 0.8
+    }
+  },
+
+  "output_structure": {
+    "session_info": {
+      "session_id": "string",
+      "timestamp": "iso_datetime", 
+      "agent": "EstefaniPUBLI",
+      "mode": "investigacion_automatica"
+    },
+    "noticias_procesadas": [
+      {
+        "id": "string",
+        "titulo": "string_60_chars_max",
+        "descripcion_corta": "string_300_chars_max",
+        "contenido": "string_html_formatted",
+        "autor": "Estefani",
+        "categoria_asignada": "string_categoria_detectada",
+        "multimedia": {
+          "tipo": "imagen",
+          "imagen_url": "string_url_validada",
+          "imagen_alt": "string_descriptiva"
+        },
+        "seo": {
+          "meta_titulo": "string_60_chars",
+          "meta_descripcion": "string_160_chars",
+          "meta_keywords": "string_csv"
+        },
+        "fuente": {
+          "portal": "string",
+          "url_original": "string",
+          "fecha_original": "iso_datetime"
+        },
+        "metricas": {
+          "longitud": "number",
+          "originalidad_score": "number_0_to_10",
+          "seo_score": "number_0_to_10"
+        }
+      }
+    ]
+  },
+
+  "execution_modes": {
+    "investigar_noticias": {
+      "description": "Investigación y creación de JSON únicamente",
+      "auto_publish": false,
+      "max_articles": 5,
+      "output_file": "shared_memory/noticias_estefani.json"
+    },
+    "analisis_rapido": {
+      "description": "Análisis rápido de 3 noticias principales",
+      "auto_publish": false,
+      "max_articles": 3,
+      "time_limit": "10_minutes"
+    },
+    "investigacion_completa": {
+      "description": "Investigación exhaustiva con análisis profundo",
+      "auto_publish": false,
+      "max_articles": 8,
+      "time_limit": "25_minutes"
+    }
+  },
+
+  "django_integration": {
+    "models_mapping": {
+      "noticia_model": "apps.blog.models.Noticia",
+      "categoria_model": "apps.blog.models.Categoria"
+    },
+    "field_mapping": {
+      "titulo": "titulo",
+      "descripcion_corta": "descripcion_corta", 
+      "contenido": "contenido",
+      "autor": "autor",
+      "categoria": "categoria__nombre",
+      "imagen_url": "imagen",
+      "meta_descripcion": "meta_descripcion",
+      "meta_keywords": "meta_keywords",
+      "activa": "true",
+      "destacada": "false"
+    }
+  },
+
+  "logging_config": {
+    "session_log": "shared_memory/logs/estefani_session.log",
+    "error_log": "shared_memory/logs/estefani_errors.log",
+    "level": "INFO",
+    "include_source_urls": true,
+    "include_processing_metrics": true
+  },
+
+  "quality_control": {
+    "content_validation": true,
+    "image_url_validation": true,
+    "seo_compliance_check": true,
+    "duplicate_detection": true,
+    "category_confidence_threshold": 0.7,
+    "minimum_processing_score": 8.0
+  },
+
+  "commands_integration": {
+    "investigar_command": "python manage.py estefani_investigar",
+    "publicar_command": "python manage.py estefani_publicar",
+    "status_check": "python manage.py estefani_status"
+  }
+}

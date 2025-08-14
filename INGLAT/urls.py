@@ -23,6 +23,9 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     
+    # TinyMCE URLs para el editor de texto rico
+    path('tinymce/', include('tinymce.urls')),
+    
     # URLs de la aplicación core (página principal)
     path('', include('apps.core.urls')),
     

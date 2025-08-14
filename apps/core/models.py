@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+import re
+from urllib.parse import urlparse, parse_qs
 
 
 class Project(models.Model):
@@ -115,6 +117,248 @@ class Project(models.Model):
     def get_absolute_url(self):
         """URL del proyecto individual"""
         return reverse('projects:detail', kwargs={'slug': self.slug})
+
+
+class HomePortada(models.Model):
+    """Modelo para gestionar el contenido multimedia de la portada principal"""
+    
+    TIPO_MULTIMEDIA_CHOICES = [
+        ('animacion', 'Animación de Electrones'),
+        ('video', 'Video'),
+    ]
+    
+    nombre = models.CharField(
+        max_length=100,
+        verbose_name="Nombre de la Portada",
+        help_text="Nombre descriptivo para identificar esta configuración de portada"
+    )
+    
+    tipo_multimedia = models.CharField(
+        max_length=20,
+        choices=TIPO_MULTIMEDIA_CHOICES,
+        default='animacion',
+        verbose_name="Tipo de Multimedia",
+        help_text="Tipo de contenido a mostrar en la portada"
+    )
+    
+    # Video URL universal (similar al blog)
+    video_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="URL del Video",
+        help_text="URL del video (YouTube, Vimeo, Google Drive, Dropbox, MP4 directo)"
+    )
+    
+    # Configuraciones de video
+    video_autoplay = models.BooleanField(
+        default=True,
+        verbose_name="Reproducción Automática",
+        help_text="Reproducir automáticamente al cargar la página"
+    )
+    
+    video_muted = models.BooleanField(
+        default=True,
+        verbose_name="Silenciado",
+        help_text="Iniciar el video silenciado (recomendado para autoplay)"
+    )
+    
+    video_show_controls = models.BooleanField(
+        default=False,
+        verbose_name="Mostrar Controles",
+        help_text="Mostrar controles de reproducción del video"
+    )
+    
+    video_loop = models.BooleanField(
+        default=True,
+        verbose_name="Reproducción en Bucle",
+        help_text="Repetir el video continuamente"
+    )
+    
+    # Campos generados automáticamente
+    video_platform = models.CharField(
+        max_length=20,
+        blank=True,
+        verbose_name="Plataforma de Video",
+        help_text="Se detecta automáticamente al guardar"
+    )
+    
+    video_id = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name="ID del Video",
+        help_text="Se extrae automáticamente de la URL"
+    )
+    
+    video_embed_url = models.URLField(
+        blank=True,
+        verbose_name="URL de Inserción",
+        help_text="URL generada para insertar el video"
+    )
+    
+    video_thumbnail_url = models.URLField(
+        blank=True,
+        verbose_name="URL de Thumbnail",
+        help_text="URL de la imagen de previsualización"
+    )
+    
+    # Control de activación
+    activa = models.BooleanField(
+        default=False,
+        verbose_name="Portada Activa",
+        help_text="Solo una portada puede estar activa a la vez"
+    )
+    
+    # Timestamps
+    fecha_creacion = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Fecha de Creación"
+    )
+    
+    fecha_actualizacion = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Última Actualización"
+    )
+    
+    class Meta:
+        verbose_name = "Portada Principal"
+        verbose_name_plural = "Configuración de Portada"
+        ordering = ['-activa', '-fecha_actualizacion']
+    
+    def __str__(self):
+        estado = "ACTIVA" if self.activa else "Inactiva"
+        return f"{self.nombre} ({estado})"
+    
+    def clean(self):
+        """Validar que solo hay una portada activa y configuración correcta"""
+        if self.activa:
+            otras_activas = HomePortada.objects.filter(activa=True)
+            if self.pk:
+                otras_activas = otras_activas.exclude(pk=self.pk)
+            if otras_activas.exists():
+                raise ValidationError("Solo puede haber una portada activa a la vez")
+        
+        # Validar que si es video, tiene URL
+        if self.tipo_multimedia == 'video' and not self.video_url:
+            raise ValidationError("Debe proporcionar una URL de video si selecciona 'Video'")
+    
+    def save(self, *args, **kwargs):
+        """Procesar URL de video antes de guardar"""
+        self.clean()
+        
+        if self.tipo_multimedia == 'video' and self.video_url:
+            self._process_video_url()
+        
+        super().save(*args, **kwargs)
+    
+    def _process_video_url(self):
+        """Procesar URL de video para extraer información"""
+        if not self.video_url:
+            return
+        
+        # Detectar plataforma y extraer ID
+        url = self.video_url.strip()
+        
+        # YouTube
+        youtube_patterns = [
+            r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/)([a-zA-Z0-9_-]+)',
+            r'youtube\.com/v/([a-zA-Z0-9_-]+)'
+        ]
+        
+        for pattern in youtube_patterns:
+            match = re.search(pattern, url)
+            if match:
+                self.video_platform = 'youtube'
+                self.video_id = match.group(1)
+                # Generar URL de embed con parámetros personalizados
+                params = []
+                if self.video_autoplay:
+                    params.append('autoplay=1')
+                if self.video_muted:
+                    params.append('mute=1')
+                if not self.video_show_controls:
+                    params.append('controls=0')
+                if self.video_loop:
+                    params.append('loop=1')
+                    params.append(f'playlist={self.video_id}')
+                
+                param_string = '&'.join(params)
+                self.video_embed_url = f"https://www.youtube.com/embed/{self.video_id}?{param_string}"
+                self.video_thumbnail_url = f"https://img.youtube.com/vi/{self.video_id}/maxresdefault.jpg"
+                return
+        
+        # Vimeo
+        vimeo_match = re.search(r'vimeo\.com/(\d+)', url)
+        if vimeo_match:
+            self.video_platform = 'vimeo'
+            self.video_id = vimeo_match.group(1)
+            params = []
+            if self.video_autoplay:
+                params.append('autoplay=1')
+            if self.video_muted:
+                params.append('muted=1')
+            if self.video_loop:
+                params.append('loop=1')
+            
+            param_string = '&'.join(params)
+            self.video_embed_url = f"https://player.vimeo.com/video/{self.video_id}?{param_string}"
+            # Vimeo thumbnail se puede obtener via API, por ahora lo dejamos vacío
+            return
+        
+        # Google Drive
+        gdrive_match = re.search(r'drive\.google\.com/file/d/([a-zA-Z0-9_-]+)', url)
+        if gdrive_match:
+            self.video_platform = 'gdrive'
+            self.video_id = gdrive_match.group(1)
+            self.video_embed_url = f"https://drive.google.com/file/d/{self.video_id}/preview"
+            return
+        
+        # Dropbox
+        if 'dropbox.com' in url:
+            self.video_platform = 'dropbox'
+            # Para Dropbox, cambiar ?dl=0 por ?raw=1
+            if '?dl=0' in url:
+                self.video_embed_url = url.replace('?dl=0', '?raw=1')
+            else:
+                self.video_embed_url = url
+            return
+        
+        # URL directa de video (MP4, WebM, etc.)
+        if any(ext in url.lower() for ext in ['.mp4', '.webm', '.avi', '.mov']):
+            self.video_platform = 'direct'
+            self.video_embed_url = url
+            return
+        
+        # Si no se reconoce la plataforma, asumir URL directa
+        self.video_platform = 'unknown'
+        self.video_embed_url = url
+    
+    @classmethod
+    def get_activa(cls):
+        """Obtener la portada activa actual"""
+        try:
+            return cls.objects.get(activa=True)
+        except cls.DoesNotExist:
+            # Crear portada por defecto si no existe ninguna
+            return cls.objects.create(
+                nombre="Portada por Defecto",
+                tipo_multimedia="animacion",
+                activa=True
+            )
+    
+    def get_video_embed_config(self):
+        """Obtener configuración para embebido de video"""
+        if self.tipo_multimedia != 'video' or not self.video_embed_url:
+            return None
+        
+        return {
+            'embed_url': self.video_embed_url,
+            'platform': self.video_platform,
+            'autoplay': self.video_autoplay,
+            'muted': self.video_muted,
+            'controls': self.video_show_controls,
+            'loop': self.video_loop,
+            'thumbnail': self.video_thumbnail_url,
+        }
 
 
 # ===========================

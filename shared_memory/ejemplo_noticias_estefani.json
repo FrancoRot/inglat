@@ -1,0 +1,113 @@
+{
+  "session_info": {
+    "session_id": "estefani_20250814_ejemplo",
+    "timestamp": "2025-08-14T14:30:00Z",
+    "agent": "EstefaniPUBLI",
+    "mode": "investigacion_completa",
+    "parametros": {
+      "max_noticias": 3,
+      "filtro_portales": "todos",
+      "portales_analizados": 4
+    }
+  },
+  
+  "noticias_procesadas": [
+    {
+      "id": "noticia_estefani_20250814_001",
+      "titulo": "Argentina avanza en energía solar con nuevos proyectos",
+      "descripcion_corta": "Análisis especializado sobre los nuevos desarrollos en energía solar fotovoltaica en Argentina. Perspectiva del mercado de autoconsumo empresarial y oportunidades de inversión en el sector renovable nacional.",
+      "contenido": "<p><strong>Introducción:</strong> En el contexto del creciente desarrollo de energías renovables en Argentina, se presenta una nueva oportunidad de análisis sobre el avance del sector solar fotovoltaico nacional.</p>\n\n<p>La información disponible sugiere importantes implicaciones para el mercado argentino de autoconsumo empresarial, especialmente considerando las regulaciones actuales y las tendencias del sector energético nacional.</p>\n\n<p><strong>Contexto Técnico:</strong> Los desarrollos recientes en energía solar muestran un crecimiento sostenido en la implementación de sistemas fotovoltaicos tanto a gran escala como para autoconsumo distribuido.</p>\n\n<p>Desde la perspectiva de INGLAT y nuestro enfoque en soluciones de autoconsumo para empresas argentinas, estos desarrollos representan oportunidades concretas de optimización energética y reducción de costos operativos.</p>\n\n<p><strong>Impacto Regional:</strong> Para el mercado argentino, esta información es particularmente relevante dado el marco regulatorio actual del programa RenovAr y las políticas de generación distribuida vigentes.</p>\n\n<p>Las empresas que consideran implementar sistemas de autoconsumo solar pueden beneficiarse de estas tendencias, especialmente en términos de retorno de inversión y eficiencia operativa.</p>\n\n<p><strong>Perspectiva Futura:</strong> La evolución del sector de energías renovables en Latinoamérica, y particularmente en Argentina, continúa presentando oportunidades de crecimiento sostenible y competitivo para el sector empresarial.</p>",
+      "autor": "Estefani",
+      "categoria_asignada": "Energía Solar",
+      "multimedia": {
+        "tipo": "imagen",
+        "imagen_url": "https://example.com/imagen-solar-argentina.jpg",
+        "imagen_alt": "Imagen sobre Argentina avanza en energía solar con nuevos proyectos"
+      },
+      "seo": {
+        "meta_titulo": "Argentina avanza en energía solar | INGLAT",
+        "meta_descripcion": "Análisis de los nuevos desarrollos en energía solar fotovoltaica en Argentina desde INGLAT.",
+        "meta_keywords": "energía solar, autoconsumo, argentina, renovables, fotovoltaica, instalación, empresarial"
+      },
+      "fuente": {
+        "portal": "Energías Renovables Argentina",
+        "url_original": "https://energiasrenovables.com.ar/ejemplo-noticia",
+        "fecha_original": "2025-08-14T10:00:00Z"
+      },
+      "metricas": {
+        "longitud": 1247,
+        "originalidad_score": 9.2,
+        "seo_score": 8.8,
+        "relevancia_argentina": 9.5
+      }
+    },
+    
+    {
+      "id": "noticia_estefani_20250814_002", 
+      "titulo": "Tecnología fotovoltaica innovadora llega a LATAM",
+      "descripcion_corta": "Análisis especializado sobre las nuevas tecnologías fotovoltaicas que se implementan en Latinoamérica. Perspectiva argentina del impacto en eficiencia energética y competitividad del autoconsumo empresarial.",
+      "contenido": "<p><strong>Introducción:</strong> En el contexto del creciente desarrollo de energías renovables en Argentina, se presenta una nueva oportunidad de análisis sobre las innovaciones tecnológicas en sistemas fotovoltaicos para la región latinoamericana.</p>\n\n<p>La información disponible sugiere importantes implicaciones para el mercado argentino de autoconsumo empresarial, especialmente considerando las regulaciones actuales y las tendencias del sector energético nacional.</p>\n\n<p><strong>Contexto Técnico:</strong> Las nuevas tecnologías en paneles solares y sistemas de almacenamiento están revolucionando la eficiencia de los sistemas fotovoltaicos en toda la región.</p>\n\n<p>Desde la perspectiva de INGLAT y nuestro enfoque en soluciones de autoconsumo para empresas argentinas, estos desarrollos representan oportunidades concretas de optimización energética y reducción de costos operativos.</p>\n\n<p><strong>Impacto Regional:</strong> Para el mercado argentino, esta información es particularmente relevante dado el marco regulatorio actual del programa RenovAr y las políticas de generación distribuida vigentes.</p>\n\n<p>Las empresas que consideran implementar sistemas de autoconsumo solar pueden beneficiarse de estas tendencias, especialmente en términos de retorno de inversión y eficiencia operativa.</p>\n\n<p><strong>Perspectiva Futura:</strong> La evolución del sector de energías renovables en Latinoamérica, y particularmente en Argentina, continúa presentando oportunidades de crecimiento sostenible y competitivo para el sector empresarial.</p>",
+      "autor": "Estefani",
+      "categoria_asignada": "Tecnología",
+      "multimedia": {
+        "tipo": "imagen", 
+        "imagen_url": "https://example.com/tecnologia-fotovoltaica.jpg",
+        "imagen_alt": "Imagen sobre Tecnología fotovoltaica innovadora llega a LATAM"
+      },
+      "seo": {
+        "meta_titulo": "Tecnología fotovoltaica innovadora | INGLAT", 
+        "meta_descripcion": "Análisis de nuevas tecnologías fotovoltaicas en LATAM desde INGLAT Argentina.",
+        "meta_keywords": "energía solar, autoconsumo, argentina, renovables, fotovoltaica, instalación, empresarial"
+      },
+      "fuente": {
+        "portal": "PV Magazine LATAM",
+        "url_original": "https://www.pv-magazine-latam.com/ejemplo-tecnologia",
+        "fecha_original": "2025-08-14T11:30:00Z"
+      },
+      "metricas": {
+        "longitud": 1198,
+        "originalidad_score": 9.0,
+        "seo_score": 8.9,
+        "relevancia_argentina": 8.8
+      }
+    },
+    
+    {
+      "id": "noticia_estefani_20250814_003",
+      "titulo": "Mercado energético argentino: oportunidades renovables",
+      "descripcion_corta": "Análisis especializado sobre las oportunidades de crecimiento en el mercado energético argentino. Perspectiva del sector renovable y las políticas de incentivos para autoconsumo empresarial e inversión sostenible.",
+      "contenido": "<p><strong>Introducción:</strong> En el contexto del creciente desarrollo de energías renovables en Argentina, se presenta una nueva oportunidad de análisis sobre las dinámicas del mercado energético nacional y su evolución hacia fuentes renovables.</p>\n\n<p>La información disponible sugiere importantes implicaciones para el mercado argentino de autoconsumo empresarial, especialmente considerando las regulaciones actuales y las tendencias del sector energético nacional.</p>\n\n<p><strong>Contexto Técnico:</strong> Las políticas energéticas actuales están creando un ecosistema favorable para la inversión en energías renovables, particularmente en el segmento de generación distribuida.</p>\n\n<p>Desde la perspectiva de INGLAT y nuestro enfoque en soluciones de autoconsumo para empresas argentinas, estos desarrollos representan oportunidades concretas de optimización energética y reducción de costos operativos.</p>\n\n<p><strong>Impacto Regional:</strong> Para el mercado argentino, esta información es particularmente relevante dado el marco regulatorio actual del programa RenovAr y las políticas de generación distribuida vigentes.</p>\n\n<p>Las empresas que consideran implementar sistemas de autoconsumo solar pueden beneficiarse de estas tendencias, especialmente en términos de retorno de inversión y eficiencia operativa.</p>\n\n<p><strong>Perspectiva Futura:</strong> La evolución del sector de energías renovables en Latinoamérica, y particularmente en Argentina, continúa presentando oportunidades de crecimiento sostenible y competitivo para el sector empresarial.</p>",
+      "autor": "Estefani",
+      "categoria_asignada": "Noticias Sector",
+      "multimedia": {
+        "tipo": "imagen",
+        "imagen_url": "https://example.com/mercado-energetico-argentina.jpg", 
+        "imagen_alt": "Imagen sobre Mercado energético argentino: oportunidades renovables"
+      },
+      "seo": {
+        "meta_titulo": "Mercado energético argentino renovable | INGLAT",
+        "meta_descripcion": "Análisis del mercado energético argentino y oportunidades renovables desde INGLAT.",
+        "meta_keywords": "energía solar, autoconsumo, argentina, renovables, fotovoltaica, instalación, empresarial"
+      },
+      "fuente": {
+        "portal": "Energía Estratégica",
+        "url_original": "https://www.energiaestrategica.com/ejemplo-mercado",
+        "fecha_original": "2025-08-14T09:15:00Z"
+      },
+      "metricas": {
+        "longitud": 1289,
+        "originalidad_score": 9.1,
+        "seo_score": 9.0,
+        "relevancia_argentina": 9.3
+      }
+    }
+  ],
+  
+  "resumen_session": {
+    "total_noticias_generadas": 3,
+    "portales_analizados": 3,
+    "tiempo_procesamiento": "0:12:45",
+    "calidad_promedio": 9.0,
+    "listo_para_publicacion": true
+  }
+}

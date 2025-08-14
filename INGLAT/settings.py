@@ -57,10 +57,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.core',
+    'tinymce',
+    'apps.core.apps.CoreConfig',
+    'apps.simulador.apps.SimuladorConfig',
     'apps.projects',
-    'apps.blog',
-    'apps.contact',
+    'apps.blog.apps.BlogConfig',
+    'apps.contact.apps.ContactConfig',
 ]
 
 MIDDLEWARE = [
@@ -235,4 +237,44 @@ LOGGING = {
             'propagate': True,
         },
     },
+}
+
+# TinyMCE Configuration
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'silver',
+    'height': 500,
+    'menubar': True,
+    'plugins': 'advlist autolink lists link image charmap print preview anchor '
+               'searchreplace visualblocks code fullscreen insertdatetime media '
+               'table paste code help wordcount emoticons colorpicker textcolor '
+               'fontselect fontsizeselect formatselect',
+    'toolbar': 'undo redo | formatselect fontselect fontsizeselect | '
+               'bold italic underline strikethrough | forecolor backcolor | '
+               'alignleft aligncenter alignright alignjustify | '
+               'bullist numlist outdent indent | '
+               'link image media table | '
+               'code preview fullscreen help',
+    'font_formats': 'Arial=arial,helvetica,sans-serif;'
+                    'Arial Black=arial black,avant garde;'
+                    'Book Antiqua=book antiqua,palatino;'
+                    'Comic Sans MS=comic sans ms,sans-serif;'
+                    'Courier New=courier new,courier;'
+                    'Georgia=georgia,palatino;'
+                    'Helvetica=helvetica;'
+                    'Impact=impact,chicago;'
+                    'Symbol=symbol;'
+                    'Tahoma=tahoma,arial,helvetica,sans-serif;'
+                    'Terminal=terminal,monaco;'
+                    'Times New Roman=times new roman,times;'
+                    'Trebuchet MS=trebuchet ms,geneva;'
+                    'Verdana=verdana,geneva;'
+                    'Webdings=webdings;'
+                    'Wingdings=wingdings,zapf dingbats',
+    'fontsize_formats': '8pt 10pt 12pt 14pt 18pt 24pt 36pt 48pt 60pt 72pt 96pt',
+    'content_style': 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+    'branding': False,
+    'language': 'es',
+    'relative_urls': False,
+    'remove_script_host': False,
+    'convert_urls': True,
 }

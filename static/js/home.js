@@ -1,6 +1,71 @@
 // JavaScript para la página de inicio - Home Page
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Video Loading Management
+    function handleVideoLoading() {
+        const videoLoading = document.getElementById('video-loading');
+        const heroVideo = document.getElementById('hero-video');
+        
+        if (!videoLoading || !heroVideo) return;
+        
+        // Función para ocultar el loading
+        const hideLoading = () => {
+            videoLoading.classList.add('hidden');
+        };
+        
+        // Para videos HTML5
+        if (heroVideo.tagName === 'VIDEO') {
+            heroVideo.addEventListener('loadeddata', hideLoading);
+            heroVideo.addEventListener('canplay', hideLoading);
+        }
+        
+        // Para iframes (YouTube, Vimeo, etc.)
+        if (heroVideo.tagName === 'IFRAME') {
+            heroVideo.addEventListener('load', () => {
+                // Esperar un poco más para que el contenido del iframe se cargue
+                setTimeout(hideLoading, 2000);
+            });
+            
+            // Fallback: ocultar después de 5 segundos máximo
+            setTimeout(hideLoading, 5000);
+        }
+    }
+    
+    // Inicializar loading management
+    handleVideoLoading();
+    
+    // Hero Video Autoplay Enhancement
+    function enhanceVideoAutoplay() {
+        const heroVideo = document.getElementById('hero-video');
+        if (!heroVideo) return;
+        
+        // Para videos HTML5 nativos
+        if (heroVideo.tagName === 'VIDEO') {
+            // Intentar reproducir cuando el usuario interactúe
+            const tryPlay = () => {
+                heroVideo.play().catch(error => {
+                    console.log('Autoplay prevented:', error);
+                });
+            };
+            
+            // Intentar autoplay después de interacción del usuario
+            ['click', 'touchstart'].forEach(event => {
+                document.addEventListener(event, tryPlay, { once: true });
+            });
+        }
+        
+        // Para iframes de YouTube - usar YouTube API si está disponible
+        if (heroVideo.tagName === 'IFRAME' && heroVideo.src.includes('youtube.com')) {
+            heroVideo.addEventListener('load', function() {
+                // El autoplay ya está configurado en la URL del iframe
+                console.log('YouTube video loaded with autoplay settings');
+            });
+        }
+    }
+    
+    // Inicializar mejoras de video
+    enhanceVideoAutoplay();
+    
     // Hyperspeed Starfield Effect Controller
     class HyperspeedStarfield {
         constructor(canvasId, config = {}) {

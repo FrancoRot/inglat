@@ -29,7 +29,17 @@
       "Bash(./venv/Scripts/python.exe manage.py check)",
       "Bash(./venv/Scripts/python.exe manage.py runserver:*)",
       "Bash(./venv/Scripts/python.exe manage.py show_urls)",
-      "Bash(./venv/Scripts/python.exe manage.py showmigrations:*)"
+      "Bash(./venv/Scripts/python.exe manage.py showmigrations:*)",
+      "WebSearch",
+      "Bash(./venv/Scripts/python.exe -m pip install django-tinymce)",
+      "Bash(./venv/Scripts/python.exe manage.py makemigrations)",
+      "Bash(./venv/Scripts/python.exe manage.py migrate)",
+      "Bash(cat:*)",
+      "Bash(./venv/Scripts/python.exe manage.py shell:*)",
+      "Bash(./venv/Scripts/pip install requests beautifulsoup4 lxml)",
+      "Bash(./venv/Scripts/python.exe -m pip install:*)",
+      "Bash(./venv/Scripts/python.exe manage.py collectstatic:*)",
+      "Bash(./venv/Scripts/python.exe manage.py estefani_publicar:*)"
     ],
     "deny": []
   }

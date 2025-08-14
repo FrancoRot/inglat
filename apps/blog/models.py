@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
+from tinymce.models import HTMLField
 from .utils import VideoURLValidator, validate_public_video_url, clean_video_url
 import re
 
@@ -57,7 +58,7 @@ class Noticia(models.Model):
         max_length=300, 
         help_text="Resumen que aparece en las tarjetas y como meta descripcion"
     )
-    contenido = models.TextField(help_text="Contenido completo del articulo")
+    contenido = HTMLField(help_text="Contenido completo del articulo con formato rico")
     
     # Multimedia (IMAGEN O VIDEO - no ambos)
     tipo_multimedia = models.CharField(

@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.db import models
 from django.forms import TextInput, Textarea
 from .models import (
-    Project, SimuladorConfig, CostoInstalacion, 
+    Project, HomePortada, SimuladorConfig, CostoInstalacion, 
     FactorUbicacion, FactorOrientacion, TipoTejado, AnguloTejado
 )
 
@@ -89,6 +89,95 @@ class ProjectAdmin(admin.ModelAdmin):
     #         'all': ('admin/css/custom-project-admin.css',)
     #     }
     #     js = ('admin/js/custom-project-admin.js',)
+
+
+# ======================================
+# ADMIN PARA PORTADA HOME
+# ======================================
+
+@admin.register(HomePortada)
+class HomePortadaAdmin(admin.ModelAdmin):
+    """Administrador para configuración de portada principal"""
+    
+    list_display = [
+        'nombre',
+        'tipo_multimedia',
+        'video_platform_display',
+        'activa_display',
+        'fecha_actualizacion'
+    ]
+    
+    list_filter = [
+        'activa',
+        'tipo_multimedia',
+        'video_platform',
+        'fecha_creacion'
+    ]
+    
+    search_fields = ['nombre', 'video_url']
+    
+    fieldsets = [
+        ('Información General', {
+            'fields': ('nombre', 'tipo_multimedia', 'activa')
+        }),
+        ('Configuración de Video', {
+            'fields': (
+                'video_url',
+                ('video_autoplay', 'video_muted'),
+                ('video_show_controls', 'video_loop')
+            ),
+            'classes': ('collapse',),
+            'description': 'Solo aplicable cuando el tipo es "Video". Soporta YouTube, Vimeo, Google Drive, Dropbox y MP4 directos.'
+        }),
+        ('Información del Video (Automática)', {
+            'fields': (
+                'video_platform',
+                'video_id', 
+                'video_embed_url',
+                'video_thumbnail_url'
+            ),
+            'classes': ('collapse',),
+            'description': 'Estos campos se generan automáticamente al guardar.'
+        }),
+    ]
+    
+    readonly_fields = [
+        'video_platform', 'video_id', 'video_embed_url', 'video_thumbnail_url',
+        'fecha_creacion', 'fecha_actualizacion'
+    ]
+    
+    def activa_display(self, obj):
+        if obj.activa:
+            return format_html('<span style="color: green; font-weight: bold;">✓ ACTIVA</span>')
+        else:
+            return format_html('<span style="color: gray;">Inactiva</span>')
+    activa_display.short_description = 'Estado'
+    
+    def video_platform_display(self, obj):
+        if obj.tipo_multimedia == 'video' and obj.video_platform:
+            platform_icons = {
+                'youtube': ('fab fa-youtube', '#FF0000'),
+                'vimeo': ('fab fa-vimeo', '#1ab7ea'),
+                'gdrive': ('fab fa-google-drive', '#4285F4'),
+                'dropbox': ('fab fa-dropbox', '#0061FF'),
+                'direct': ('fas fa-video', '#28a745'),
+                'unknown': ('fas fa-question-circle', '#666')
+            }
+            icon_class, color = platform_icons.get(obj.video_platform, ('fas fa-video', '#666'))
+            return format_html(
+                f'<i class="{icon_class}" style="color: {color};"></i> {obj.video_platform.upper()}'
+            )
+        elif obj.tipo_multimedia == 'animacion':
+            return format_html('<i class="fas fa-atom" style="color: #00d4aa;"></i> ANIMACIÓN')
+        return '-'
+    video_platform_display.short_description = 'Multimedia'
+    
+    save_on_top = True
+    
+    class Media:
+        css = {
+            'all': ('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',)
+        }
 
 
 # ======================================
@@ -207,10 +296,6 @@ class CostoInstalacionAdmin(admin.ModelAdmin):
         return f"${obj.costo_bateria_por_kw:,.0f} USD/kW"
     costo_bateria_por_kw_display.short_description = 'Costo Batería'
     
-    def activo_display(self, obj):
-        return "✓" if obj.activo else "✗"
-    activo_display.short_description = 'Activo'
-    
     ordering = ['potencia_min']
 
 
@@ -226,7 +311,6 @@ class FactorUbicacionAdmin(admin.ModelAdmin):
     ]
     
     list_filter = ['activo']
-    
     search_fields = ['provincia']
     
     fields = [
@@ -253,10 +337,6 @@ class FactorUbicacionAdmin(admin.ModelAdmin):
     def irradiacion_promedio_display(self, obj):
         return f"{obj.irradiacion_promedio:.1f} kWh/m²/día"
     irradiacion_promedio_display.short_description = 'Irradiación'
-    
-    def activo_display(self, obj):
-        return "✓" if obj.activo else "✗"
-    activo_display.short_description = 'Activo'
     
     ordering = ['provincia']
 
@@ -295,10 +375,6 @@ class FactorOrientacionAdmin(admin.ModelAdmin):
             f'<span style="color: {color}; font-weight: bold;">{percentage:.0f}%</span>'
         )
     factor_eficiencia_display.short_description = 'Eficiencia'
-    
-    def activo_display(self, obj):
-        return "✓" if obj.activo else "✗"
-    activo_display.short_description = 'Activo'
     
     ordering = ['angulo_solar']
 
@@ -348,10 +424,6 @@ class TipoTejadoAdmin(admin.ModelAdmin):
     def angulo_optimo_display(self, obj):
         return f"{obj.angulo_optimo}°"
     angulo_optimo_display.short_description = 'Ángulo Óptimo'
-    
-    def activo_display(self, obj):
-        return "✓" if obj.activo else "✗"
-    activo_display.short_description = 'Activo'
 
 
 @admin.register(AnguloTejado)
@@ -394,18 +466,40 @@ class AnguloTejadoAdmin(admin.ModelAdmin):
         )
     factor_eficiencia_display.short_description = 'Eficiencia'
     
-    def recomendado_display(self, obj):
-        return "⭐ SÍ" if obj.recomendado else ""
-    recomendado_display.short_description = 'Recomendado'
-    
-    def activo_display(self, obj):
-        return "✓" if obj.activo else "✗"
-    activo_display.short_description = 'Activo'
-    
     ordering = ['angulo']
+
+
 
 
 # Personalización del sitio admin
 admin.site.site_header = 'INGLAT - Administración'
 admin.site.site_title = 'INGLAT Admin'
 admin.site.index_title = 'Panel de Administración INGLAT'
+
+# Configurar nombres verbosos para organización del admin
+
+# GRUPO HOME
+Project._meta.verbose_name = "HOME - Proyecto Destacado"
+Project._meta.verbose_name_plural = "HOME - Proyectos Destacados"
+
+HomePortada._meta.verbose_name = "HOME - Configuracion de Portada"
+HomePortada._meta.verbose_name_plural = "HOME - Portada Principal"
+
+# GRUPO SIMULADOR SOLAR
+SimuladorConfig._meta.verbose_name = "SIMULADOR - Configuracion Principal"
+SimuladorConfig._meta.verbose_name_plural = "SIMULADOR - Configuracion Principal"
+
+CostoInstalacion._meta.verbose_name = "SIMULADOR - Costo de Instalacion"
+CostoInstalacion._meta.verbose_name_plural = "SIMULADOR - Costos de Instalacion"
+
+FactorUbicacion._meta.verbose_name = "SIMULADOR - Factor por Provincia"
+FactorUbicacion._meta.verbose_name_plural = "SIMULADOR - Factores de Ubicacion"
+
+FactorOrientacion._meta.verbose_name = "SIMULADOR - Factor de Orientacion"
+FactorOrientacion._meta.verbose_name_plural = "SIMULADOR - Factores de Orientacion"
+
+TipoTejado._meta.verbose_name = "SIMULADOR - Tipo de Tejado"
+TipoTejado._meta.verbose_name_plural = "SIMULADOR - Tipos de Tejado"
+
+AnguloTejado._meta.verbose_name = "SIMULADOR - Angulo de Inclinacion"
+AnguloTejado._meta.verbose_name_plural = "SIMULADOR - Angulos de Tejado"

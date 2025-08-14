@@ -11,8 +11,70 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="hero">
-    <!-- Hyperspeed Starfield Canvas -->
+    {% if video_config %}
+    <!-- Video Background -->
+    <div class="hero__video">
+        {% if video_config.platform == 'youtube' %}
+            <iframe 
+                id="hero-video"
+                src="{{ video_config.embed_url }}&enablejsapi=1&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0"
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                class="hero__video-iframe"
+                loading="eager">
+            </iframe>
+        {% elif video_config.platform == 'vimeo' %}
+            <iframe 
+                id="hero-video"
+                src="{{ video_config.embed_url }}&background=1&byline=0&portrait=0&title=0"
+                frameborder="0" 
+                allow="autoplay; fullscreen; picture-in-picture" 
+                class="hero__video-iframe"
+                loading="eager">
+            </iframe>
+        {% elif video_config.platform == 'gdrive' %}
+            <iframe 
+                id="hero-video"
+                src="{{ video_config.embed_url }}"
+                frameborder="0"
+                class="hero__video-iframe"
+                loading="eager">
+            </iframe>
+        {% elif video_config.platform == 'direct' %}
+            <video 
+                id="hero-video"
+                class="hero__video-element"
+                autoplay
+                muted
+                {% if video_config.loop %}loop{% endif %}
+                playsinline
+                preload="metadata">
+                <source src="{{ video_config.embed_url }}" type="video/mp4">
+                Tu navegador no soporta el elemento video.
+            </video>
+        {% else %}
+            <!-- Fallback para plataformas no reconocidas -->
+            <iframe 
+                id="hero-video"
+                src="{{ video_config.embed_url }}"
+                frameborder="0"
+                class="hero__video-iframe"
+                loading="eager">
+            </iframe>
+        {% endif %}
+        
+        <!-- Overlay oscuro para mejorar legibilidad del texto -->
+        <div class="hero__video-overlay"></div>
+        
+        <!-- Loading placeholder mientras carga el video -->
+        <div class="hero__video-loading" id="video-loading">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Hyperspeed Starfield Canvas (fallback) -->
     <canvas id="starfield-canvas"></canvas>
+    {% endif %}
     
     <div class="container">
         <h1 class="hero__title">{{ hero_title }}</h1>
