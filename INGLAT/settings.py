@@ -155,6 +155,20 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# APIs de imágenes para EstefaniPUBLI
+PEXELS_API_KEY = get_env_variable('PEXELS_API_KEY', 'fNeW3dU9Vyy4WpU3OaBvxKf8RAZHXgP2nHWpqvIjSLU3wC4fJBVVpa40')
+PIXABAY_API_KEY = get_env_variable('PIXABAY_API_KEY', '51882759-985a415c97f74baf1d84924fe')
+
+# Configuración de imágenes automáticas
+IMAGE_SEARCH_CONFIG = {
+    'max_images_per_search': 5,
+    'preferred_orientation': 'landscape',
+    'min_image_width': 800,
+    'min_image_height': 600,
+    'timeout_seconds': 30,
+    'retry_attempts': 3
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

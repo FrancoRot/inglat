@@ -11,6 +11,10 @@ from bs4 import BeautifulSoup
 import re
 from urllib.parse import urljoin, urlparse
 
+# Importar servicios Estefani optimizados
+from apps.blog.image_service import image_service
+from apps.blog.estefani_core import estefani_core
+
 
 class Command(BaseCommand):
     help = 'EstefaniPUBLI - Investigación automática de noticias de energías renovables LATAM'
@@ -37,6 +41,11 @@ class Command(BaseCommand):
             help='Modo de investigación: rapido (3), completo (5), exhaustivo (8)'
         )
         parser.add_argument(
+            '--con-imagenes',
+            action='store_true',
+            help='Generar imágenes automáticamente usando APIs de Pexels/Pixabay'
+        )
+        parser.add_argument(
             '--debug',
             action='store_true',
             help='Modo debug con información detallada'
@@ -54,9 +63,13 @@ class Command(BaseCommand):
         
         modo = options['modo']
         max_noticias = options['max_noticias'] or modo_config[modo]['max_noticias']
+        con_imagenes = options['con_imagenes']
         
         self.stdout.write(f'EstefaniPUBLI - Iniciando investigacion en modo {modo.upper()}')
-        self.stdout.write(f'Parametros: Max noticias: {max_noticias}, Portales: {options["portales"]}')
+        parametros_info = f'Max noticias: {max_noticias}, Portales: {options["portales"]}'
+        if con_imagenes:
+            parametros_info += ', Imágenes: AUTOMÁTICAS'
+        self.stdout.write(f'Parametros: {parametros_info}')
         
         session_start = timezone.now()
         session_id = f"estefani_{session_start.strftime('%Y%m%d_%H%M%S')}"
@@ -84,7 +97,7 @@ class Command(BaseCommand):
                             break
                             
                         try:
-                            noticia_procesada = self.procesar_noticia(noticia_raw, portal, session_id)
+                            noticia_procesada = self.procesar_noticia(noticia_raw, portal, session_id, con_imagenes)
                             if noticia_procesada:
                                 noticias_procesadas.append(noticia_procesada)
                                 total_extraidas += 1
@@ -687,20 +700,51 @@ class Command(BaseCommand):
         except Exception:
             return False
 
-    def procesar_noticia(self, noticia_raw, portal, session_id):
+    def generar_multimedia(self, titulo, portal_name, con_imagenes=False):
+        """Genera información multimedia para una noticia"""
+        if con_imagenes:
+            try:
+                # Usar el servicio de imágenes para búsqueda automática
+                multimedia_info = image_service.obtener_imagen_para_noticia(titulo, portal_name)
+                if multimedia_info.get('imagen_url'):
+                    self.stdout.write(f'      IMG OK: {multimedia_info["imagen_source"]} - {multimedia_info["imagen_url"][:50]}...')
+                else:
+                    self.stdout.write(f'      IMG WARN: No se encontró imagen para {titulo[:30]}...')
+                return multimedia_info
+            except Exception as e:
+                self.logger.error(f'Error generando imagen automática: {str(e)}')
+                self.stdout.write(f'      IMG ERROR: {str(e)[:50]}...')
+        
+        # Fallback: estructura básica sin imagen
+        return {
+            'tipo': 'imagen',
+            'imagen_url': '',
+            'imagen_source': '',
+            'imagen_alt': f'Imagen sobre {titulo[:50]}...'
+        }
+
+    def procesar_noticia(self, noticia_raw, portal, session_id, con_imagenes=False):
         """Procesa y reformula una noticia para crear contenido original"""
         try:
+            # Extraer datos básicos
+            titulo = noticia_raw.get('titulo', 'Noticia sin título')
+            
+            # Validar que tenemos datos mínimos
+            if not titulo or len(titulo.strip()) < 10:
+                self.logger.warning('Noticia descartada por título inválido')
+                return None
+            
             # Generar contenido original
             contenido_reformulado = self.reformular_contenido(noticia_raw)
             
             # Asignar categoría automáticamente
-            categoria = self.asignar_categoria(noticia_raw['titulo'], contenido_reformulado)
+            categoria = self.asignar_categoria(titulo, contenido_reformulado)
             
             # Optimizar SEO
-            seo_data = self.optimizar_seo(noticia_raw['titulo'], contenido_reformulado)
+            seo_data = self.optimizar_seo(titulo, contenido_reformulado)
             
             # Generar ID único
-            noticia_id = f"noticia_{session_id}_{len(noticia_raw['titulo'].split())}"
+            noticia_id = f"noticia_{session_id}_{len(titulo.split())}"
             
             noticia_procesada = {
                 'id': noticia_id,
@@ -709,11 +753,7 @@ class Command(BaseCommand):
                 'contenido': contenido_reformulado,
                 'autor': 'Estefani',
                 'categoria_asignada': categoria,
-                'multimedia': {
-                    'tipo': 'imagen',
-                    'imagen_url': noticia_raw.get('imagen_url', ''),
-                    'imagen_alt': f"Imagen sobre {seo_data['titulo_optimizado']}"
-                },
+                'multimedia': self.generar_multimedia(titulo, portal['name'], con_imagenes),
                 'seo': {
                     'meta_titulo': seo_data['meta_titulo'],
                     'meta_descripcion': seo_data['meta_descripcion'],
@@ -735,7 +775,11 @@ class Command(BaseCommand):
             return noticia_procesada
             
         except Exception as e:
-            self.logger.error(f'Error procesando noticia {noticia_raw.get("titulo", "sin título")}: {str(e)}')
+            import traceback
+            titulo = noticia_raw.get("titulo", "sin título")[:50]
+            self.logger.error(f'Error procesando noticia {titulo}: {str(e)}')
+            self.logger.error(f'Traceback completo: {traceback.format_exc()}')
+            self.stdout.write(f'   ERROR DETALLE: {str(e)}')
             return None
 
     def reformular_contenido(self, noticia_raw):

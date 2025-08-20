@@ -50,7 +50,8 @@
       "WebFetch(domain:www.energiaestrategica.com)",
       "WebFetch(domain:www.pv-magazine-latam.com)",
       "Bash(./venv/Scripts/python.exe manage.py makemigrations core)",
-      "Bash(./venv/Scripts/python.exe manage.py migrate core)"
+      "Bash(./venv/Scripts/python.exe manage.py migrate core)",
+      "Bash(./venv/Scripts/python.exe manage.py estefani_workflow --max-noticias=2 --analisis=impacto-ia --con-imagenes --dry-run --debug)"
     ],
     "deny": []
   }
