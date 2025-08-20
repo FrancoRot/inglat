@@ -40,13 +40,14 @@
                 class="hero__video-iframe"
                 loading="eager">
             </iframe>
-        {% elif video_config.platform == 'direct' %}
+        {% elif video_config.platform == 'direct' or video_config.platform == 'archivo_local' %}
             <video 
                 id="hero-video"
                 class="hero__video-element"
-                autoplay
-                muted
+                {% if video_config.autoplay %}autoplay{% endif %}
+                {% if video_config.muted %}muted{% endif %}
                 {% if video_config.loop %}loop{% endif %}
+                {% if video_config.controls %}controls{% endif %}
                 playsinline
                 preload="metadata">
                 <source src="{{ video_config.embed_url }}" type="video/mp4">
@@ -255,7 +256,8 @@
                                          loading="lazy">
                                 {% else %}
                                     <div class="video-placeholder">
-                                        <i class="fas fa-play-circle fa-3x"></i>
+                                        <i class="fas fa-play-circle fa-3x" style="color: white;"></i>
+                                        <span style="color: white; margin-top: 8px; font-size: 14px;">Video disponible</span>
                                     </div>
                                 {% endif %}
                                 <div class="video-overlay">
@@ -264,7 +266,8 @@
                             </div>
                         {% else %}
                             <div class="noticia-placeholder">
-                                <i class="fas fa-newspaper fa-2x"></i>
+                                <i class="fas fa-newspaper fa-2x" style="color: white;"></i>
+                                <span style="color: white; margin-top: 8px; font-size: 14px;">Sin imagen</span>
                             </div>
                         {% endif %}
                         

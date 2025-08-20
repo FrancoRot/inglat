@@ -1,0 +1,86 @@
+{
+  "assigned_by": "Guido",
+  "topic": "diagnostico_extraccion_noticias_energiasrenovables",
+  "investigation_date": "2025-08-18",
+  "sources": [
+    {
+      "url": "https://energiasrenovables.com.ar/",
+      "credibility": "alta",
+      "key_insights": [
+        "Sitio web funcional con noticias actualizadas frecuentemente",
+        "Estructura HTML compleja con contenido dinámico",
+        "Última noticia real: 2025/08/11 sobre parque solar Genneia en Mendoza",
+        "Formato de URLs: https://energiasrenovables.com.ar/YYYY/MM/DD/article-slug/",
+        "Contenido cargado principalmente vía HTML estático, no JavaScript"
+      ],
+      "structural_analysis": {
+        "main_containers": [".infinite-content", ".infinite-post"],
+        "article_containers": [".post-gallery-top", ".post-gallery-bot"],
+        "title_selectors": ["h2", ".feat-widget-text", ".blog-widget-text"],
+        "image_selectors": [".wp-image-*", ".rll-youtube-player"],
+        "current_selectors_in_code": ["article", ".post", ".entry", ".hentry", ".post-item", "[class*=\"post\"]", "[class*=\"article\"]", ".news-item", ".content-item"]
+      }
+    }
+  ],
+  "technical_summary": "El sistema de extracción de noticias falla porque los selectores CSS definidos en el código no coinciden con la estructura real del sitio web energiasrenovables.com.ar. El sitio usa clases específicas como .infinite-content, .post-gallery-top, .feat-widget-text que no están contempladas en los selectores actuales.",
+  "noticias_reales_encontradas": [
+    {
+      "titulo": "GENNEIA PONE EN MARCHA UN NUEVO PARQUE SOLAR EN MENDOZA Y PROYECTA MÁS DE 1,7 GW DE CAPACIDAD RENOVABLE EN ARGENTINA",
+      "url": "https://energiasrenovables.com.ar/2025/08/11/genneia-pone-en-marcha-un-nuevo-parque-solar-en-mendoza-y-proyecta-mas-de-17-gw-de-capacidad-renovable-en-argentina/",
+      "fecha": "2025/08/11",
+      "descripcion": "Genneia launches a new solar park in Mendoza and projects over 1.7 GW of renewable capacity in Argentina"
+    },
+    {
+      "titulo": "Las energías renovables y el plan nuclear sumarán más dólares tras el boom de Vaca Muerta",
+      "url": "https://energiasrenovables.com.ar/2025/07/21/las-energias-renovables-y-el-plan-nuclear-sumaran-mas-dolares-tras-el-boom-de-vaca-muerta/",
+      "fecha": "2025/07/21",
+      "descripcion": "Renewable energies and the nuclear plan will add more dollars after the Vaca Muerta boom"
+    },
+    {
+      "titulo": "Las eléctricas ofrecen 1.000 millones de dólares para instalar baterías de litio y frenar los cortes de luz",
+      "url": "https://energiasrenovables.com.ar/2025/07/19/las-electricas-ofrecen-1-000-millones-de-dolares-para-instalar-baterias-de-litio-y-frenar-los-cortes-de-luz-pero-se-demoran-inversiones-claves/",
+      "fecha": "2025/07/19",
+      "descripcion": "Electric companies offer 1,000 million dollars to install lithium batteries and stop power outages"
+    }
+  ],
+  "noticias_ejemplo_hardcoded": [
+    {
+      "titulo": "Argentina avanza en energía solar con nuevos proyectos",
+      "descripcion": "Análisis especializado sobre los nuevos desarrollos en energía solar fotovoltaica en Argentina",
+      "es_ejemplo": true
+    },
+    {
+      "titulo": "Tecnología fotovoltaica innovadora llega a LATAM", 
+      "descripcion": "Análisis especializado sobre las nuevas tecnologías fotovoltaicas que se implementan en Latinoamérica",
+      "es_ejemplo": true
+    },
+    {
+      "titulo": "Mercado energético argentino: oportunidades renovables",
+      "descripcion": "Análisis especializado sobre las oportunidades de crecimiento en el mercado energético argentino",
+      "es_ejemplo": true
+    }
+  ],
+  "implementation_recommendations": [
+    "Actualizar selectores CSS para energiasrenovables.com.ar con: ['.infinite-content', '.infinite-post', '.post-gallery-top', '.post-gallery-bot', '.feat-widget-text', '.blog-widget-text']",
+    "Implementar estrategia específica por portal basada en análisis de estructura HTML real",
+    "Agregar logs detallados para identificar qué selectores están encontrando elementos",
+    "Implementar validación de contenido extraído antes de recurrir a ejemplos hardcoded",
+    "Considerar usar herramientas como Selenium para sitios con contenido dinámico",
+    "Implementar caché de selectores exitosos por dominio para optimizar futuras extracciones"
+  ],
+  "potential_issues": [
+    "Los selectores actuales son demasiado genéricos y no coinciden con la estructura específica del sitio",
+    "El código recurre inmediatamente a noticias de ejemplo cuando no encuentra elementos, sin intentar selectores alternativos",
+    "Falta manejo específico para diferentes layouts de portales de noticias",
+    "No hay validación de que el contenido extraído sea realmente una noticia",
+    "El timeout de 30 segundos puede ser insuficiente para sitios lentos",
+    "La función generar_noticias_ejemplo() siempre retorna el mismo contenido hardcoded"
+  ],
+  "immediate_fixes_needed": [
+    "Agregar selectores específicos para energiasrenovables.com.ar: '.infinite-content article', '.post-gallery-top h2', '.feat-widget-text'",
+    "Implementar mejor logging para identificar exactamente dónde falla la extracción",
+    "Agregar validación de longitud y contenido de títulos extraídos",
+    "Implementar retry con diferentes estrategias de selección antes de usar ejemplos"
+  ],
+  "conclusiones": "El sistema está funcionando como fallback y generando siempre noticias de ejemplo porque los selectores CSS no están adaptados a la estructura real del sitio energiasrenovables.com.ar. El sitio tiene contenido actual y funcional, pero la extracción falla en la fase de selección de elementos HTML."
+}

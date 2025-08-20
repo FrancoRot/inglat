@@ -378,9 +378,12 @@
     height: 100%;
     background: var(--gradient-primary);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--white);
+    text-align: center;
+    gap: var(--space-2);
 }
 
 .card-video-preview {
@@ -735,6 +738,7 @@
 /* Placeholder para videos sin thumbnail */
 .video-placeholder {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -742,6 +746,8 @@
     background: linear-gradient(135deg, #006466, #0d7377);
     border-radius: var(--border-radius, 8px);
     color: white;
+    text-align: center;
+    gap: var(--space-2);
     transition: all 0.3s ease;
 }
 

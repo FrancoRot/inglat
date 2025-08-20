@@ -120,14 +120,27 @@ class HomePortadaAdmin(admin.ModelAdmin):
         ('Información General', {
             'fields': ('nombre', 'tipo_multimedia', 'activa')
         }),
-        ('Configuración de Video', {
+        ('Configuración de Video - Opción 1: URL Externa', {
             'fields': (
                 'video_url',
+            ),
+            'classes': ('collapse',),
+            'description': 'Soporta YouTube, Vimeo, Google Drive, Dropbox y MP4 directos desde URL externa.'
+        }),
+        ('Configuración de Video - Opción 2: Archivo Local', {
+            'fields': (
+                'video_archivo',
+            ),
+            'classes': ('collapse',),
+            'description': 'Sube un archivo MP4 local. Si se proporciona tanto archivo como URL, el archivo tiene prioridad.'
+        }),
+        ('Configuración de Reproducción', {
+            'fields': (
                 ('video_autoplay', 'video_muted'),
                 ('video_show_controls', 'video_loop')
             ),
             'classes': ('collapse',),
-            'description': 'Solo aplicable cuando el tipo es "Video". Soporta YouTube, Vimeo, Google Drive, Dropbox y MP4 directos.'
+            'description': 'Configuración aplicable para videos (tanto URL como archivo local).'
         }),
         ('Información del Video (Automática)', {
             'fields': (
@@ -161,11 +174,13 @@ class HomePortadaAdmin(admin.ModelAdmin):
                 'gdrive': ('fab fa-google-drive', '#4285F4'),
                 'dropbox': ('fab fa-dropbox', '#0061FF'),
                 'direct': ('fas fa-video', '#28a745'),
+                'archivo_local': ('fas fa-file-video', '#0066cc'),
                 'unknown': ('fas fa-question-circle', '#666')
             }
             icon_class, color = platform_icons.get(obj.video_platform, ('fas fa-video', '#666'))
+            platform_name = 'ARCHIVO LOCAL' if obj.video_platform == 'archivo_local' else obj.video_platform.upper()
             return format_html(
-                f'<i class="{icon_class}" style="color: {color};"></i> {obj.video_platform.upper()}'
+                f'<i class="{icon_class}" style="color: {color};"></i> {platform_name}'
             )
         elif obj.tipo_multimedia == 'animacion':
             return format_html('<i class="fas fa-atom" style="color: #00d4aa;"></i> ANIMACIÓN')

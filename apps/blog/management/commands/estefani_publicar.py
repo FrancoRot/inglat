@@ -11,6 +11,7 @@ import logging
 import requests
 from urllib.parse import urlparse
 from datetime import datetime
+import re
 
 
 class Command(BaseCommand):
@@ -63,8 +64,8 @@ class Command(BaseCommand):
         # Verificar archivo JSON
         json_path = os.path.join(settings.BASE_DIR, archivo_json)
         if not os.path.exists(json_path):
-            self.stdout.write(self.style.ERROR(f'❌ Archivo no encontrado: {json_path}'))
-            self.stdout.write('💡 Ejecuta primero: python manage.py estefani_investigar')
+            self.stdout.write(self.style.ERROR(f'ERROR Archivo no encontrado: {json_path}'))
+            self.stdout.write('INFO Ejecuta primero: python manage.py estefani_investigar')
             return
         
         # Cargar datos JSON
@@ -72,21 +73,21 @@ class Command(BaseCommand):
             with open(json_path, 'r', encoding='utf-8') as f:
                 session_data = json.load(f)
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f'❌ Error cargando JSON: {str(e)}'))
+            self.stdout.write(self.style.ERROR(f'ERROR cargando JSON: {str(e)}'))
             return
         
         noticias_data = session_data.get('noticias_procesadas', [])
         if not noticias_data:
-            self.stdout.write(self.style.WARNING('⚠️  No hay noticias para publicar en el JSON'))
+            self.stdout.write(self.style.WARNING('WARN No hay noticias para publicar en el JSON'))
             return
         
-        self.stdout.write(f'📄 Archivo: {archivo_json}')
-        self.stdout.write(f'📊 Noticias a procesar: {len(noticias_data)}')
-        self.stdout.write(f'🎛️  Modo: {"BORRADOR" if draft_mode else "PUBLICADO"}')
-        self.stdout.write(f'🖼️  Imágenes: {"OMITIDAS" if skip_images else "PROCESADAS"}')
+        self.stdout.write(f'Archivo: {archivo_json}')
+        self.stdout.write(f'Noticias a procesar: {len(noticias_data)}')
+        self.stdout.write(f'Modo: {"BORRADOR" if draft_mode else "PUBLICADO"}')
+        self.stdout.write(f'Imagenes: {"OMITIDAS" if skip_images else "PROCESADAS"}')
         
         if dry_run:
-            self.stdout.write(self.style.WARNING('🧪 MODO SIMULACIÓN - No se crearán registros'))
+            self.stdout.write(self.style.WARNING('MODO SIMULACION - No se crearan registros'))
         
         # Verificar/crear categorías
         self.verificar_categorias()
@@ -94,11 +95,11 @@ class Command(BaseCommand):
         # Verificar que haya al menos una categoría activa
         categorias_activas = Categoria.objects.filter(activa=True).count()
         if categorias_activas == 0:
-            self.stdout.write(self.style.ERROR('❌ No hay categorías activas en la base de datos'))
-            self.stdout.write('💡 Crea al menos una categoría en Django Admin antes de continuar')
+            self.stdout.write(self.style.ERROR('ERROR No hay categorias activas en la base de datos'))
+            self.stdout.write('INFO Crea al menos una categoria en Django Admin antes de continuar')
             return
         
-        self.stdout.write(f'✅ Categorías activas disponibles: {categorias_activas}')
+        self.stdout.write(f'OK Categorias activas disponibles: {categorias_activas}')
         
         # Procesar noticias
         publicaciones_exitosas = []
@@ -106,21 +107,21 @@ class Command(BaseCommand):
         
         for i, noticia_data in enumerate(noticias_data, 1):
             try:
-                self.stdout.write(f'\n📰 Procesando {i}/{len(noticias_data)}: {noticia_data["titulo"][:50]}...')
+                self.stdout.write(f'\nProcesando {i}/{len(noticias_data)}: {noticia_data["titulo"][:50]}...')
                 
                 if confirmar and not dry_run:
-                    respuesta = input(f'¿Publicar esta noticia? (s/N): ')
+                    respuesta = input(f'Publicar esta noticia? (s/N): ')
                     if respuesta.lower() not in ['s', 'si', 'sí', 'y', 'yes']:
-                        self.stdout.write('   ⏭️  Omitida por usuario')
+                        self.stdout.write('   SKIP Omitida por usuario')
                         continue
                 
                 # Verificar si ya existe
                 if self.noticia_existe(noticia_data['titulo']):
-                    self.stdout.write('   ⚠️  Ya existe una noticia con título similar')
+                    self.stdout.write('   WARN Ya existe una noticia con titulo similar')
                     continue
                 
                 if dry_run:
-                    self.stdout.write('   🧪 SIMULACIÓN: Se crearían los siguientes datos:')
+                    self.stdout.write('   SIM SIMULACION: Se crearian los siguientes datos:')
                     self.mostrar_preview_noticia(noticia_data)
                     publicaciones_exitosas.append({
                         'titulo': noticia_data['titulo'],
@@ -143,14 +144,14 @@ class Command(BaseCommand):
                             'categoria': noticia_creada.categoria.nombre if noticia_creada.categoria else 'Sin categoría',
                             'url_admin': f'/admin/blog/noticia/{noticia_creada.id}/change/'
                         })
-                        self.stdout.write(f'   ✅ Creada exitosamente (ID: {noticia_creada.id})')
+                        self.stdout.write(f'   OK Creada exitosamente (ID: {noticia_creada.id})')
                     else:
                         publicaciones_fallidas.append(noticia_data['titulo'])
-                        self.stdout.write('   ❌ Error en la creación')
+                        self.stdout.write('   ERROR en la creacion')
                 
             except Exception as e:
                 self.logger.error(f'Error procesando noticia {noticia_data.get("titulo", "sin título")}: {str(e)}')
-                self.stdout.write(f'   ❌ Error: {str(e)}')
+                self.stdout.write(f'   ERROR: {str(e)}')
                 publicaciones_fallidas.append(noticia_data.get('titulo', 'Sin título'))
         
         # Mostrar resumen final
@@ -185,7 +186,7 @@ class Command(BaseCommand):
             try:
                 # Primero intentar obtener la categoría existente
                 categoria = Categoria.objects.get(nombre=cat_data['nombre'])
-                self.stdout.write(f'   ✅ Categoría existente: {categoria.nombre}')
+                self.stdout.write(f'   OK Categoria existente: {categoria.nombre}')
             except Categoria.DoesNotExist:
                 # Si no existe, crearla con manejo de errores
                 try:
@@ -195,14 +196,14 @@ class Command(BaseCommand):
                         color=cat_data['color'],
                         activa=True
                     )
-                    self.stdout.write(f'   📁 Categoría creada: {categoria.nombre}')
+                    self.stdout.write(f'   OK Categoria creada: {categoria.nombre}')
                 except Exception as e:
                     # Si hay error de duplicado, intentar obtener de nuevo
                     try:
                         categoria = Categoria.objects.get(nombre=cat_data['nombre'])
-                        self.stdout.write(f'   ✅ Categoría recuperada: {categoria.nombre}')
+                        self.stdout.write(f'   OK Categoria recuperada: {categoria.nombre}')
                     except Categoria.DoesNotExist:
-                        self.stdout.write(f'   ❌ Error creando categoría {cat_data["nombre"]}: {str(e)}')
+                        self.stdout.write(f'   ERROR creando categoria {cat_data["nombre"]}: {str(e)}')
                         continue
 
     def noticia_existe(self, titulo):
@@ -321,13 +322,13 @@ class Command(BaseCommand):
             noticia.save()
             
             self.logger.info(f'Noticia creada: {noticia.titulo} (ID: {noticia.id})')
-            self.stdout.write(f'      ✅ ID: {noticia.id}, Slug: {noticia.slug}')
+            self.stdout.write(f'      OK ID: {noticia.id}, Slug: {noticia.slug}')
             
             return noticia
             
         except Exception as e:
             self.logger.error(f'Error creando noticia: {str(e)}')
-            self.stdout.write(f'      ❌ Error: {str(e)}')
+            self.stdout.write(f'      ERROR: {str(e)}')
             return None
     
     def obtener_categoria(self, categoria_nombre):
@@ -336,7 +337,7 @@ class Command(BaseCommand):
             # Usar la primera categoría activa como fallback
             categoria_fallback = Categoria.objects.filter(activa=True).first()
             if categoria_fallback:
-                self.stdout.write(f'      🔄 Usando categoría fallback: {categoria_fallback.nombre}')
+                self.stdout.write(f'      INFO Usando categoria fallback: {categoria_fallback.nombre}')
             return categoria_fallback
         
         try:
@@ -353,13 +354,13 @@ class Command(BaseCommand):
                 ).first()
                 
                 if categoria:
-                    self.stdout.write(f'      ✅ Categoría encontrada (similar): {categoria.nombre}')
+                    self.stdout.write(f'      OK Categoria encontrada (similar): {categoria.nombre}')
                     return categoria
                 
                 # Si no hay similar, usar la primera activa
                 categoria_fallback = Categoria.objects.filter(activa=True).first()
                 if categoria_fallback:
-                    self.stdout.write(f'      ⚠️  Categoría "{categoria_nombre}" no existe, usando: {categoria_fallback.nombre}')
+                    self.stdout.write(f'      WARN Categoria "{categoria_nombre}" no existe, usando: {categoria_fallback.nombre}')
                 return categoria_fallback
                 
             except Exception as e:
@@ -376,79 +377,139 @@ class Command(BaseCommand):
             return False
 
     def descargar_imagen(self, imagen_url, titulo):
-        """Descarga una imagen desde URL y la convierte en Django File"""
+        """Descarga una imagen desde URL y la convierte en Django File con validación robusta"""
         try:
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            }
-            
-            response = requests.get(imagen_url, headers=headers, timeout=30, stream=True)
-            response.raise_for_status()
-            
-            # Verificar que sea imagen
-            content_type = response.headers.get('content-type', '')
-            if not content_type.startswith('image/'):
-                self.logger.warning(f'URL no es imagen válida: {imagen_url}')
+            # Validar URL primero
+            if not self.es_url_valida(imagen_url):
+                self.logger.warning(f'URL inválida: {imagen_url}')
                 return None
             
-            # Determinar extensión
-            extension = '.jpg'
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+                'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+                'Cache-Control': 'no-cache',
+                'Referer': imagen_url
+            }
+            
+            self.stdout.write(f'      IMG Descargando imagen: {imagen_url[:60]}...')
+            
+            # Intentar descarga con timeout y retry
+            for intento in range(3):
+                try:
+                    response = requests.get(
+                        imagen_url, 
+                        headers=headers, 
+                        timeout=30, 
+                        stream=True,
+                        allow_redirects=True
+                    )
+                    response.raise_for_status()
+                    break
+                except requests.RequestException as e:
+                    if intento == 2:  # Último intento
+                        self.logger.warning(f'Error descargando imagen después de 3 intentos: {str(e)}')
+                        return None
+                    continue
+            
+            # Verificar content-type
+            content_type = response.headers.get('content-type', '').lower()
+            content_length = response.headers.get('content-length')
+            
+            # Validar que sea imagen
+            if not content_type.startswith('image/'):
+                self.logger.warning(f'Content-type no es imagen: {content_type} para {imagen_url}')
+                return None
+            
+            # Verificar tamaño (evitar imágenes muy grandes o muy pequeñas)
+            if content_length:
+                size_mb = int(content_length) / (1024 * 1024)
+                if size_mb > 10:  # Mayor a 10MB
+                    self.logger.warning(f'Imagen demasiado grande: {size_mb:.1f}MB')
+                    return None
+                elif size_mb < 0.001:  # Menor a 1KB
+                    self.logger.warning(f'Imagen demasiado pequeña: {size_mb:.1f}MB')
+                    return None
+            
+            # Determinar extensión basada en content-type
+            extension = '.jpg'  # default
             if 'png' in content_type:
                 extension = '.png'
             elif 'gif' in content_type:
                 extension = '.gif'
             elif 'webp' in content_type:
                 extension = '.webp'
+            elif 'jpeg' in content_type or 'jpg' in content_type:
+                extension = '.jpg'
+            elif 'svg' in content_type:
+                extension = '.svg'
             
-            # Crear archivo temporal
-            img_temp = NamedTemporaryFile(delete=True)
-            for chunk in response.iter_content(chunk_size=1024):
+            # Descargar imagen a memoria
+            image_data = b''
+            total_size = 0
+            for chunk in response.iter_content(chunk_size=8192):
                 if chunk:
-                    img_temp.write(chunk)
-            img_temp.flush()
+                    total_size += len(chunk)
+                    # Límite de seguridad: 10MB
+                    if total_size > 10 * 1024 * 1024:
+                        self.logger.warning(f'Imagen excede límite de tamaño: {imagen_url}')
+                        return None
+                    image_data += chunk
             
-            # Crear nombre de archivo
-            filename = f"{titulo[:30].replace(' ', '_')}_estefani{extension}"
+            # Verificar que tenemos datos válidos
+            if len(image_data) < 1024:  # Menor a 1KB
+                self.logger.warning(f'Imagen muy pequeña: {len(image_data)} bytes')
+                return None
+            
+            # Crear archivo en memoria usando BytesIO
+            from io import BytesIO
+            image_buffer = BytesIO(image_data)
+            
+            # Crear nombre de archivo limpio
+            titulo_limpio = re.sub(r'[^\w\-_\.]', '_', titulo[:30])
+            filename = f"{titulo_limpio}_estefani{extension}"
             
             # Crear Django File
-            django_file = File(img_temp)
+            django_file = File(image_buffer)
             django_file.name = filename
             
+            self.stdout.write(f'      OK Imagen descargada: {filename} ({total_size/1024:.1f}KB)')
             return django_file
             
         except Exception as e:
             self.logger.error(f'Error descargando imagen {imagen_url}: {str(e)}')
+            self.stdout.write(f'      ERROR descargando imagen: {str(e)[:50]}...')
             return None
 
     def mostrar_resumen_publicacion(self, exitosas, fallidas, dry_run):
         """Muestra resumen final de la publicación"""
         self.stdout.write('\n' + '='*60)
         modo = 'SIMULACIÓN' if dry_run else 'PUBLICACIÓN'
-        self.stdout.write(f'📋 RESUMEN ESTEFANI PUBLI - {modo} COMPLETADA')
+        self.stdout.write(f'RESUMEN ESTEFANI PUBLI - {modo} COMPLETADA')
         self.stdout.write('='*60)
         
-        self.stdout.write(f'✅ Exitosas: {len(exitosas)}')
-        self.stdout.write(f'❌ Fallidas: {len(fallidas)}')
-        self.stdout.write(f'📊 Total procesadas: {len(exitosas) + len(fallidas)}')
+        self.stdout.write(f'OK Exitosas: {len(exitosas)}')
+        self.stdout.write(f'ERROR Fallidas: {len(fallidas)}')
+        self.stdout.write(f'TOTAL procesadas: {len(exitosas) + len(fallidas)}')
         
         if exitosas:
-            self.stdout.write('\n📝 Noticias procesadas exitosamente:')
+            self.stdout.write('\nNoticias procesadas exitosamente:')
             for i, noticia in enumerate(exitosas, 1):
-                status_icon = '🧪' if dry_run else ('📰' if noticia['status'] == 'publicada' else '📄')
+                status_icon = 'SIM' if dry_run else ('PUB' if noticia['status'] == 'publicada' else 'DRAFT')
                 self.stdout.write(f'   {i}. {status_icon} {noticia["titulo"][:60]}... ({noticia["categoria"]})')
                 if not dry_run and 'url_admin' in noticia:
-                    self.stdout.write(f'      🔗 Admin: http://localhost:8000{noticia["url_admin"]}')
+                    self.stdout.write(f'      Admin: http://localhost:8000{noticia["url_admin"]}')
         
         if fallidas:
-            self.stdout.write('\n❌ Noticias con errores:')
+            self.stdout.write('\nNoticias con errores:')
             for i, titulo in enumerate(fallidas, 1):
                 self.stdout.write(f'   {i}. {titulo}')
         
         if not dry_run and exitosas:
-            self.stdout.write(f'\n🎉 ¡{len(exitosas)} noticias procesadas exitosamente!')
-            self.stdout.write('🔗 Accede al admin Django: http://localhost:8000/admin/blog/noticia/')
+            self.stdout.write(f'\n{len(exitosas)} noticias procesadas exitosamente!')
+            self.stdout.write('Accede al admin Django: http://localhost:8000/admin/blog/noticia/')
         elif dry_run:
-            self.stdout.write(f'\n🧪 Simulación completada. {len(exitosas)} noticias serían procesadas.')
-            self.stdout.write('💡 Para publicar realmente, ejecuta sin --dry-run')
+            self.stdout.write(f'\nSimulacion completada. {len(exitosas)} noticias serian procesadas.')
+            self.stdout.write('Para publicar realmente, ejecuta sin --dry-run')
         
-        self.stdout.write(f'\n📁 Log detallado: shared_memory/logs/estefani_publicacion.log')
+        self.stdout.write(f'\nLog detallado: shared_memory/logs/estefani_publicacion.log')

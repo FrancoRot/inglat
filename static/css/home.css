@@ -1149,9 +1149,12 @@
     height: 100%;
     background: var(--gradient-primary);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--white);
+    text-align: center;
+    gap: var(--space-2);
 }
 
 .noticia-video-preview {

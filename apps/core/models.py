@@ -149,6 +149,15 @@ class HomePortada(models.Model):
         help_text="URL del video (YouTube, Vimeo, Google Drive, Dropbox, MP4 directo)"
     )
     
+    # Archivo de video MP4 local
+    video_archivo = models.FileField(
+        upload_to='videos/portada/',
+        blank=True,
+        null=True,
+        verbose_name="Archivo MP4",
+        help_text="Archivo MP4 local para la portada. Prioridad sobre URL si ambos están presentes."
+    )
+    
     # Configuraciones de video
     video_autoplay = models.BooleanField(
         default=True,
@@ -237,16 +246,20 @@ class HomePortada(models.Model):
             if otras_activas.exists():
                 raise ValidationError("Solo puede haber una portada activa a la vez")
         
-        # Validar que si es video, tiene URL
-        if self.tipo_multimedia == 'video' and not self.video_url:
-            raise ValidationError("Debe proporcionar una URL de video si selecciona 'Video'")
+        # Validar que si es video, tiene URL o archivo
+        if self.tipo_multimedia == 'video' and not self.video_url and not self.video_archivo:
+            raise ValidationError("Debe proporcionar una URL de video o un archivo MP4 si selecciona 'Video'")
     
     def save(self, *args, **kwargs):
         """Procesar URL de video antes de guardar"""
         self.clean()
         
-        if self.tipo_multimedia == 'video' and self.video_url:
-            self._process_video_url()
+        if self.tipo_multimedia == 'video':
+            # Priorizar archivo local sobre URL
+            if self.video_archivo:
+                self._process_video_archivo()
+            elif self.video_url:
+                self._process_video_url()
         
         super().save(*args, **kwargs)
     
@@ -332,6 +345,18 @@ class HomePortada(models.Model):
         self.video_platform = 'unknown'
         self.video_embed_url = url
     
+    def _process_video_archivo(self):
+        """Procesar archivo de video local"""
+        if not self.video_archivo:
+            return
+        
+        # Para archivos locales, configurar como video directo
+        self.video_platform = 'archivo_local'
+        self.video_id = self.video_archivo.name
+        self.video_embed_url = self.video_archivo.url
+        # No hay thumbnail para archivos locales por ahora
+        self.video_thumbnail_url = ''
+    
     @classmethod
     def get_activa(cls):
         """Obtener la portada activa actual"""
@@ -347,18 +372,32 @@ class HomePortada(models.Model):
     
     def get_video_embed_config(self):
         """Obtener configuración para embebido de video"""
-        if self.tipo_multimedia != 'video' or not self.video_embed_url:
+        if self.tipo_multimedia != 'video':
             return None
+            
+        # Priorizar archivo local sobre URL
+        if self.video_archivo:
+            return {
+                'embed_url': self.video_archivo.url,
+                'platform': 'archivo_local',
+                'autoplay': self.video_autoplay,
+                'muted': self.video_muted,
+                'controls': self.video_show_controls,
+                'loop': self.video_loop,
+                'thumbnail': self.video_thumbnail_url,
+            }
+        elif self.video_embed_url:
+            return {
+                'embed_url': self.video_embed_url,
+                'platform': self.video_platform,
+                'autoplay': self.video_autoplay,
+                'muted': self.video_muted,
+                'controls': self.video_show_controls,
+                'loop': self.video_loop,
+                'thumbnail': self.video_thumbnail_url,
+            }
         
-        return {
-            'embed_url': self.video_embed_url,
-            'platform': self.video_platform,
-            'autoplay': self.video_autoplay,
-            'muted': self.video_muted,
-            'controls': self.video_show_controls,
-            'loop': self.video_loop,
-            'thumbnail': self.video_thumbnail_url,
-        }
+        return None
 
 
 # ===========================

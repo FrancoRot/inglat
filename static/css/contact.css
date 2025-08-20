@@ -347,28 +347,30 @@
     color: var(--accent-gold);
 }
 
-/* Proyectos - Secondary with Border */
-.quick-link:nth-child(3) {
-    background: var(--white);
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow);
+/* Proyectos - Primary Green (EXACT COPY of Nuestros Servicios) - MAXIMUM SPECIFICITY */
+.quick-links .quick-link:nth-child(3) {
+    background: var(--gradient-primary) !important;
+    color: var(--white) !important;
+    border: none !important;
+    border-color: transparent !important;
+    box-shadow: var(--shadow-primary) !important;
 }
 
-.quick-link:nth-child(3):hover {
-    background: var(--primary-color);
-    color: var(--white);
+.quick-links .quick-link:nth-child(3):hover {
+    background: var(--gradient-primary) !important;
     transform: translateY(-2px) scale(1.02);
-    box-shadow: var(--shadow-primary);
+    box-shadow: 0 8px 25px 0 rgba(0, 100, 102, 0.4);
+    color: var(--white) !important;
+    border: none !important;
 }
 
-.quick-link:nth-child(3) i {
-    color: inherit;
+.quick-links .quick-link:nth-child(3) i {
+    color: var(--accent-gold) !important;
     transition: color 0.3s ease;
 }
 
-.quick-link:nth-child(3):hover i {
-    color: var(--white);
+.quick-links .quick-link:nth-child(3):hover i {
+    color: var(--accent-gold) !important;
 }
 
 .quick-link span {

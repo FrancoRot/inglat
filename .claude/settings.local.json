@@ -39,7 +39,18 @@
       "Bash(./venv/Scripts/pip install requests beautifulsoup4 lxml)",
       "Bash(./venv/Scripts/python.exe -m pip install:*)",
       "Bash(./venv/Scripts/python.exe manage.py collectstatic:*)",
-      "Bash(./venv/Scripts/python.exe manage.py estefani_publicar:*)"
+      "Bash(./venv/Scripts/python.exe manage.py estefani_publicar:*)",
+      "Bash(./venv/Scripts/python.exe manage.py estefani_investigar --max-noticias=5 --modo=completo --debug)",
+      "Bash(./venv/Scripts/python.exe manage.py estefani_investigar:*)",
+      "Bash(./venv/Scripts/python.exe manage.py help)",
+      "Bash(./venv/Scripts/python.exe manage.py estefani_limpiar --todas-estefani --confirmar)",
+      "Bash(./venv/Scripts/python.exe manage.py estefani_limpiar --inactivas --listar)",
+      "Bash(./venv/Scripts/python.exe -c \"from apps.blog.models import Noticia; print(''Noticias existentes:''); [print(f''- {n.titulo}'') for n in Noticia.objects.all()]\")",
+      "WebFetch(domain:energiasrenovables.com.ar)",
+      "WebFetch(domain:www.energiaestrategica.com)",
+      "WebFetch(domain:www.pv-magazine-latam.com)",
+      "Bash(./venv/Scripts/python.exe manage.py makemigrations core)",
+      "Bash(./venv/Scripts/python.exe manage.py migrate core)"
     ],
     "deny": []
   }

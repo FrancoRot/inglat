@@ -1,0 +1,113 @@
+{
+  "session_info": {
+    "session_id": "estefani_20250818_optimizado",
+    "timestamp": "2025-08-18T10:00:00Z",
+    "agent": "EstefaniPUBLI",
+    "mode": "optimizado",
+    "parametros": {
+      "max_noticias": 3,
+      "plantillas_simplificadas": true
+    }
+  },
+  
+  "noticias_procesadas": [
+    {
+      "id": "noticia_estefani_20250818_001",
+      "titulo": "Argentina impulsa energía solar empresarial 2025",
+      "descripcion_corta": "Análisis del crecimiento solar fotovoltaico para autoconsumo empresarial argentino. Oportunidades de inversión y eficiencia energética en el marco RenovAr vigente.",
+      "contenido": "<p><strong>Introducción:</strong> El sector solar argentino acelera con proyectos que benefician el autoconsumo empresarial nacional.</p>\n\n<p>Los desarrollos fotovoltaicos presentan oportunidades concretas de ahorro energético para empresas bajo el marco regulatorio actual de generación distribuida.</p>\n\n<p><strong>Contexto:</strong> Las políticas RenovAr y la Ley 27191 consolidan un ecosistema favorable para inversión empresarial en sistemas solares.</p>\n\n<p>Desde INGLAT identificamos retornos de inversión competitivos para empresas que implementan autoconsumo fotovoltaico en Argentina.</p>\n\n<p><strong>Impacto:</strong> Esta evolución del mercado renovable ofrece ventajas operativas y sostenibilidad para el sector empresarial argentino.</p>",
+      "autor": "Estefani",
+      "categoria_asignada": "Energía Solar",
+      "multimedia": {
+        "tipo": "imagen",
+        "imagen_url": "https://example.com/solar-empresarial-argentina.jpg",
+        "imagen_alt": "Energía solar empresarial Argentina 2025"
+      },
+      "seo": {
+        "meta_titulo": "Energía Solar Empresarial Argentina 2025 | INGLAT",
+        "meta_descripcion": "Análisis del crecimiento solar para autoconsumo empresarial argentino. Oportunidades RenovAr y eficiencia energética desde INGLAT.",
+        "meta_keywords": "energía solar, autoconsumo, empresarial, argentina, fotovoltaica, renovar"
+      },
+      "fuente": {
+        "portal": "Energías Renovables Argentina",
+        "url_original": "https://energiasrenovables.com.ar/ejemplo-2025",
+        "fecha_original": "2025-08-18T08:00:00Z"
+      },
+      "metricas": {
+        "longitud": 687,
+        "originalidad_score": 9.4,
+        "seo_score": 9.1,
+        "relevancia_argentina": 9.6
+      }
+    },
+    
+    {
+      "id": "noticia_estefani_20250818_002", 
+      "titulo": "Tecnología fotovoltaica eficiente llega a LATAM",
+      "descripcion_corta": "Innovaciones en paneles solares y almacenamiento para el mercado latinoamericano. Impacto en competitividad y eficiencia del autoconsumo empresarial argentino.",
+      "contenido": "<p><strong>Introducción:</strong> Nuevas tecnologías fotovoltaicas optimizan la eficiencia energética en Latinoamérica con impacto directo en Argentina.</p>\n\n<p>Las innovaciones en paneles y sistemas de almacenamiento mejoran el rendimiento del autoconsumo empresarial, especialmente para el mercado argentino.</p>\n\n<p><strong>Contexto:</strong> Estas tecnologías avanzadas se integran perfectamente con las regulaciones de generación distribuida vigentes en Argentina.</p>\n\n<p>INGLAT evalúa que estas mejoras tecnológicas aumentan la viabilidad económica de sistemas solares para empresas nacionales.</p>\n\n<p><strong>Impacto:</strong> La adopción de estas tecnologías representa ventajas competitivas sustanciales para empresas argentinas en transición energética.</p>",
+      "autor": "Estefani",
+      "categoria_asignada": "Tecnología",
+      "multimedia": {
+        "tipo": "imagen", 
+        "imagen_url": "https://example.com/tecnologia-solar-latam.jpg",
+        "imagen_alt": "Tecnología fotovoltaica eficiente LATAM"
+      },
+      "seo": {
+        "meta_titulo": "Tecnología Solar Eficiente LATAM | INGLAT Argentina",
+        "meta_descripcion": "Innovaciones fotovoltaicas para autoconsumo empresarial. Análisis de tecnologías solares eficientes en Latinoamérica desde INGLAT.",
+        "meta_keywords": "tecnología solar, fotovoltaica, eficiencia, latam, argentina, innovación"
+      },
+      "fuente": {
+        "portal": "PV Magazine LATAM",
+        "url_original": "https://www.pv-magazine-latam.com/tecnologia-2025",
+        "fecha_original": "2025-08-18T09:15:00Z"
+      },
+      "metricas": {
+        "longitud": 651,
+        "originalidad_score": 9.2,
+        "seo_score": 8.9,
+        "relevancia_argentina": 8.7
+      }
+    },
+    
+    {
+      "id": "noticia_estefani_20250818_003",
+      "titulo": "Mercado energético argentino: oportunidades 2025",
+      "descripcion_corta": "Perspectivas del sector energético nacional con énfasis en renovables. Análisis de políticas de incentivos y oportunidades para autoconsumo empresarial sostenible.",
+      "contenido": "<p><strong>Introducción:</strong> El mercado energético argentino consolida oportunidades renovables con políticas favorables para el sector empresarial.</p>\n\n<p>Las regulaciones actuales crean condiciones óptimas para inversión empresarial en sistemas de generación distribuida y autoconsumo solar.</p>\n\n<p><strong>Contexto:</strong> Los incentivos gubernamentales y la estabilidad regulatoria impulsan la adopción de energías renovables en el sector productivo.</p>\n\n<p>INGLAT identifica que las empresas argentinas pueden capitalizar estas oportunidades para reducir costos energéticos de manera sustancial.</p>\n\n<p><strong>Impacto:</strong> Este escenario favorable posiciona a Argentina como líder regional en transición energética empresarial hacia fuentes renovables.</p>",
+      "autor": "Estefani",
+      "categoria_asignada": "Noticias Sector",
+      "multimedia": {
+        "tipo": "imagen",
+        "imagen_url": "https://example.com/mercado-energetico-arg-2025.jpg",
+        "imagen_alt": "Mercado energético argentino oportunidades 2025"
+      },
+      "seo": {
+        "meta_titulo": "Mercado Energético Argentino 2025 | INGLAT",
+        "meta_descripcion": "Oportunidades renovables en Argentina. Análisis del mercado energético y políticas de incentivos para autoconsumo empresarial.",
+        "meta_keywords": "mercado energético, argentina, renovables, autoconsumo, políticas, incentivos"
+      },
+      "fuente": {
+        "portal": "Energía Estratégica",
+        "url_original": "https://www.energiaestrategica.com/mercado-arg-2025",
+        "fecha_original": "2025-08-18T07:30:00Z"
+      },
+      "metricas": {
+        "longitud": 672,
+        "originalidad_score": 9.3,
+        "seo_score": 9.0,
+        "relevancia_argentina": 9.4
+      }
+    }
+  ],
+  
+  "resumen_session": {
+    "total_noticias_generadas": 3,
+    "portales_analizados": 3,
+    "tiempo_procesamiento": "0:08:30",
+    "calidad_promedio": 9.1,
+    "optimizacion_tokens": "70% reducción vs version anterior",
+    "listo_para_publicacion": true
+  }
+}
