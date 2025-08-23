@@ -580,7 +580,7 @@ class Command(BaseCommand):
             # Verificar que no existe en BD antes de agregar
             if not self.noticia_existe_en_bd(titulo_template):
                 noticia = {
-                    'titulo': f'{titulo_template} - {timestamp}',  # Timestamp para unicidad
+                    'titulo': titulo_template,  # Sin timestamp - se usa slug para unicidad  
                     'descripcion': desc_template,
                     'url': portal['url'],
                     'imagen_url': None,
@@ -838,8 +838,20 @@ class Command(BaseCommand):
         """.strip()
     
     def _generar_plantilla_oportunidades_argentinas(self, titulo, descripcion, portal):
-        """Plantilla 3: Enfoque en oportunidades específicas para Argentina"""  
-        return f"""<p><strong>Contexto regional:</strong> La información sobre <strong>{titulo.lower()}</strong> se enmarca en un momento favorable para el desarrollo de energías renovables en Argentina, donde confluyen factores regulatorios, tecnológicos y económicos que impulsan el crecimiento del sector.</p>
+        """Plantilla 3: Enfoque en oportunidades específicas para Argentina"""
+        
+        # Variaciones más naturales para introducción
+        introducciones = [
+            f"<p>El desarrollo de <strong>{titulo.lower()}</strong> cobra especial relevancia en Argentina, donde las empresas buscan alternativas energéticas más eficientes y sustentables.</p>",
+            f"<p>En un momento de transformación energética, <strong>{titulo.lower()}</strong> representa una oportunidad clave para las empresas argentinas que apuntan a la sustentabilidad.</p>",
+            f"<p>La industria argentina observa con atención los avances en <strong>{titulo.lower()}</strong>, especialmente por su potencial impacto en costos operativos y competitividad.</p>",
+            f"<p>Para las empresas argentinas, <strong>{titulo.lower()}</strong> no es solo una tendencia global, sino una oportunidad concreta de optimización energética.</p>"
+        ]
+        
+        import random
+        intro_seleccionada = random.choice(introducciones)
+        
+        return f"""{intro_seleccionada}
 
 <p>{descripcion[:180] if descripcion else 'El mercado argentino de energías renovables muestra señales positivas de crecimiento, con marcos regulatorios favorables y tecnologías cada vez más accesibles para el sector empresarial.'}</p>
 
@@ -1819,8 +1831,17 @@ class Command(BaseCommand):
         if len(meta_titulo) > 60:
             meta_titulo = f"{titulo_original[:50]}... | INGLAT"
         
-        # Descripción corta para preview (max 300)
-        descripcion_corta = f"Análisis especializado sobre {titulo_original.lower()}. Perspectiva argentina del mercado de autoconsumo empresarial y energías renovables."
+        # Descripción corta más natural y variada (max 300)
+        descripciones_templates = [
+            f"Descubre cómo {titulo_original.lower()} impacta en el sector energético argentino y las oportunidades para empresas.",
+            f"Todo lo que necesitas saber sobre {titulo_original.lower()} en el contexto del mercado argentino de energías limpias.",
+            f"Análisis del impacto de {titulo_original.lower()} en las decisiones energéticas de empresas argentinas.",
+            f"La relevancia de {titulo_original.lower()} para el desarrollo del autoconsumo solar en Argentina.",
+            f"Cómo {titulo_original.lower()} transforma el panorama energético empresarial en Argentina.",
+        ]
+        
+        import random
+        descripcion_corta = random.choice(descripciones_templates)
         if len(descripcion_corta) > 300:
             descripcion_corta = descripcion_corta[:297] + "..."
         

@@ -13,4 +13,7 @@ urlpatterns = [
     
     # Simulador Solar
     path('simulador/', views.SimuladorSolarView.as_view(), name='simulador'),
+    
+    # API endpoints
+    path('api/whatsapp-config/', views.whatsapp_config, name='whatsapp_config'),
 ]

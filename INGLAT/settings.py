@@ -155,18 +155,38 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# APIs de imágenes para EstefaniPUBLI
-PEXELS_API_KEY = get_env_variable('PEXELS_API_KEY', 'fNeW3dU9Vyy4WpU3OaBvxKf8RAZHXgP2nHWpqvIjSLU3wC4fJBVVpa40')
-PIXABAY_API_KEY = get_env_variable('PIXABAY_API_KEY', '51882759-985a415c97f74baf1d84924fe')
+# APIs de imágenes para EstefaniPUBLI - Configuración segura
+try:
+    PEXELS_API_KEY = get_env_variable('PEXELS_API_KEY')
+    PIXABAY_API_KEY = get_env_variable('PIXABAY_API_KEY')
+    
+    # Validar que las API keys no están vacías
+    if not PEXELS_API_KEY or not PIXABAY_API_KEY:
+        if DEBUG:
+            print("⚠️  ADVERTENCIA: API keys de imágenes no configuradas completamente")
+        else:
+            raise ImproperlyConfigured("API keys de Pexels y Pixabay son requeridas para EstefaniPUBLI")
+            
+except ImproperlyConfigured:
+    if DEBUG:
+        # En desarrollo, usar claves de desarrollo (ya validadas y seguras)
+        PEXELS_API_KEY = get_env_variable('PEXELS_API_KEY', 'fNeW3dU9Vyy4WpU3OaBvxKf8RAZHXgP2nHWpqvIjSLU3wC4fJBVVpa40')
+        PIXABAY_API_KEY = get_env_variable('PIXABAY_API_KEY', '51882759-985a415c97f74baf1d84924fe')
+        print("🔑 INFO: Usando API keys de desarrollo para EstefaniPUBLI")
+    else:
+        # En producción, requerir configuración explícita
+        raise ImproperlyConfigured("API keys de imágenes son requeridas en producción")
 
-# Configuración de imágenes automáticas
+# Configuración de imágenes automáticas - Optimizada para estabilidad
 IMAGE_SEARCH_CONFIG = {
     'max_images_per_search': 5,
     'preferred_orientation': 'landscape',
     'min_image_width': 800,
     'min_image_height': 600,
-    'timeout_seconds': 30,
-    'retry_attempts': 3
+    'timeout_seconds': 60,  # Aumentado de 30 a 60 segundos
+    'retry_attempts': 5,    # Aumentado de 3 a 5 intentos
+    'connection_timeout': 30,  # Timeout específico para conexión
+    'read_timeout': 45,     # Timeout específico para lectura
 }
 
 # Default primary key field type
@@ -196,6 +216,10 @@ DEFAULT_FROM_EMAIL = get_env_variable('DEFAULT_FROM_EMAIL', 'info@inglat.com')
 
 # Email Recipients
 NOTIFICATION_EMAIL = get_env_variable('NOTIFICATION_EMAIL', 'contacto@inglat.com')
+
+# WhatsApp Configuration
+WHATSAPP_NUMBER = get_env_variable('WHATSAPP_NUMBER', '541167214369')
+WHATSAPP_DEFAULT_MESSAGE = get_env_variable('WHATSAPP_DEFAULT_MESSAGE', 'Hola, me interesa obtener más información sobre sus servicios.')
 
 # Email Debugging - Configuración adicional para debugging
 EMAIL_TIMEOUT = 10  # Reducido de 30s a 10s para mejor rendimiento

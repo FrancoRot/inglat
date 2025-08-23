@@ -27,8 +27,27 @@ class ImageService:
         self.logger = logging.getLogger('estefani.images')
         self.session = requests.Session()
         
+        # Validación segura de API keys
+        self._validate_api_keys()
+        
         # Cache simple en memoria para evitar requests duplicados
         self._cache = {}
+    
+    def _validate_api_keys(self):
+        """Valida la configuración de API keys de forma segura"""
+        if not self.pexels_api_key:
+            self.logger.warning('Pexels API key no configurada - servicio limitado')
+        elif len(self.pexels_api_key) < 10:
+            self.logger.warning('Pexels API key parece inválida - verificar configuración')
+        else:
+            self.logger.info(f'Pexels API key configurada correctamente (longitud: {len(self.pexels_api_key)})')
+            
+        if not self.pixabay_api_key:
+            self.logger.warning('Pixabay API key no configurada - servicio limitado')
+        elif len(self.pixabay_api_key) < 10:
+            self.logger.warning('Pixabay API key parece inválida - verificar configuración')
+        else:
+            self.logger.info(f'Pixabay API key configurada correctamente (longitud: {len(self.pixabay_api_key)})')
     
     def generar_keywords_inteligentes(self, titulo: str, portal: str = '') -> List[str]:
         """Genera keywords optimizadas para búsqueda de imágenes"""
@@ -121,7 +140,11 @@ class ImageService:
             return None
             
         except Exception as e:
-            self.logger.error(f'Error buscando en Pexels: {str(e)}')
+            # Log seguro sin exponer API keys
+            error_msg = str(e)
+            if self.pexels_api_key and self.pexels_api_key in error_msg:
+                error_msg = error_msg.replace(self.pexels_api_key, '[API_KEY_HIDDEN]')
+            self.logger.error(f'Error buscando en Pexels: {error_msg}')
             return None
     
     def buscar_imagen_pixabay(self, keywords: List[str]) -> Optional[Dict]:
@@ -173,7 +196,11 @@ class ImageService:
             return None
             
         except Exception as e:
-            self.logger.error(f'Error buscando en Pixabay: {str(e)}')
+            # Log seguro sin exponer API keys
+            error_msg = str(e)
+            if self.pixabay_api_key and self.pixabay_api_key in error_msg:
+                error_msg = error_msg.replace(self.pixabay_api_key, '[API_KEY_HIDDEN]')
+            self.logger.error(f'Error buscando en Pixabay: {error_msg}')
             return None
     
     def buscar_imagen_automatica(self, titulo: str, portal: str = '') -> Optional[Dict]:
@@ -224,20 +251,38 @@ class ImageService:
         try:
             url = imagen_info['url']
             
-            # Headers para la descarga
+            # Headers mejorados anti-bloqueo
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Referer': url
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 EdgA/120.0.2210.144',
+                'Accept': 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+                'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'DNT': '1',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-Fetch-Dest': 'image',
+                'Sec-Fetch-Mode': 'no-cors',
+                'Sec-Fetch-Site': 'cross-site',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
             }
             
             # Intentar descarga con reintentos
             for intento in range(self.config.get('retry_attempts', 3)):
                 try:
+                    # Timeout específico: (conexión, lectura)
+                    timeout_tuple = (
+                        self.config.get('connection_timeout', 30),
+                        self.config.get('read_timeout', 45)
+                    )
+                    
                     response = self.session.get(
                         url, 
                         headers=headers, 
-                        timeout=self.config.get('timeout_seconds', 30),
-                        stream=True
+                        timeout=timeout_tuple,
+                        stream=True,
+                        allow_redirects=True,
+                        verify=True
                     )
                     response.raise_for_status()
                     break

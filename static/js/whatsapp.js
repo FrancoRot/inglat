@@ -6,12 +6,43 @@
 (function() {
     'use strict';
 
-    // Configuration
-    const config = {
-        phoneNumber: '541167214369',
-        defaultMessage: 'Hola, me interesa obtener más información sobre sus servicios.',
-        fallbackUrl: 'https://wa.me/541167214369',
-        debug: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    // Configuration - loaded dynamically from server
+    let config = {
+        phoneNumber: '541167214369', // fallback
+        defaultMessage: 'Hola, me interesa obtener más información sobre sus servicios.', // fallback
+        fallbackUrl: 'https://wa.me/541167214369', // fallback
+        debug: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
+        loaded: false
+    };
+
+    // Configuration loader
+    const ConfigLoader = {
+        loadConfig: async function() {
+            try {
+                const response = await fetch('/api/whatsapp-config/', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                if (response.ok) {
+                    const serverConfig = await response.json();
+                    config.phoneNumber = serverConfig.phoneNumber;
+                    config.defaultMessage = serverConfig.defaultMessage;
+                    config.fallbackUrl = serverConfig.fallbackUrl;
+                    config.loaded = true;
+                    
+                    if (config.debug) {
+                        console.log('WhatsApp config loaded from server:', serverConfig);
+                    }
+                } else {
+                    console.warn('Failed to load WhatsApp config, using fallbacks');
+                }
+            } catch (error) {
+                console.warn('Error loading WhatsApp config:', error);
+            }
+        }
     };
 
     // Device detection utilities
@@ -89,10 +120,14 @@
 
     // Main WhatsApp handler
     const WhatsAppHandler = {
-        init: function() {
+        init: async function() {
+            // Load configuration from server first
+            await ConfigLoader.loadConfig();
+            
             this.bindEvents();
             if (config.debug) {
                 console.log('WhatsApp Handler initialized:', DeviceDetector.getDeviceInfo());
+                console.log('Current config:', config);
             }
         },
         
@@ -224,13 +259,15 @@
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            WhatsAppHandler.init();
+        document.addEventListener('DOMContentLoaded', async function() {
+            await WhatsAppHandler.init();
             ButtonEnhancer.init();
         });
     } else {
-        WhatsAppHandler.init();
-        ButtonEnhancer.init();
+        (async () => {
+            await WhatsAppHandler.init();
+            ButtonEnhancer.init();
+        })();
     }
 
     // Expose for debugging in development

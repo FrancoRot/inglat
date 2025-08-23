@@ -39,6 +39,11 @@ class Command(BaseCommand):
             action='store_true',
             help='Confirmar antes de eliminar'
         )
+        parser.add_argument(
+            '--imagenes-huerfanas',
+            action='store_true',
+            help='Limpiar imágenes huérfanas sin noticia asociada'
+        )
 
     def handle(self, *args, **options):
         inactivas = options['inactivas']
@@ -47,9 +52,15 @@ class Command(BaseCommand):
         por_ids = options['por_ids']
         listar = options['listar']
         confirmar = options['confirmar']
+        imagenes_huerfanas = options['imagenes_huerfanas']
         
         self.stdout.write('EstefaniPUBLI - Limpieza de Noticias')
         self.stdout.write('='*50)
+        
+        # Manejar limpieza de imágenes huérfanas
+        if imagenes_huerfanas:
+            self.limpiar_imagenes_huerfanas()
+            return
         
         # Determinar qué noticias eliminar
         noticias_a_eliminar = None
@@ -158,3 +169,90 @@ class Command(BaseCommand):
                 ids.append(int(parte))
         
         return ids
+    
+    def limpiar_imagenes_huerfanas(self):
+        """Limpia imágenes huérfanas sin noticia asociada"""
+        import os
+        import glob
+        from django.conf import settings
+        
+        self.stdout.write('Iniciando limpieza de imágenes huérfanas...')
+        
+        # Directorio de imágenes de noticias
+        imagenes_dir = os.path.join(settings.MEDIA_ROOT, 'noticias', 'imagenes')
+        
+        if not os.path.exists(imagenes_dir):
+            self.stdout.write('AVISO: Directorio de imágenes no existe')
+            return
+        
+        # Obtener todas las imágenes en el directorio
+        patron_imagenes = os.path.join(imagenes_dir, '*.*')
+        archivos_imagenes = glob.glob(patron_imagenes)
+        
+        if not archivos_imagenes:
+            self.stdout.write('INFO: No hay archivos de imagen para verificar')
+            return
+        
+        self.stdout.write(f'Encontrados {len(archivos_imagenes)} archivos de imagen')
+        
+        # Obtener todas las noticias activas con imágenes
+        noticias_con_imagenes = Noticia.objects.exclude(imagen='').exclude(imagen__isnull=True)
+        imagenes_en_uso = set()
+        
+        for noticia in noticias_con_imagenes:
+            if noticia.imagen:
+                try:
+                    imagenes_en_uso.add(noticia.imagen.path)
+                except ValueError:
+                    # Path inválido, ignorar
+                    pass
+        
+        self.stdout.write(f'Encontradas {len(imagenes_en_uso)} imágenes vinculadas a noticias activas')
+        
+        # Identificar imágenes huérfanas
+        imagenes_huerfanas = []
+        for archivo in archivos_imagenes:
+            if archivo not in imagenes_en_uso:
+                imagenes_huerfanas.append(archivo)
+        
+        if not imagenes_huerfanas:
+            self.stdout.write('INFO: No se encontraron imágenes huérfanas')
+            return
+        
+        self.stdout.write(f'Encontradas {len(imagenes_huerfanas)} imágenes huérfanas:')
+        
+        # Mostrar lista de archivos huérfanos
+        for i, archivo in enumerate(imagenes_huerfanas, 1):
+            nombre_archivo = os.path.basename(archivo)
+            tamaño = os.path.getsize(archivo) / 1024  # KB
+            self.stdout.write(f'  {i}. {nombre_archivo} ({tamaño:.1f} KB)')
+        
+        # Calcular espacio total a liberar
+        espacio_total = sum(os.path.getsize(archivo) for archivo in imagenes_huerfanas) / (1024 * 1024)  # MB
+        self.stdout.write(f'Espacio total a liberar: {espacio_total:.2f} MB')
+        
+        # Confirmar eliminación
+        respuesta = input('\n¿Eliminar estas imágenes huérfanas? (s/N): ').lower().strip()
+        if respuesta not in ['s', 'si', 'sí', 'y', 'yes']:
+            self.stdout.write('Operación cancelada')
+            return
+        
+        # Eliminar archivos
+        eliminados = 0
+        errores = 0
+        
+        for archivo in imagenes_huerfanas:
+            try:
+                os.remove(archivo)
+                eliminados += 1
+                self.stdout.write(f'Eliminado: {os.path.basename(archivo)}')
+            except OSError as e:
+                errores += 1
+                self.stdout.write(f'Error eliminando {os.path.basename(archivo)}: {str(e)}')
+        
+        # Resumen final
+        self.stdout.write('\n' + '='*50)
+        self.stdout.write(f'Limpieza completada:')
+        self.stdout.write(f'   - Archivos eliminados: {eliminados}')
+        self.stdout.write(f'   - Errores: {errores}')
+        self.stdout.write(f'   - Espacio liberado: {espacio_total:.2f} MB')

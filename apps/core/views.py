@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.conf import settings
 from datetime import datetime
 import json
 import math
@@ -290,3 +291,12 @@ class SimuladorSolarView(TemplateView):
             'factor_inclinacion': round(factor_inclinacion, 3),
             'factor_complejidad_tejado': factor_complejidad_tejado
         }
+
+
+def whatsapp_config(request):
+    """API endpoint para obtener configuración de WhatsApp de forma segura"""
+    return JsonResponse({
+        'phoneNumber': settings.WHATSAPP_NUMBER,
+        'defaultMessage': settings.WHATSAPP_DEFAULT_MESSAGE,
+        'fallbackUrl': f'https://wa.me/{settings.WHATSAPP_NUMBER}'
+    })

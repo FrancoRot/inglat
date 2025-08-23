@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from tinymce.models import HTMLField
 from .utils import VideoURLValidator, validate_public_video_url, clean_video_url
 import re
+import os
+import logging
 
 
 class Categoria(models.Model):
@@ -24,6 +26,10 @@ class Categoria(models.Model):
         verbose_name = "Categoria"
         verbose_name_plural = "Categorias"
         ordering = ['orden', 'nombre']
+        indexes = [
+            # Índice para categorías activas (usado en queries de filtro)
+            models.Index(fields=['activa', 'orden'], name='blog_categoria_activa_orden'),
+        ]
     
     def __str__(self):
         return self.nombre
@@ -170,6 +176,18 @@ class Noticia(models.Model):
         verbose_name = "Noticia"
         verbose_name_plural = "Noticias"
         ordering = ['-fecha_publicacion', 'orden']
+        indexes = [
+            # Índice para queries de noticias activas (más común)
+            models.Index(fields=['activa', '-fecha_publicacion'], name='blog_noticia_activa_fecha'),
+            # Índice para noticias destacadas
+            models.Index(fields=['destacada', 'activa'], name='blog_noticia_destacada'),
+            # Índice para filtros por autor (EstefaniPUBLI)
+            models.Index(fields=['autor', 'activa'], name='blog_noticia_autor'),
+            # Índice para filtros por categoría
+            models.Index(fields=['categoria', 'activa', '-fecha_publicacion'], name='blog_noticia_categoria'),
+            # Índice compuesto para la query más común: activa + categoria + fecha
+            models.Index(fields=['activa', 'categoria', '-fecha_publicacion'], name='blog_noticia_main_query'),
+        ]
     
     def __str__(self):
         return self.titulo
@@ -305,3 +323,60 @@ class Noticia(models.Model):
             categoria=self.categoria,
             activa=True
         ).exclude(pk=self.pk)[:limit]
+    
+    def delete(self, *args, **kwargs):
+        """Override delete para limpiar archivos de imagen asociados"""
+        logger = logging.getLogger('estefani.cleanup')
+        
+        # Lista de archivos a eliminar
+        archivos_a_eliminar = []
+        
+        # Si tiene imagen tradicional, agregarla
+        if self.imagen and hasattr(self.imagen, 'path'):
+            try:
+                if os.path.exists(self.imagen.path):
+                    archivos_a_eliminar.append(self.imagen.path)
+                    logger.info(f'Marcado para eliminar imagen tradicional: {self.imagen.path}')
+            except ValueError:
+                # El archivo ya no existe o path inválido
+                pass
+        
+        # Buscar imágenes generadas por EstefaniPUBLI asociadas a esta noticia
+        # Patrón: titulo_timestamp_source.jpg
+        if self.titulo:
+            import glob
+            from django.conf import settings
+            
+            # Generar posibles patrones de nombres de archivo
+            titulo_limpio = ''.join(c for c in self.titulo.lower() if c.isalnum() or c.isspace()).replace(' ', '_')[:30]
+            patron_busqueda = os.path.join(
+                settings.MEDIA_ROOT, 
+                'noticias', 
+                'imagenes',
+                f"{titulo_limpio}_*.*"
+            )
+            
+            archivos_encontrados = glob.glob(patron_busqueda)
+            archivos_a_eliminar.extend(archivos_encontrados)
+            
+            if archivos_encontrados:
+                logger.info(f'Encontradas {len(archivos_encontrados)} imágenes EstefaniPUBLI para eliminar')
+        
+        # Eliminar la noticia de la base de datos primero
+        super().delete(*args, **kwargs)
+        
+        # Ahora eliminar los archivos físicos
+        archivos_eliminados = 0
+        for archivo_path in archivos_a_eliminar:
+            try:
+                if os.path.exists(archivo_path):
+                    os.remove(archivo_path)
+                    archivos_eliminados += 1
+                    logger.info(f'Archivo eliminado: {archivo_path}')
+            except OSError as e:
+                logger.error(f'Error eliminando archivo {archivo_path}: {str(e)}')
+        
+        if archivos_eliminados > 0:
+            logger.info(f'Limpieza completada: {archivos_eliminados} archivos eliminados para noticia "{self.titulo}"')
+        else:
+            logger.info(f'Sin archivos que limpiar para noticia "{self.titulo}"')

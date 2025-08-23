@@ -11,7 +11,9 @@
                 <img src="{{ noticia.imagen.url }}" 
                      alt="{{ noticia.titulo }}" 
                      class="card-image"
-                     loading="lazy">
+                     loading="lazy"
+                     decoding="async"
+                     fetchpriority="low">
             
             {% elif noticia.tipo_multimedia == 'video' or noticia.has_video %}
                 <!-- Sistema de video universal -->
@@ -21,13 +23,17 @@
                         <img src="{{ noticia.video_thumbnail_url }}" 
                              alt="{{ noticia.titulo }}" 
                              class="card-image"
-                             loading="lazy">
+                             loading="lazy"
+                             decoding="async"
+                             fetchpriority="low">
                     {% elif noticia.imagen %}
                         <!-- Fallback a imagen si no hay thumbnail de video -->
                         <img src="{{ noticia.imagen.url }}" 
                              alt="{{ noticia.titulo }}" 
                              class="card-image"
-                             loading="lazy">
+                             loading="lazy"
+                             decoding="async"
+                             fetchpriority="low">
                     {% else %}
                         <!-- Placeholder para video sin thumbnail -->
                         <div class="video-placeholder">
@@ -48,7 +54,9 @@
                     <img src="https://vumbnail.com/{{ noticia.video_vimeo_id }}.jpg" 
                          alt="{{ noticia.titulo }}" 
                          class="card-image"
-                         loading="lazy">
+                         loading="lazy"
+                         decoding="async"
+                         fetchpriority="low">
                     <div class="video-overlay">
                         <i class="fas fa-play-circle fa-2x" style="color: white; opacity: 0.9;"></i>
                     </div>

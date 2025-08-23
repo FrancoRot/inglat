@@ -51,7 +51,12 @@
       "WebFetch(domain:www.pv-magazine-latam.com)",
       "Bash(./venv/Scripts/python.exe manage.py makemigrations core)",
       "Bash(./venv/Scripts/python.exe manage.py migrate core)",
-      "Bash(./venv/Scripts/python.exe manage.py estefani_workflow --max-noticias=2 --analisis=impacto-ia --con-imagenes --dry-run --debug)"
+      "Bash(./venv/Scripts/python.exe manage.py estefani_workflow --max-noticias=2 --analisis=impacto-ia --con-imagenes --dry-run --debug)",
+      "Bash(./venv/Scripts/python.exe -c \"from apps.blog.image_service import image_service; print(''Testing image service...''); result = image_service.buscar_imagen_automatica(''energia solar argentina''); print(''Result:'', result)\")",
+      "Bash(./venv/Scripts/python.exe -c \"from apps.blog.models import Categoria; print(''Import successful'')\")",
+      "Bash(./venv/Scripts/python.exe manage.py makemigrations blog -n add_database_indexes)",
+      "Bash(timeout 30 ./venv/Scripts/python.exe manage.py estefani_investigar:*)",
+      "Bash(./venv/Scripts/python.exe manage.py estefani_limpiar --imagenes-huerfanas)"
     ],
     "deny": []
   }

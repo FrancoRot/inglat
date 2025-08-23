@@ -17,44 +17,148 @@ class EstefaniCore:
     def __init__(self):
         self.logger = logging.getLogger('estefani.core')
     
+    # VALIDACIÓN ANTI-ROBÓTICA
+    
+    def validar_contenido_humano(self, contenido: str, titulo: str = "") -> Dict:
+        """Valida que el contenido suene natural y humano"""
+        problemas = []
+        score_humanidad = 100
+        
+        # Patrones robóticos a detectar
+        patrones_roboticos = [
+            r'Análisis especializado sobre',
+            r'Contexto regional:',
+            r'\d{8}_\d{4}',  # timestamps
+            r'se enmarca en un momento',
+            r'confluyen factores',
+            r'desde INGLAT Argentina',
+            r'La información sobre.*se enmarca',
+            r'Perspectiva.*del mercado',
+        ]
+        
+        # Revisar patrones robóticos
+        for patron in patrones_roboticos:
+            import re
+            if re.search(patron, contenido, re.IGNORECASE):
+                problemas.append(f"Contiene patrón robótico: {patron}")
+                score_humanidad -= 15
+        
+        # Revisar repeticiones excesivas
+        palabras = contenido.lower().split()
+        from collections import Counter
+        contador_palabras = Counter(palabras)
+        
+        for palabra, count in contador_palabras.most_common(10):
+            if len(palabra) > 4 and count > 8:  # Palabra repetida más de 8 veces
+                problemas.append(f"Palabra '{palabra}' repetida {count} veces")
+                score_humanidad -= 10
+        
+        # Revisar longitud de párrafos (muy largos son robóticos)
+        parrafos = contenido.split('<p>')
+        for i, parrafo in enumerate(parrafos[1:], 1):  # Skip primer elemento vacío
+            clean_parrafo = re.sub(r'<[^>]+>', '', parrafo)
+            if len(clean_parrafo) > 500:
+                problemas.append(f"Párrafo {i} muy largo ({len(clean_parrafo)} caracteres)")
+                score_humanidad -= 5
+        
+        # Revisar falta de variación en estructura
+        if contenido.count('<strong>') > 6:
+            problemas.append("Demasiados elementos <strong> (posible estructura rígida)")
+            score_humanidad -= 10
+        
+        # Calcular score final
+        score_humanidad = max(0, score_humanidad)
+        
+        return {
+            'es_humano': score_humanidad >= 70,
+            'score_humanidad': score_humanidad,
+            'problemas': problemas,
+            'recomendaciones': self._generar_recomendaciones(problemas)
+        }
+    
+    def _generar_recomendaciones(self, problemas: List[str]) -> List[str]:
+        """Genera recomendaciones específicas basadas en problemas detectados"""
+        recomendaciones = []
+        
+        problemas_text = ' '.join(problemas).lower()
+        
+        if 'robótico' in problemas_text:
+            recomendaciones.append("Usar lenguaje más natural y conversacional")
+            recomendaciones.append("Variar las estructuras de introducción")
+        
+        if 'repetida' in problemas_text:
+            recomendaciones.append("Usar sinónimos para evitar repeticiones")
+            recomendaciones.append("Reestructurar párrafos para mayor variedad")
+        
+        if 'largo' in problemas_text:
+            recomendaciones.append("Dividir párrafos largos en múltiples párrafos")
+            recomendaciones.append("Usar listas o bullets para información densa")
+        
+        if 'strong' in problemas_text:
+            recomendaciones.append("Reducir uso de negritas, usar solo para puntos clave")
+            recomendaciones.append("Variar la estructura visual del contenido")
+        
+        if not recomendaciones:
+            recomendaciones.append("Contenido aprobado - mantener este nivel de calidad")
+        
+        return recomendaciones
+    
     # PLANTILLAS OPTIMIZADAS (reutilizables entre comandos)
     
     def get_plantilla_profesional(self, titulo: str, descripcion: str, portal: str) -> str:
-        """Plantilla profesional optimizada para tokens"""
+        """Plantilla profesional humanizada para generar contenido atractivo"""
         return f"""
-Genera una noticia profesional basada en: "{titulo}"
-Fuente: {portal} | Descripción: {descripcion}
+Redacta un artículo periodístico profesional y atractivo sobre: "{titulo}"
+Fuente: {portal} | Información base: {descripcion}
 
-ESTRUCTURA REQUERIDA (HTML limpio):
-<p><strong>Introducción:</strong> [contextualización argentina del tema]</p>
-<p>[desarrollo del impacto para mercado de autoconsumo empresarial argentino]</p>
-<p><strong>Contexto:</strong> [implicaciones técnicas y comerciales]</p>
-<p>[perspectiva INGLAT para empresas argentinas]</p>
-<p><strong>Impacto:</strong> [relevancia para RenovAr y generación distribuida]</p>
+OBJETIVO: Crear contenido que enganche al lector desde el primer párrafo
 
-REQUISITOS:
-- 600-800 palabras
-- Enfoque empresarial argentino
-- Reformulación 100% original
-- HTML simple (p, strong, blockquote únicamente)
-- Integrar perspectiva INGLAT como líder en autoconsumo solar
+ESTRUCTURA NATURAL:
+- Párrafo inicial impactante que capture la atención
+- Desarrollo del tema con casos concretos y beneficios tangibles  
+- Contexto argentino relevante (regulaciones, mercado, oportunidades)
+- Perspectiva práctica para empresas argentinas
+- Cierre que invite a la acción o reflexión
+
+ESTILO DE REDACCIÓN:
+- Tono profesional pero accesible, como un especialista que explica a colegas
+- Usa datos concretos y ejemplos reales cuando sea posible
+- Evita jerga técnica excesiva - explica conceptos complejos de forma simple
+- Incluye beneficios económicos específicos (% de ahorro, ROI, etc.)
+- Menciona casos de éxito o tendencias del mercado argentino
+
+LONGITUD: 600-800 palabras
+FORMATO: HTML simple (solo <p>, <strong>, <blockquote>)
+ENFOQUE: Empresas argentinas interesadas en eficiencia energética
         """.strip()
     
     def get_plantilla_empresarial(self, titulo: str, descripcion: str, portal: str) -> str:
-        """Plantilla empresarial optimizada"""
+        """Plantilla empresarial humanizada enfocada en resultados"""
         return f"""
-Crea análisis empresarial de: "{titulo}"
-Fuente: {portal} | Base: {descripcion}
+Redacta un artículo enfocado en decisores empresariales sobre: "{titulo}"
+Fuente: {portal} | Información base: {descripcion}
 
-FORMATO:
-<p><strong>Contexto empresarial:</strong> [impacto sector empresarial argentino]</p>
-<p>[oportunidades concretas autoconsumo solar]</p>
-<p><strong>Beneficios:</strong></p>
-<ul><li>[beneficio 1 específico]</li><li>[beneficio 2 medible]</li><li>[beneficio 3 competitivo]</li></ul>
-<p><strong>Perspectiva INGLAT:</strong> [posicionamiento como expertos]</p>
+ENFOQUE: Empresario argentino evaluando inversiones en eficiencia energética
 
-ENFOQUE: Empresas argentinas, ROI, competitividad, sostenibilidad
+ESTRUCTURA RECOMENDADA:
+- Apertura con un dato impactante o estadística relevante
+- Explicación clara del tema en términos de negocio (no técnicos)
+- Beneficios concretos: ahorro en pesos, reducción de costos, tiempo de retorno
+- Casos reales de empresas argentinas similares (si es posible)
+- Marco regulatorio favorable en Argentina
+- Próximos pasos o llamada a la acción
+
+TONO: Directo, orientado a resultados, con credibilidad técnica pero lenguaje empresarial
+
+ELEMENTOS CLAVE A INCLUIR:
+- Cifras de ahorro o beneficios económicos
+- Comparación con costos actuales de energía
+- Ventajas competitivas para la empresa
+- Aspectos de sustentabilidad como valor agregado
+- Referencias a incentivos fiscales o regulaciones favorables
+
 LONGITUD: 500-700 palabras
+FORMATO: HTML simple, fácil de leer en móvil
         """.strip()
     
     def get_plantilla_analisis_ia(self, titulo: str, contenido: str) -> str:
