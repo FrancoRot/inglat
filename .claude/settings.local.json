@@ -56,7 +56,9 @@
       "Bash(./venv/Scripts/python.exe -c \"from apps.blog.models import Categoria; print(''Import successful'')\")",
       "Bash(./venv/Scripts/python.exe manage.py makemigrations blog -n add_database_indexes)",
       "Bash(timeout 30 ./venv/Scripts/python.exe manage.py estefani_investigar:*)",
-      "Bash(./venv/Scripts/python.exe manage.py estefani_limpiar --imagenes-huerfanas)"
+      "Bash(./venv/Scripts/python.exe manage.py estefani_limpiar --imagenes-huerfanas)",
+      "Bash(sqlite3:*)",
+      "WebFetch(domain:www.holaluz.com)"
     ],
     "deny": []
   }
