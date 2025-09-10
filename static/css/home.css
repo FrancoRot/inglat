@@ -1276,3 +1276,215 @@
         height: auto;
     }
 }
+
+/* ===== COMPONENTES INSTALACIÓN SOLAR ===== */
+.componentes-section {
+    padding: var(--space-16) 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.componentes-diagram {
+    margin: var(--space-12) 0;
+    display: flex;
+    justify-content: center;
+}
+
+.diagram-container {
+    position: relative;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.diagram-image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.component-label {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    border-radius: var(--border-radius-md);
+    padding: 8px 12px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--gray-800);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.component-label:hover {
+    background: rgba(var(--primary-color-rgb), 0.1);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Posicionamiento específico de etiquetas basado en coordenadas precisas */
+.label-sol {
+    top: 5%;
+    right: 15%;
+}
+
+.label-paneles {
+    top: 22%;
+    left: 15%;
+}
+
+.label-estructura {
+    top: 23%;
+    left: 45%;
+}
+
+.label-inversor {
+    top: 68%;
+    left: 75%;
+}
+
+.label-contador {
+    top: 50%;
+    left: 75%;
+}
+
+.label-cargador {
+    top: 69%;
+    right: 28%;
+}
+
+.label-bateria {
+    top: 58%;
+    left: 75%;
+}
+
+/* Control de visibilidad de texto responsivo */
+.label-mobile {
+    display: none;
+}
+
+.label-desktop {
+    display: inline;
+}
+
+.componentes-description {
+    margin-top: var(--space-8);
+    text-align: center;
+}
+
+.componentes-text {
+    font-size: var(--text-lg);
+    color: var(--gray-700);
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ===== RESPONSIVE PARA COMPONENTES ===== */
+@media (max-width: 768px) {
+    .componentes-section {
+        padding: var(--space-12) 0;
+    }
+    
+    .component-label {
+        padding: 6px 10px;
+        font-size: var(--text-xs);
+    }
+    
+    /* Mostrar texto móvil, ocultar desktop */
+    .label-mobile {
+        display: inline;
+    }
+    
+    .label-desktop {
+        display: none;
+    }
+    
+    /* Ajustar posiciones para mobile */
+    .label-sol {
+        top: 7%;
+        right: 14%;
+    }
+    
+    .label-paneles {
+        top: 24%;
+        left: 12%;
+    }
+    
+    .label-estructura {
+        top: 24%;
+        left: 42%;
+    }
+    
+    .label-inversor {
+        top: 44%;
+        right: 25%;
+    }
+    
+    .label-contador {
+        top: 22%;
+        right: 22%;
+    }
+    
+    .label-cargador {
+        top: 88%;
+        right: 12%;
+    }
+    
+    .label-bateria {
+        top: 78%;
+        left: 12%;
+    }
+    
+    .componentes-text {
+        font-size: var(--text-base);
+        padding: 0 var(--space-4);
+    }
+}
+
+@media (max-width: 480px) {
+    .component-label {
+        padding: 4px 8px;
+        font-size: var(--text-xs);
+    }
+    
+    /* Ajustar más las posiciones para pantallas muy pequeñas */
+    .label-sol {
+        top: 8%;
+        right: 10%;
+    }
+    
+    .label-paneles {
+        top: 25%;
+        left: 10%;
+    }
+    
+    .label-estructura {
+        top: 20%;
+        left: 40%;
+    }
+    
+    .label-inversor {
+        top: 46%;
+        right: 23%;
+    }
+    
+    .label-contador {
+        top: 30%;
+        right: 20%;
+    }
+    
+    .label-cargador {
+        top: 75%;
+        right: 15%;
+    }
+    
+    .label-bateria {
+        top: 62%;
+        left: 70%;
+    }
+}
