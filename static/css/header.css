@@ -358,44 +358,17 @@
 
 /* Responsive para móviles - Simplificado */
 @media (max-width: 768px) {
-    .logo-container {
-        padding: 3px 10px;
-    }
-    
+    .logo-container { padding: 3px 10px; }
+    /* Mantener la misma animación que desktop en mobile */
     .electron {
-        width: 2px;
-        height: 2px;
-        margin-top: -1px;
-        margin-left: -1px;
+        width: 3px;
+        height: 3px;
+        margin-top: -1.5px;
+        margin-left: -1.5px;
     }
-    
-    /* Ocultar 2 electrones y simplificar movimientos */
+    /* No ocultar electrones en mobile */
     .electron--curve-s,
-    .electron--rectangle {
-        display: none;
-    }
-    
-    /* Movimientos más simples en móvil */
-    @keyframes wave-horizontal {
-        0% { transform: translate(-8px, -4px); }
-        50% { transform: translate(8px, 4px); }
-        100% { transform: translate(-8px, -4px); }
-    }
-    
-    @keyframes zigzag-diagonal {
-        0% { transform: translate(-6px, -6px); }
-        33% { transform: translate(0px, 6px); }
-        66% { transform: translate(6px, -6px); }
-        100% { transform: translate(-6px, -6px); }
-    }
-    
-    @keyframes ellipse-vertical {
-        0% { transform: translate(0px, -6px); }
-        25% { transform: translate(4px, 0px); }
-        50% { transform: translate(0px, 6px); }
-        75% { transform: translate(-4px, 0px); }
-        100% { transform: translate(0px, -6px); }
-    }
+    .electron--rectangle { display: inline-block; }
 }
 
 /* Efecto hover para pausar animación */

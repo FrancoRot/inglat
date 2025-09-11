@@ -51,6 +51,31 @@ const INGLAT = {
             return window.innerWidth < this.breakpoints.mobile;
         },
 
+        // Bloqueo robusto de scroll para iOS/Android
+        lockBodyScroll() {
+            const currentScrollY = window.scrollY || window.pageYOffset || 0;
+            document.body.setAttribute('data-scroll-lock', String(currentScrollY));
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${currentScrollY}px`;
+            document.body.style.left = '0';
+            document.body.style.right = '0';
+            document.body.style.width = '100%';
+            document.body.style.overflow = 'hidden';
+        },
+
+        unlockBodyScroll() {
+            const stored = document.body.getAttribute('data-scroll-lock');
+            const scrollY = stored ? parseInt(stored, 10) : 0;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+            document.body.removeAttribute('data-scroll-lock');
+            window.scrollTo(0, scrollY);
+        },
+
         // Smooth scroll
         smoothScrollTo(target, offset = 0) {
             const element = typeof target === 'string' ? document.querySelector(target) : target;
@@ -100,6 +125,19 @@ INGLAT.mobileMenu = {
         
         // Cerrar con overlay
         this.overlay.addEventListener('click', () => this.close());
+
+        // Cerrar al hacer click/tap fuera del menú
+        const closeIfOutside = (event) => {
+            if (!this.isOpen) return;
+            const target = event.target;
+            const clickInsideMenu = this.mobileMenu.contains(target);
+            const clickOnButton = this.menuBtn.contains(target);
+            if (!clickInsideMenu && !clickOnButton) {
+                this.close();
+            }
+        };
+        document.addEventListener('click', closeIfOutside, true);
+        document.addEventListener('touchstart', closeIfOutside, { passive: true, capture: true });
         
         // Cerrar con ESC
         document.addEventListener('keydown', (e) => {
@@ -140,9 +178,9 @@ INGLAT.mobileMenu = {
         this.menuBtn.classList.add('active');
         this.menuBtn.setAttribute('aria-expanded', 'true');
         this.mobileMenu.setAttribute('aria-hidden', 'false');
-        
-        // Prevenir scroll del body
-        document.body.style.overflow = 'hidden';
+
+        // Prevenir scroll del body (robusto)
+        INGLAT.utils.lockBodyScroll();
     },
 
     close() {
@@ -152,9 +190,9 @@ INGLAT.mobileMenu = {
         this.menuBtn.classList.remove('active');
         this.menuBtn.setAttribute('aria-expanded', 'false');
         this.mobileMenu.setAttribute('aria-hidden', 'true');
-        
+
         // Restaurar scroll del body
-        document.body.style.overflow = '';
+        INGLAT.utils.unlockBodyScroll();
     }
 };
 

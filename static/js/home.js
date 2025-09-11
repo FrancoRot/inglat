@@ -686,8 +686,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Focus management para accesibilidad
         modalCloseBtn.focus();
         
-        // Prevenir scroll del body
-        document.body.style.overflow = 'hidden';
+        // Prevenir scroll del body (robusto y consistente con base.js)
+        if (window.INGLAT && INGLAT.utils && typeof INGLAT.utils.lockBodyScroll === 'function') {
+            INGLAT.utils.lockBodyScroll();
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
     }
     
     // Función para cerrar el modal
@@ -696,7 +700,11 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.setAttribute('aria-hidden', 'true');
         
         // Restaurar scroll del body
-        document.body.style.overflow = '';
+        if (window.INGLAT && INGLAT.utils && typeof INGLAT.utils.unlockBodyScroll === 'function') {
+            INGLAT.utils.unlockBodyScroll();
+        } else {
+            document.body.style.overflow = '';
+        }
         
         // Devolver focus al elemento que abrió el modal (si es posible)
         const activeLabel = document.querySelector('.component-label:focus');
@@ -779,10 +787,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Evitar que clicks dentro del contenido cierren el modal
-    modal.querySelector('.component-modal__content').addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
+    // Evitar que clicks dentro del contenido cierren el modal y contener scroll
+    (function(){
+        const modalContent = modal.querySelector('.component-modal__content');
+        if (!modalContent) return;
+        modalContent.addEventListener('click', function(e) { e.stopPropagation(); });
+        modalContent.addEventListener('touchmove', function(e) { e.stopPropagation(); }, { passive: true });
+        modalContent.addEventListener('wheel', function(e) { e.stopPropagation(); }, { passive: true });
+        // Mejorar experiencia de scroll en iOS/Android dentro del modal
+        modalContent.style.overscrollBehavior = 'contain';
+        modalContent.style.webkitOverflowScrolling = 'touch';
+    })();
     
     // Performance monitoring (development only)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
