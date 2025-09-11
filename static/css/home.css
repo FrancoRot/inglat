@@ -1307,7 +1307,7 @@
     position: absolute;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    border: 1px solid rgba(0, 100, 102, 0.2);
     border-radius: var(--border-radius-md);
     padding: 8px 12px;
     font-size: var(--text-sm);
@@ -1317,10 +1317,12 @@
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 10;
+    overflow: hidden;
+    position: relative;
 }
 
 .component-label:hover {
-    background: rgba(var(--primary-color-rgb), 0.1);
+    background: rgba(0, 100, 102, 0.1);
     border-color: var(--primary-color);
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -1393,6 +1395,7 @@
     .component-label {
         padding: 6px 10px;
         font-size: var(--text-xs);
+        overflow: hidden;
     }
     
     /* Mostrar texto móvil, ocultar desktop */
@@ -1450,6 +1453,7 @@
     .component-label {
         padding: 4px 8px;
         font-size: var(--text-xs);
+        overflow: hidden;
     }
     
     /* Ajustar más las posiciones para pantallas muy pequeñas */
@@ -1487,4 +1491,102 @@
         top: 62%;
         left: 70%;
     }
+}
+
+/* ===== ANIMACIONES HOVER PARA COMPONENTES SOLARES ===== */
+/* CSS limpio con hover permanente - ubicado al final para máxima especificidad */
+
+/* Base: preparar todos los botones para animaciones MANTENIENDO POSITION ABSOLUTE */
+.componentes-section .component-label {
+    position: absolute !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    will-change: transform, background-color;
+}
+
+/* ===== DESKTOP ANIMATIONS (769px+) - HOVER PERMANENTE VERDE ===== */
+@media (min-width: 769px) {
+    /* Hover permanente: fondo verde que se mantiene */
+    .componentes-section .component-label:hover {
+        background-color: rgba(0, 212, 170, 0.85) !important;
+        color: white !important;
+        transform: scale(1.05) !important;
+        border-color: #00d4aa !important;
+        box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3) !important;
+    }
+    
+    /* Transición suave de vuelta al estado original */
+    .componentes-section .component-label {
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, 
+                   border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+/* ===== MOBILE/TABLET ANIMATIONS (up to 768px) - ONDAS LÍQUIDAS ===== */
+@media (max-width: 768px) {    
+    /* Pseudo-elemento para ondas líquidas circulares */
+    .componentes-section .component-label::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(0, 212, 170, 0.4);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        z-index: -1;
+        pointer-events: none;
+    }
+    
+    /* Expansión circular en hover */
+    .componentes-section .component-label:hover::after {
+        width: 250%;
+        height: 250%;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    
+    /* Efectos hover para móvil */
+    .componentes-section .component-label:hover {
+        background: rgba(255, 255, 255, 0.95) !important;
+        color: #006466 !important;
+        transform: scale(1.03) !important;
+        border-color: #00d4aa !important;
+        box-shadow: 0 6px 20px rgba(0, 212, 170, 0.25) !important;
+    }
+}
+
+/* ===== ACCESSIBILITY - RESPECT REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    .componentes-section .component-label {
+        transition: none !important;
+    }
+    
+    .componentes-section .component-label::after {
+        display: none !important;
+    }
+    
+    /* Hover simplificado para usuarios con reduced motion */
+    .componentes-section .component-label:hover {
+        background: rgba(0, 212, 170, 0.2) !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
+
+/* ===== FALLBACK DIRECTO POR CLASES (máxima compatibilidad) ===== */
+.label-sol:hover, 
+.label-paneles:hover, 
+.label-estructura:hover, 
+.label-inversor:hover, 
+.label-contador:hover, 
+.label-cargador:hover, 
+.label-bateria:hover {
+    background-color: rgba(0, 212, 170, 0.85) !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+    border-color: #00d4aa !important;
+    box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3) !important;
+    transition: all 0.3s ease !important;
 }
