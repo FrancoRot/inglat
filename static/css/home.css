@@ -1386,6 +1386,121 @@
     margin: 0 auto;
 }
 
+/* ===== RESALTADO ESPECIAL: Título, Subtítulo y Párrafo de Componentes ===== */
+/* Título con texto en gradiente y subrayado animado */
+#componentes-solares .section-header .section-title {
+    color: var(--primary-color);
+    position: relative;
+}
+
+#componentes-solares .section-header .section-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    width: 140px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--primary-color);
+    box-shadow: 0 6px 16px rgba(0, 100, 102, 0.25);
+    animation: underlineSweep 1s ease forwards;
+}
+
+/* Subtítulo estilo "pill" con borde sutil en gradiente */
+#componentes-solares .section-header .section-subtitle {
+    display: inline-block;
+    margin-top: var(--space-3);
+    padding: 10px 16px;
+    border-radius: 999px;
+    position: relative;
+    background: rgba(0, 100, 102, 0.06);
+    border: 1px solid rgba(0, 100, 102, 0.18);
+    box-shadow: 0 8px 24px rgba(0, 100, 102, 0.08);
+    white-space: nowrap;
+    max-width: none;
+    overflow: visible;
+}
+
+/* Párrafo destacado con recuadro y borde degradado animado */
+#componentes-solares .componentes-description .componentes-text {
+    position: relative;
+    padding: var(--space-6) var(--space-6);
+    margin-top: var(--space-6);
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+    border-radius: var(--border-radius-xl);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 100, 102, 0.18);
+    overflow: hidden;
+    color: var(--gray-900);
+    z-index: 0; /* crear stacking context local */
+}
+
+/* Borde degradado externo (halo) */
+#componentes-solares .componentes-description .componentes-text::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from 0deg, var(--primary-light), var(--primary-color), var(--accent-color), var(--primary-light));
+    z-index: -1; /* detrás del contenido */
+    filter: blur(10px);
+    opacity: 0.35;
+    animation: borderGlow 6s linear infinite;
+}
+
+/* Capa interna para garantizar legibilidad sobre el halo */
+#componentes-solares .componentes-description .componentes-text::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: calc(var(--border-radius-xl) - 1px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86));
+    z-index: -1; /* detrás del contenido */
+}
+
+/* Elevar el texto por encima de las capas decorativas */
+#componentes-solares .componentes-description .componentes-text {
+    position: relative;
+}
+
+/* El propio texto del párrafo queda por encima de las capas decorativas */
+
+/* Animación de entrada sutil (progressive enhancement) */
+#componentes-solares .section-header .section-title,
+#componentes-solares .section-header .section-subtitle,
+#componentes-solares .componentes-description .componentes-text {
+    animation: fadeSlideUp 0.6s ease both;
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes borderGlow {
+    0% { filter: blur(10px) brightness(1); }
+    50% { filter: blur(12px) brightness(1.15); }
+    100% { filter: blur(10px) brightness(1); }
+}
+
+@keyframes underlineSweep {
+    0% { transform: translateX(-50%) scaleX(0); opacity: 0; }
+    100% { transform: translateX(-50%) scaleX(1); opacity: 1; }
+}
+
+/* Motion-safe: reducir movimientos si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+    #componentes-solares .section-header .section-title::after,
+    #componentes-solares .componentes-description .componentes-text::before,
+    #componentes-solares .section-header .section-title,
+    #componentes-solares .section-header .section-subtitle,
+    #componentes-solares .componentes-description .componentes-text {
+        animation: none !important;
+    }
+}
+
 /* ===== RESPONSIVE PARA COMPONENTES ===== */
 @media (max-width: 768px) {
     .componentes-section {
