@@ -1590,3 +1590,406 @@
     box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3) !important;
     transition: all 0.3s ease !important;
 }
+
+/* ===== MODAL DE COMPONENTES SOLARES ===== */
+
+/* Base del modal - oculto por defecto */
+.component-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: var(--space-4);
+}
+
+/* Estado visible del modal */
+.component-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Backdrop con glassmorphism */
+.component-modal__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+}
+
+/* Contenedor principal del modal */
+.component-modal__container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    background: var(--white);
+    border-radius: var(--border-radius-xl);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+}
+
+/* Animación de entrada del modal */
+.component-modal.show .component-modal__container {
+    transform: scale(1);
+}
+
+/* Contenido scrolleable */
+.component-modal__content {
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--gray-100);
+}
+
+.component-modal__content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.component-modal__content::-webkit-scrollbar-track {
+    background: var(--gray-100);
+}
+
+.component-modal__content::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+/* Header del modal */
+.component-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-6);
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.component-modal__title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--white);
+    margin: 0;
+    flex: 1;
+    padding-right: var(--space-4);
+}
+
+/* Botón cerrar */
+.component-modal__close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: var(--space-2);
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.component-modal__close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.component-modal__close:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* Body del modal */
+.component-modal__body {
+    padding: var(--space-6);
+    display: grid;
+    gap: var(--space-6);
+}
+
+/* Contenedor de imagen */
+.component-modal__image-container {
+    text-align: center;
+    background: var(--gray-50);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-4);
+    border: 1px solid var(--gray-200);
+}
+
+.component-modal__image {
+    max-width: 100%;
+    max-height: 250px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.component-modal__image:hover {
+    transform: scale(1.05);
+}
+
+/* Secciones de información */
+.component-modal__info {
+    display: grid;
+    gap: var(--space-5);
+}
+
+.component-modal__description,
+.component-modal__functionality,
+.component-modal__features {
+    padding: var(--space-4);
+    background: var(--gray-50);
+    border-radius: var(--border-radius-lg);
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Subtítulos de secciones */
+.component-modal__subtitle {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--primary-color);
+    margin: 0 0 var(--space-3) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.component-modal__subtitle::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+/* Texto del modal */
+.component-modal__text {
+    font-size: var(--text-base);
+    color: var(--gray-700);
+    line-height: 1.7;
+    margin: 0;
+    text-align: justify;
+}
+
+/* Lista de características */
+.component-modal__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+}
+
+.component-modal__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: var(--text-base);
+    color: var(--gray-700);
+    line-height: 1.6;
+}
+
+.component-modal__list li::before {
+    content: '✓';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* Footer del modal */
+.component-modal__footer {
+    padding: var(--space-6);
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    text-align: center;
+}
+
+.component-modal__cta {
+    font-size: var(--text-base);
+    color: var(--gray-700);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.component-modal__link {
+    color: var(--primary-color);
+    font-weight: var(--font-semibold);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.component-modal__link:hover {
+    border-bottom-color: var(--primary-color);
+}
+
+/* ===== RESPONSIVE PARA MODAL ===== */
+@media (max-width: 768px) {
+    .component-modal {
+        padding: var(--space-2);
+        align-items: flex-end;
+    }
+    
+    .component-modal__container {
+        max-height: 95vh;
+        border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+        margin-bottom: 0;
+    }
+    
+    .component-modal__header {
+        padding: var(--space-4);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .component-modal__title {
+        font-size: var(--text-xl);
+    }
+    
+    .component-modal__close {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .component-modal__body {
+        padding: var(--space-4);
+        gap: var(--space-4);
+    }
+    
+    .component-modal__image {
+        max-height: 200px;
+    }
+    
+    .component-modal__description,
+    .component-modal__functionality,
+    .component-modal__features {
+        padding: var(--space-3);
+    }
+    
+    .component-modal__subtitle {
+        font-size: var(--text-base);
+    }
+    
+    .component-modal__text {
+        font-size: var(--text-sm);
+        text-align: left;
+    }
+    
+    .component-modal__list li {
+        font-size: var(--text-sm);
+    }
+    
+    .component-modal__footer {
+        padding: var(--space-4);
+    }
+    
+    .component-modal__cta {
+        font-size: var(--text-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .component-modal {
+        padding: 0;
+    }
+    
+    .component-modal__container {
+        border-radius: 0;
+        max-height: 100vh;
+    }
+    
+    .component-modal__header {
+        padding: var(--space-3) var(--space-4);
+    }
+    
+    .component-modal__title {
+        font-size: var(--text-lg);
+    }
+    
+    .component-modal__body {
+        padding: var(--space-3);
+        gap: var(--space-3);
+    }
+    
+    .component-modal__image {
+        max-height: 180px;
+    }
+}
+
+/* ===== ACCESIBILIDAD ===== */
+@media (prefers-reduced-motion: reduce) {
+    .component-modal,
+    .component-modal__container,
+    .component-modal__close,
+    .component-modal__image {
+        transition: none;
+    }
+    
+    .component-modal.show .component-modal__container {
+        transform: scale(1);
+    }
+    
+    .component-modal__close:hover {
+        transform: none;
+    }
+}
+
+/* ===== ANIMACIONES ADICIONALES ===== */
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .component-modal.show .component-modal__container {
+        animation: modalSlideUp 0.3s ease-out;
+    }
+}
+
+/* Enfoque de elementos dentro del modal */
+.component-modal .component-modal__close:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.component-modal .component-modal__link:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: var(--border-radius);
+}

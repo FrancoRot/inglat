@@ -542,6 +542,248 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // ===== MODAL DE COMPONENTES SOLARES =====
+    
+    // Datos técnicos detallados de cada componente
+    const componentData = {
+        'fuente-energia': {
+            title: 'Fuente de Energía Solar',
+            image: '/media/imagenes_animacion/fuente_energia.png',
+            description: 'El Sol es la fuente de energía más abundante y sostenible disponible en la Tierra. Cada hora, la superficie terrestre recibe más energía solar de la que toda la humanidad consume en un año entero. Esta radiación electromagnética se convierte en electricidad mediante tecnología fotovoltaica, proporcionando una solución energética limpia, renovable e inagotable.',
+            functionality: 'Como fuente primaria del sistema fotovoltaico, el Sol proporciona la energía radiante que los paneles solares convierten directamente en electricidad mediante el efecto fotovoltaico. La radiación solar varía según la hora del día, estación del año, ubicación geográfica y condiciones meteorológicas, por lo que es fundamental dimensionar correctamente el sistema para optimizar la captación energética.',
+            features: [
+                'Recurso energético completamente gratuito y renovable',
+                'Disponibilidad diaria promedio de 4-6 horas de sol pico',
+                'Potencial energético de 1.000 W/m² en condiciones ideales',
+                'Sin emisiones de gases de efecto invernadero',
+                'Independencia de fluctuaciones en precios de combustibles fósiles',
+                'Vida útil ilimitada del recurso solar'
+            ]
+        },
+        'paneles-solares': {
+            title: 'Paneles Solares Fotovoltaicos',
+            image: '/media/imagenes_animacion/panel_solar.png',
+            description: 'Los paneles solares fotovoltaicos son dispositivos semiconductores que convierten directamente la radiación solar en electricidad mediante el efecto fotovoltaico. Fabricados principalmente con células de silicio cristalino o tecnologías de película delgada, estos módulos representan el corazón de cualquier instalación solar residencial.',
+            functionality: 'Cada panel solar contiene múltiples células fotovoltaicas conectadas en serie y paralelo para generar el voltaje y corriente deseados. Cuando la luz solar incide sobre las células, los fotones liberan electrones en el material semiconductor, creando un flujo de corriente continua. Los paneles se conectan en serie para formar strings, aumentando el voltaje total del sistema.',
+            features: [
+                'Eficiencia de conversión entre 18-22% en paneles monocristalinos',
+                'Vida útil garantizada de 25-30 años con degradación < 0.5% anual',
+                'Potencia típica de 300-500W por panel residencial',
+                'Resistencia a condiciones climáticas extremas (granizo, viento, lluvia)',
+                'Tecnología anti-reflectante para máxima captación solar',
+                'Certificaciones internacionales IEC 61215 e IEC 61730'
+            ]
+        },
+        'estructura': {
+            title: 'Estructura de Soporte de Aluminio',
+            image: '/media/imagenes_animacion/estructura_solar.png',
+            description: 'La estructura de soporte es el sistema de anclaje que fija los paneles solares al tejado o superficie de instalación. Fabricada en aleaciones de aluminio marino con tratamiento anodizado, garantiza la estabilidad, orientación óptima y durabilidad de toda la instalación solar durante décadas.',
+            functionality: 'Proporciona el soporte mecánico necesario para mantener los paneles en la orientación e inclinación óptimas (generalmente 30-35° para captar la mayor cantidad de radiación solar posible). La estructura debe resistir cargas de viento, nieve y peso propio, distribuyendo uniformemente las fuerzas sobre la cubierta sin comprometer la estanqueidad del tejado.',
+            features: [
+                'Aleación de aluminio marino AA6005-T5 resistente a corrosión',
+                'Diseño calculado para resistir vientos de hasta 150 km/h',
+                'Sistema de fijación ajustable para diferentes tipos de tejado',
+                'Garantía estructural de 20 años contra defectos de fabricación',
+                'Instalación sin perforación del tejado mediante ganchas especiales',
+                'Cumplimiento del Código Técnico de Edificación'
+            ]
+        },
+        'inversor': {
+            title: 'Inversor Solar Inteligente',
+            image: '/media/imagenes_animacion/inversor_solar.png',
+            description: 'El inversor es el cerebro de la instalación solar, responsable de convertir la corriente continua (DC) generada por los paneles solares en corriente alterna (AC) compatible con la red eléctrica doméstica. Los inversores modernos incorporan sistemas de monitorización avanzada, optimizadores de potencia y funciones de seguridad integradas.',
+            functionality: 'Mediante circuitos electrónicos de potencia y algoritmos de seguimiento del punto de máxima potencia (MPPT), el inversor optimiza continuamente la extracción de energía de los paneles solares. También gestiona la sincronización con la red eléctrica, controla la calidad de la energía suministrada y proporciona protecciones contra sobretensiones, cortocircuitos y desconexión de red.',
+            features: [
+                'Eficiencia de conversión superior al 97% en inversores modernos',
+                'Doble seguidor MPPT para optimización independiente de strings',
+                'Monitorización en tiempo real vía WiFi/Ethernet',
+                'Protecciones integradas: anti-islanding, sobretensión, cortocircuito',
+                'Garantía del fabricante de 10-25 años según modelo',
+                'Cumplimiento normativas internacionales'
+            ]
+        },
+        'contador': {
+            title: 'Contador Bidireccional Inteligente',
+            image: '/media/imagenes_animacion/medidor_bidireccional.png',
+            description: 'El contador bidireccional es un dispositivo de medición avanzado que registra tanto el consumo de electricidad de la red como la energía excedentaria inyectada por la instalación solar. Este equipo digital permite la implementación del autoconsumo con compensación de excedentes, optimizando el aprovechamiento económico de la producción solar.',
+            functionality: 'Mide en tiempo real los flujos energéticos en ambas direcciones: consumo desde la red y excedentes vertidos a la red. Los datos se registran en diferentes períodos tarifarios, permitiendo el cálculo preciso de la compensación económica. La comunicación remota con la compañía eléctrica facilita la lectura automática y facturación del balance neto energético.',
+            features: [
+                'Medición bidireccional con precisión clase 1 según normativa',
+                'Registro horario de consumo y generación para facturación',
+                'Comunicación remota PLC/GPRS con distribuidora eléctrica',
+                'Display LCD con información en tiempo real del balance energético',
+                'Función anti-fraude y registro de eventos de red',
+                'Homologación según normativa internacional'
+            ]
+        },
+        'cargador': {
+            title: 'Cargador para Vehículo Eléctrico',
+            image: '/media/imagenes_animacion/cargador_vehiculo.png',
+            description: 'El cargador de vehículo eléctrico es una estación de recarga doméstica que permite cargar automóviles eléctricos utilizando la energía solar generada por la instalación fotovoltaica. Estos dispositivos inteligentes optimizan la carga según la disponibilidad de energía solar, maximizando el autoconsumo y reduciendo los costes de movilidad.',
+            functionality: 'Gestiona la recarga del vehículo eléctrico priorizando el uso de energía solar disponible. Los modelos inteligentes ajustan automáticamente la potencia de carga según la producción fotovoltaica instantánea, evitando el consumo innecesario de la red eléctrica. Incluye protecciones eléctricas, control de acceso y monitorización de sesiones de carga.',
+            features: [
+                'Potencia de carga ajustable desde 3.7kW hasta 22kW trifásico',
+                'Carga inteligente con priorización de energía solar',
+                'Control remoto vía aplicación móvil WiFi/4G',
+                'Protecciones integradas: diferencial tipo A, magnetotérmico',
+                'Compatible con todos los vehículos eléctricos (conector tipo 2)',
+                'Certificación CE y cumplimiento normativa internacional'
+            ]
+        },
+        'bateria': {
+            title: 'Batería de Almacenamiento Solar',
+            image: '/media/imagenes_animacion/bateria_solar.png',
+            description: 'Las baterías de almacenamiento permiten acumular la energía solar excedentaria durante las horas de mayor producción para utilizarla posteriormente cuando no hay generación fotovoltaica. Las modernas baterías de ion-litio ofrecen alta densidad energética, miles de ciclos de vida útil y gestión inteligente de la energía almacenada.',
+            functionality: 'Durante el día, cuando la producción solar supera el consumo instantáneo, la batería se carga automáticamente con el excedente energético. Por la noche o en días nublados, la batería suministra electricidad almacenada, reduciendo significativamente la dependencia de la red eléctrica. El sistema de gestión de batería (BMS) optimiza los ciclos de carga/descarga para maximizar la vida útil.',
+            features: [
+                'Tecnología ion-litio LiFePO4 con más de 6.000 ciclos de vida',
+                'Capacidad típica de 5-15 kWh para instalaciones residenciales',
+                'Eficiencia de carga/descarga superior al 95%',
+                'Sistema de gestión de batería (BMS) con protecciones integradas',
+                'Profundidad de descarga del 90-95% sin afectar la vida útil',
+                'Garantía de rendimiento de 10 años con retención > 80% capacidad'
+            ]
+        }
+    };
+    
+    // Variables del modal
+    const modal = document.getElementById('component-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalImage = document.getElementById('modal-image');
+    const modalDescription = document.getElementById('modal-description');
+    const modalFunctionality = document.getElementById('modal-functionality');
+    const modalFeatures = document.getElementById('modal-features');
+    const modalCloseBtn = modal.querySelector('.component-modal__close');
+    const modalBackdrop = modal.querySelector('.component-modal__backdrop');
+    
+    // Función para abrir el modal
+    function openComponentModal(componentKey) {
+        const data = componentData[componentKey];
+        if (!data) {
+            console.error(`No se encontraron datos para el componente: ${componentKey}`);
+            return;
+        }
+        
+        // Llenar el contenido del modal
+        modalTitle.textContent = data.title;
+        modalImage.src = data.image;
+        modalImage.alt = data.title;
+        modalDescription.textContent = data.description;
+        modalFunctionality.textContent = data.functionality;
+        
+        // Llenar la lista de características
+        modalFeatures.innerHTML = '';
+        data.features.forEach(feature => {
+            const li = document.createElement('li');
+            li.textContent = feature;
+            modalFeatures.appendChild(li);
+        });
+        
+        // Mostrar el modal
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        
+        // Focus management para accesibilidad
+        modalCloseBtn.focus();
+        
+        // Prevenir scroll del body
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Función para cerrar el modal
+    function closeComponentModal() {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        
+        // Restaurar scroll del body
+        document.body.style.overflow = '';
+        
+        // Devolver focus al elemento que abrió el modal (si es posible)
+        const activeLabel = document.querySelector('.component-label:focus');
+        if (activeLabel) {
+            activeLabel.focus();
+        }
+    }
+    
+    // Event listeners para los botones de componentes
+    const componentLabels = document.querySelectorAll('.component-label');
+    componentLabels.forEach(label => {
+        // Click para abrir modal
+        label.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const componentKey = this.getAttribute('data-component');
+            openComponentModal(componentKey);
+        });
+        
+        // Soporte para navegación por teclado
+        label.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const componentKey = this.getAttribute('data-component');
+                openComponentModal(componentKey);
+            }
+        });
+        
+        // Hacer focuseable para accesibilidad
+        if (!label.hasAttribute('tabindex')) {
+            label.setAttribute('tabindex', '0');
+        }
+    });
+    
+    // Event listeners para cerrar el modal
+    modalCloseBtn.addEventListener('click', closeComponentModal);
+    modalBackdrop.addEventListener('click', closeComponentModal);
+    
+    // Cerrar con tecla Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closeComponentModal();
+        }
+    });
+    
+    // Trap focus dentro del modal cuando está abierto
+    modal.addEventListener('keydown', function(e) {
+        if (!modal.classList.contains('show')) return;
+        
+        if (e.key === 'Tab') {
+            const focusableElements = modal.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (e.shiftKey) {
+                // Shift + Tab
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                // Tab
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        }
+    });
+    
+    // Prevenir que el modal se cierre si se hace click en el contenido
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target === modalBackdrop) {
+            closeComponentModal();
+        }
+    });
+    
+    // Evitar que clicks dentro del contenido cierren el modal
+    modal.querySelector('.component-modal__content').addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
     // Performance monitoring (development only)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         let frameCount = 0;
