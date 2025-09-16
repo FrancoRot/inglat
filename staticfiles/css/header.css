@@ -1,0 +1,385 @@
+/* Estilos adicionales para el menú móvil - Header Component */
+/* IMPORTANTE: Solo mostrar en dispositivos móviles */
+.header__mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: #dbe6dbf2;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+    display: none; /* Oculto por defecto */
+}
+
+/* Mostrar solo en dispositivos móviles (768px o menos) */
+@media (max-width: 768px) {
+    .header__mobile-menu {
+        display: block;
+    }
+}
+
+.header__mobile-menu.active {
+    right: 0;
+}
+
+.header__mobile-nav {
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.header__mobile-link {
+    color: var(--gray-700);
+    text-decoration: none;
+    font-weight: var(--font-medium);
+    font-size: var(--text-lg);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--gray-100);
+    transition: color 0.3s ease;
+}
+
+.header__mobile-link:hover {
+    color: var(--primary-color);
+}
+
+.header__mobile-cta {
+    margin: var(--space-6) 0;
+}
+
+.btn--full-width {
+    width: 100%;
+}
+
+.header__mobile-contact {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--gray-200);
+}
+
+.header__mobile-phone,
+.header__mobile-whatsapp {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+    transition: color 0.3s ease;
+}
+
+.header__mobile-phone:hover {
+    color: var(--primary-color);
+}
+
+.header__mobile-whatsapp:hover {
+    color: #25D366;
+}
+
+.header__mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    display: none; /* Oculto por defecto */
+}
+
+/* Mostrar overlay solo en dispositivos móviles */
+@media (max-width: 768px) {
+    .header__mobile-overlay {
+        display: block;
+    }
+}
+
+.header__mobile-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Estados del botón hamburguesa */
+.header__menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.header__menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.header__menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Accesibilidad */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.sr-only-focusable:focus {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    padding: var(--space-2) var(--space-4) !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    background: var(--primary-color) !important;
+    color: var(--white) !important;
+    text-decoration: none !important;
+    z-index: 10000 !important;
+}
+
+/* ======================================
+   LOGO ANIMADO INGLAT - ELECTRONES V2
+   ====================================== */
+
+.logo-container {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    padding: 8px 25px;
+}
+
+.logo-text {
+    position: relative;
+    z-index: 10;
+    display: inline-block;
+}
+
+/* Electrones base */
+.electron {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    margin-top: -2px;
+    margin-left: -2px;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Colores de electrones */
+.electron--blue {
+    background-color: #212f45; /* --prussian-blue */
+    box-shadow: 0 0 3px rgba(33, 47, 69, 0.5);
+    animation-duration: 6s; /* Azul lento */
+}
+
+.electron--gold {
+    background-color: #FFB627; /* --accent-gold */
+    box-shadow: 0 0 3px rgba(255, 182, 39, 0.5);
+    animation-duration: 3s; /* Dorado rápido */
+}
+
+/* Efectos de destello */
+@keyframes glow-blue {
+    0%, 100% { box-shadow: 0 0 3px rgba(33, 47, 69, 0.5); }
+    50% { box-shadow: 0 0 8px rgba(33, 47, 69, 0.9), 0 0 12px rgba(33, 47, 69, 0.6); }
+}
+
+@keyframes glow-gold {
+    0%, 100% { box-shadow: 0 0 3px rgba(255, 182, 39, 0.5); }
+    50% { box-shadow: 0 0 8px rgba(255, 182, 39, 0.9), 0 0 12px rgba(255, 182, 39, 0.6); }
+}
+
+/* Patrón 1: Movimiento ondulado horizontal (horario) */
+.electron--wave-1 {
+    animation-name: wave-horizontal, glow-gold;
+    animation-delay: 0s;
+    animation-duration: 3s, 2s;
+}
+
+@keyframes wave-horizontal {
+    0% { transform: translate(-30px, -12px); }
+    25% { transform: translate(-10px, 12px); }
+    50% { transform: translate(30px, -12px); }
+    75% { transform: translate(10px, 12px); }
+    100% { transform: translate(-30px, -12px); }
+}
+
+/* Patrón 2: Movimiento zigzag diagonal (antihorario) */
+.electron--zigzag-1 {
+    animation-name: zigzag-diagonal, glow-blue;
+    animation-delay: -1s;
+    animation-direction: reverse;
+    animation-duration: 6s, 2s;
+}
+
+@keyframes zigzag-diagonal {
+    0% { transform: translate(-25px, -15px); }
+    20% { transform: translate(-15px, 15px); }
+    40% { transform: translate(15px, -15px); }
+    60% { transform: translate(25px, 15px); }
+    80% { transform: translate(0px, -8px); }
+    100% { transform: translate(-25px, -15px); }
+}
+
+/* Patrón 3: Movimiento elíptico vertical (horario) */
+.electron--ellipse-1 {
+    animation-name: ellipse-vertical, glow-gold;
+    animation-delay: -0.5s;
+    animation-duration: 3s, 2s;
+}
+
+@keyframes ellipse-vertical {
+    0% { transform: translate(0px, -18px); }
+    25% { transform: translate(20px, 0px); }
+    50% { transform: translate(0px, 18px); }
+    75% { transform: translate(-20px, 0px); }
+    100% { transform: translate(0px, -18px); }
+}
+
+/* Patrón 4: Movimiento en "S" (antihorario) */
+.electron--curve-s {
+    animation-name: curve-s, glow-blue;
+    animation-delay: -2s;
+    animation-direction: reverse;
+    animation-duration: 6s, 2s;
+}
+
+@keyframes curve-s {
+    0% { transform: translate(-22px, -16px); }
+    25% { transform: translate(22px, -8px); }
+    50% { transform: translate(-22px, 8px); }
+    75% { transform: translate(22px, 16px); }
+    100% { transform: translate(-22px, -16px); }
+}
+
+/* Patrón 5: Movimiento rectangular pequeño (horario) */
+.electron--rectangle {
+    animation-name: rectangle-small, glow-gold;
+    animation-delay: -3s;
+    animation-duration: 3s, 2s;
+}
+
+@keyframes rectangle-small {
+    0% { transform: translate(-18px, -10px); }
+    25% { transform: translate(18px, -10px); }
+    50% { transform: translate(18px, 10px); }
+    75% { transform: translate(-18px, 10px); }
+    100% { transform: translate(-18px, -10px); }
+}
+
+/* Patrón 6: Movimiento en espiral (antihorario) */
+.electron--spiral {
+    animation-name: spiral-motion, glow-blue;
+    animation-delay: -4s;
+    animation-direction: reverse;
+    animation-duration: 6s, 2s;
+}
+
+@keyframes spiral-motion {
+    0% { transform: translate(-5px, -5px) scale(1); }
+    25% { transform: translate(15px, -15px) scale(1.2); }
+    50% { transform: translate(25px, 10px) scale(0.8); }
+    75% { transform: translate(-15px, 15px) scale(1.1); }
+    100% { transform: translate(-5px, -5px) scale(1); }
+}
+
+/* Responsive para tablets */
+@media (max-width: 1024px) {
+    .logo-container {
+        padding: 4px 12px;
+    }
+    
+    .electron {
+        width: 3px;
+        height: 3px;
+        margin-top: -1.5px;
+        margin-left: -1.5px;
+    }
+    
+    /* Reducir amplitud de movimientos */
+    @keyframes wave-horizontal {
+        0% { transform: translate(-12px, -6px); }
+        25% { transform: translate(-4px, 6px); }
+        50% { transform: translate(12px, -6px); }
+        75% { transform: translate(4px, 6px); }
+        100% { transform: translate(-12px, -6px); }
+    }
+    
+    @keyframes zigzag-diagonal {
+        0% { transform: translate(-10px, -8px); }
+        20% { transform: translate(-6px, 8px); }
+        40% { transform: translate(6px, -8px); }
+        60% { transform: translate(10px, 8px); }
+        80% { transform: translate(0px, -4px); }
+        100% { transform: translate(-10px, -8px); }
+    }
+    
+    @keyframes ellipse-vertical {
+        0% { transform: translate(0px, -10px); }
+        25% { transform: translate(6px, 0px); }
+        50% { transform: translate(0px, 10px); }
+        75% { transform: translate(-6px, 0px); }
+        100% { transform: translate(0px, -10px); }
+    }
+    
+    @keyframes curve-s {
+        0% { transform: translate(-8px, -8px); }
+        25% { transform: translate(8px, -4px); }
+        50% { transform: translate(-8px, 4px); }
+        75% { transform: translate(8px, 8px); }
+        100% { transform: translate(-8px, -8px); }
+    }
+    
+    @keyframes rectangle-small {
+        0% { transform: translate(-6px, -5px); }
+        25% { transform: translate(6px, -5px); }
+        50% { transform: translate(6px, 5px); }
+        75% { transform: translate(-6px, 5px); }
+        100% { transform: translate(-6px, -5px); }
+    }
+}
+
+/* Responsive para móviles - Simplificado */
+@media (max-width: 768px) {
+    .logo-container { padding: 3px 10px; }
+    /* Mantener la misma animación que desktop en mobile */
+    .electron {
+        width: 3px;
+        height: 3px;
+        margin-top: -1.5px;
+        margin-left: -1.5px;
+    }
+    /* No ocultar electrones en mobile */
+    .electron--curve-s,
+    .electron--rectangle { display: inline-block; }
+}
+
+/* Efecto hover para pausar animación */
+.header__logo:hover .electron {
+    animation-play-state: paused;
+}
+
+/* Accesibilidad: Respetar preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .electron {
+        animation: none;
+        opacity: 0.5;
+    }
+}

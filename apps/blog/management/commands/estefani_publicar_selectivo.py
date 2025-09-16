@@ -288,7 +288,8 @@ class Command(BaseCommand):
                 if imagen_url and self.es_url_valida(imagen_url):
                     imagen_file = self.descargar_imagen(imagen_url, titulo)
                     if imagen_file:
-                        noticia.imagen = imagen_file
+                        noticia.archivo = imagen_file
+                        noticia.tipo_multimedia = 'imagen'
             
             noticia.save()
             return noticia

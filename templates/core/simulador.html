@@ -6,17 +6,15 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/simulador.css' %}">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block content %}
 <!-- Hero Section del Simulador -->
-<section class="hero">
-    <div class="container">
-        <h1 class="hero__title">Simulador Solar INGLAT</h1>
-        <p class="hero__subtitle">
-            Calcula el ahorro y retorno de inversión de tu instalación solar personalizada
-        </p>
+<section class="hero hero--video">
+    <div class="hero__video-container">
+        <video class="hero__video" autoplay loop muted playsinline>
+            <source src="/media/videos/simulador2.mp4" type="video/mp4">
+        </video>
     </div>
 </section>
 
@@ -31,148 +29,25 @@
                         <div class="wizard-steps">
                             <div class="step active" data-step="1">
                                 <span class="step-number">1</span>
-                                <span class="step-title">Consumo</span>
+                                <span class="step-title">Ubicación</span>
                             </div>
                             <div class="step" data-step="2">
                                 <span class="step-number">2</span>
-                                <span class="step-title">Preferencias</span>
+                                <span class="step-title">Consumo</span>
                             </div>
                             <div class="step" data-step="3">
                                 <span class="step-number">3</span>
-                                <span class="step-title">Ubicación</span>
-                            </div>
-                            <div class="step" data-step="4">
-                                <span class="step-number">4</span>
-                                <span class="step-title">Instalación</span>
-                            </div>
-                            <div class="step" data-step="5">
-                                <span class="step-number">5</span>
                                 <span class="step-title">Resultados</span>
                             </div>
                         </div>
                     </div>
 
                     <form id="simulador-form" class="wizard-form">
-                        <!-- Paso 1: Consumo Energético -->
+                        <!-- Paso 1: Ubicación e Irradiación Solar -->
                         <div class="wizard-step active" data-step="1">
-                            <h3 class="step-heading">Consumo Energético Anual</h3>
-                            <p class="step-description">
-                                Introduce tu consumo anual de electricidad. Lo puedes encontrar en tu factura eléctrica.
-                            </p>
-                            
-                            <div class="form-group">
-                                <label for="consumo_anual" class="form-label">
-                                    Consumo anual (kWh/año) *
-                                </label>
-                                <input type="number" 
-                                       id="consumo_anual" 
-                                       name="consumo_anual" 
-                                       class="form-input" 
-                                       placeholder="Ej: 4500" 
-                                       min="500" 
-                                       max="50000"
-                                       required>
-                                <small class="form-help">
-                                    Consumo típico: Vivienda pequeña (2000-3000 kWh), Media (3000-5000 kWh), Grande (5000+ kWh)
-                                </small>
-                            </div>
-
-                            <div class="consumo-estimador">
-                                <h4>¿No conoces tu consumo? Calculadora rápida:</h4>
-                                <div class="estimador-grid">
-                                    <div class="form-group">
-                                        <label for="habitantes" class="form-label">Habitantes</label>
-                                        <select id="habitantes" class="form-input">
-                                            <option value="">Seleccionar</option>
-                                            <option value="1">1 persona</option>
-                                            <option value="2">2 personas</option>
-                                            <option value="3">3 personas</option>
-                                            <option value="4">4 personas</option>
-                                            <option value="5">5+ personas</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="tipo_vivienda" class="form-label">Tipo de vivienda</label>
-                                        <select id="tipo_vivienda" class="form-input">
-                                            <option value="">Seleccionar</option>
-                                            <option value="piso">Piso/Apartamento</option>
-                                            <option value="casa">Casa unifamiliar</option>
-                                            <option value="chalet">Chalet/Villa</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button type="button" id="calcular-consumo" class="btn btn--secondary">
-                                    Calcular Consumo Estimado
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Paso 2: Preferencias -->
-                        <div class="wizard-step" data-step="2">
-                            <h3 class="step-heading">Preferencias del Sistema</h3>
-                            <p class="step-description">
-                                Personaliza tu instalación según tus necesidades específicas.
-                            </p>
-                            
-                            <div class="preferences-grid">
-                                <!-- Coche Eléctrico con Imagen -->
-                                <div class="preference-card">
-                                    <div class="preference-visual">
-                                        <img src="{% static 'images/simulador/coche-electrico.png' %}" 
-                                             alt="Coche Eléctrico" 
-                                             class="preference-image" 
-                                             id="coche-electrico-img">
-                                    </div>
-                                    <div class="preference-content">
-                                        <label class="checkbox-container visual-checkbox">
-                                            <input type="checkbox" id="coche_electrico" name="coche_electrico">
-                                            <span class="checkbox-custom-visual"></span>
-                                            <span class="checkbox-label">
-                                                <strong>Tengo o planeo tener coche eléctrico</strong>
-                                                <small>Esto aumentará tu consumo energético estimado en ~2500 kWh/año</small>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Sistema de Baterías con Imagen -->
-                                <div class="preference-card">
-                                    <div class="preference-visual">
-                                        <img src="{% static 'images/simulador/sistema-baterias.svg' %}" 
-                                             alt="Sistema de Baterías" 
-                                             class="preference-image" 
-                                             id="sistema-baterias-img">
-                                    </div>
-                                    <div class="preference-content">
-                                        <label class="checkbox-container visual-checkbox">
-                                            <input type="checkbox" id="bateria" name="bateria">
-                                            <span class="checkbox-custom-visual"></span>
-                                            <span class="checkbox-label">
-                                                <strong>Quiero incluir sistema de baterías</strong>
-                                                <small>Aumenta el autoconsumo pero incrementa la inversión inicial</small>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="preferences-info">
-                                <div class="info-card">
-                                    <h4>Ventajas de las baterías:</h4>
-                                    <ul>
-                                        <li>Mayor autoconsumo (hasta 80%)</li>
-                                        <li>Independencia energética</li>
-                                        <li>Respaldo en cortes de luz</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Paso 3: Ubicación -->
-                        <div class="wizard-step" data-step="3">
                             <h3 class="step-heading">Ubicación e Irradiación Solar</h3>
                             <p class="step-description">
-                                La ubicación geográfica afecta significativamente la producción solar.
+                                La ubicación geográfica y orientación de tu tejado son claves para maximizar la producción solar.
                             </p>
                             
                             <div class="form-group">
@@ -206,6 +81,23 @@
                                 </select>
                             </div>
 
+                            <!-- Mapa de Google Maps -->
+                            <div class="form-group">
+                                <div class="google-map-container" id="google-map-container" style="display: none;">
+                                    <h4>Tu Ubicación</h4>
+                                    <div class="map-wrapper">
+                                        <iframe id="google-map" 
+                                                width="100%" 
+                                                height="300" 
+                                                style="border:0; border-radius: var(--border-radius);" 
+                                                allowfullscreen="" 
+                                                loading="lazy" 
+                                                referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="orientacion" class="form-label">Orientación del tejado *</label>
                                 <div class="orientation-selector">
@@ -213,7 +105,7 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="N" checked required>
                                             <span class="orientation-card optimal">
-                                                <span class="orientation-icon">↑</span>
+                                                <img src="{% static 'images/simulador/casa-norte.svg' %}" alt="Norte" class="orientation-house">
                                                 <span class="orientation-text">Norte</span>
                                                 <span class="orientation-efficiency">100%</span>
                                             </span>
@@ -221,7 +113,7 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="NE" required>
                                             <span class="orientation-card">
-                                                <span class="orientation-icon">↗</span>
+                                                <img src="{% static 'images/simulador/casa-noreste.svg' %}" alt="Noreste" class="orientation-house">
                                                 <span class="orientation-text">Noreste</span>
                                                 <span class="orientation-efficiency">95%</span>
                                             </span>
@@ -229,7 +121,7 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="E" required>
                                             <span class="orientation-card">
-                                                <span class="orientation-icon">→</span>
+                                                <img src="{% static 'images/simulador/casa-este.svg' %}" alt="Este" class="orientation-house">
                                                 <span class="orientation-text">Este</span>
                                                 <span class="orientation-efficiency">85%</span>
                                             </span>
@@ -237,7 +129,7 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="SE" required>
                                             <span class="orientation-card">
-                                                <span class="orientation-icon">↘</span>
+                                                <img src="{% static 'images/simulador/casa-sureste.svg' %}" alt="Sureste" class="orientation-house">
                                                 <span class="orientation-text">Sureste</span>
                                                 <span class="orientation-efficiency">70%</span>
                                             </span>
@@ -245,7 +137,7 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="S" required>
                                             <span class="orientation-card">
-                                                <span class="orientation-icon">↓</span>
+                                                <img src="{% static 'images/simulador/casa-sur.svg' %}" alt="Sur" class="orientation-house">
                                                 <span class="orientation-text">Sur</span>
                                                 <span class="orientation-efficiency">60%</span>
                                             </span>
@@ -253,7 +145,7 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="SO" required>
                                             <span class="orientation-card">
-                                                <span class="orientation-icon">↙</span>
+                                                <img src="{% static 'images/simulador/casa-suroeste.svg' %}" alt="Suroeste" class="orientation-house">
                                                 <span class="orientation-text">Suroeste</span>
                                                 <span class="orientation-efficiency">70%</span>
                                             </span>
@@ -261,7 +153,7 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="O" required>
                                             <span class="orientation-card">
-                                                <span class="orientation-icon">←</span>
+                                                <img src="{% static 'images/simulador/casa-oeste.svg' %}" alt="Oeste" class="orientation-house">
                                                 <span class="orientation-text">Oeste</span>
                                                 <span class="orientation-efficiency">85%</span>
                                             </span>
@@ -269,54 +161,9 @@
                                         <label class="orientation-option">
                                             <input type="radio" name="orientacion" value="NO" required>
                                             <span class="orientation-card">
-                                                <span class="orientation-icon">↖</span>
+                                                <img src="{% static 'images/simulador/casa-noroeste.svg' %}" alt="Noroeste" class="orientation-house">
                                                 <span class="orientation-text">Noroeste</span>
                                                 <span class="orientation-efficiency">95%</span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Selector de Tipo de Tejado -->
-                            <div class="form-group">
-                                <label class="form-label">Tipo de Tejado *</label>
-                                <div class="roof-type-selector">
-                                    <div class="roof-type-grid">
-                                        <label class="roof-type-option">
-                                            <input type="radio" name="tipo_tejado" value="plano" required>
-                                            <span class="roof-type-card">
-                                                <img src="{% static 'images/simulador/tejado-plano.svg' %}" 
-                                                     alt="Techo Plano" 
-                                                     class="roof-type-image">
-                                                <span class="roof-type-text">Techo Plano</span>
-                                            </span>
-                                        </label>
-                                        <label class="roof-type-option">
-                                            <input type="radio" name="tipo_tejado" value="un_agua" required>
-                                            <span class="roof-type-card">
-                                                <img src="{% static 'images/simulador/tejado-un-agua.svg' %}" 
-                                                     alt="Techo a Un Agua" 
-                                                     class="roof-type-image">
-                                                <span class="roof-type-text">Un Agua</span>
-                                            </span>
-                                        </label>
-                                        <label class="roof-type-option">
-                                            <input type="radio" name="tipo_tejado" value="dos_aguas" checked required>
-                                            <span class="roof-type-card">
-                                                <img src="{% static 'images/simulador/tejado-dos-aguas.svg' %}" 
-                                                     alt="Techo a Dos Aguas" 
-                                                     class="roof-type-image">
-                                                <span class="roof-type-text">Dos Aguas</span>
-                                            </span>
-                                        </label>
-                                        <label class="roof-type-option">
-                                            <input type="radio" name="tipo_tejado" value="cuatro_aguas" required>
-                                            <span class="roof-type-card">
-                                                <img src="{% static 'images/simulador/tejado-cuatro-aguas.svg' %}" 
-                                                     alt="Techo a Cuatro Aguas" 
-                                                     class="roof-type-image">
-                                                <span class="roof-type-text">Cuatro Aguas</span>
                                             </span>
                                         </label>
                                     </div>
@@ -385,15 +232,7 @@
                                     El ángulo óptimo para Argentina es 30°. Los paneles serán más eficientes con orientación Norte y ángulo de 30°.
                                 </small>
                             </div>
-                        </div>
 
-                        <!-- Paso 4: Instalación -->
-                        <div class="wizard-step" data-step="4">
-                            <h3 class="step-heading">Detalles de la Instalación</h3>
-                            <p class="step-description">
-                                Información sobre el espacio disponible para los paneles solares.
-                            </p>
-                            
                             <div class="form-group">
                                 <label for="superficie" class="form-label">
                                     Superficie disponible (m²) *
@@ -428,7 +267,61 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
+                        <!-- Paso 2: Consumo Energético -->
+                        <div class="wizard-step" data-step="2">
+                            <h3 class="step-heading">Consumo Energético Anual</h3>
+                            <p class="step-description">
+                                Introduce tu consumo anual de electricidad. Lo puedes encontrar en tu factura eléctrica.
+                            </p>
+                            
+                            <div class="form-group">
+                                <label for="consumo_anual" class="form-label">
+                                    Consumo anual (kWh/año) *
+                                </label>
+                                <input type="number" 
+                                       id="consumo_anual" 
+                                       name="consumo_anual" 
+                                       class="form-input" 
+                                       placeholder="Ej: 4500" 
+                                       min="500" 
+                                       max="50000"
+                                       required>
+                                <small class="form-help">
+                                    Consumo típico: Vivienda pequeña (2000-3000 kWh), Media (3000-5000 kWh), Grande (5000+ kWh)
+                                </small>
+                            </div>
+
+                            <div class="consumo-estimador">
+                                <h4>¿No conoces tu consumo? Calculadora rápida:</h4>
+                                <div class="estimador-grid">
+                                    <div class="form-group">
+                                        <label for="habitantes" class="form-label">Habitantes</label>
+                                        <select id="habitantes" class="form-input">
+                                            <option value="">Seleccionar</option>
+                                            <option value="1">1 persona</option>
+                                            <option value="2">2 personas</option>
+                                            <option value="3">3 personas</option>
+                                            <option value="4">4 personas</option>
+                                            <option value="5">5+ personas</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tipo_vivienda" class="form-label">Tipo de vivienda</label>
+                                        <select id="tipo_vivienda" class="form-input">
+                                            <option value="">Seleccionar</option>
+                                            <option value="piso">Piso/Apartamento</option>
+                                            <option value="casa">Casa unifamiliar</option>
+                                            <option value="chalet">Chalet/Villa</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="button" id="calcular-consumo" class="btn btn--secondary">
+                                    Calcular Consumo Estimado
+                                </button>
+                            </div>
+                            
                             <div class="form-actions">
                                 <button type="submit" class="btn btn--primary btn--large">
                                     <span class="btn-text">Calcular Simulación</span>
@@ -444,8 +337,10 @@
                             </div>
                         </div>
 
-                        <!-- Paso 5: Resultados -->
-                        <div class="wizard-step" data-step="5">
+
+
+                        <!-- Paso 3: Resultados -->
+                        <div class="wizard-step" data-step="3">
                             <div id="resultados-container" style="display: none;">
                                 <!-- Los resultados se cargarán aquí dinámicamente -->
                             </div>
@@ -453,7 +348,7 @@
                             <div id="error-container" class="error-message" style="display: none;">
                                 <h3>Error en el cálculo</h3>
                                 <p id="error-text"></p>
-                                <button type="button" class="btn btn--secondary" onclick="goToStep(4)">
+                                <button type="button" class="btn btn--secondary" onclick="goToStep(2)">
                                     Volver a intentar
                                 </button>
                             </div>
@@ -527,5 +422,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- Chart.js para gráficos de resultados -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Script principal del simulador -->
 <script src="{% static 'js/simulador.js' %}" defer></script>
 {% endblock %}

@@ -3,7 +3,7 @@
 class SimuladorSolar {
     constructor() {
         this.currentStep = 1;
-        this.totalSteps = 5;
+        this.totalSteps = 3;
         this.formData = {};
         
         this.init();
@@ -29,11 +29,14 @@ class SimuladorSolar {
         // Calculadora de consumo
         document.getElementById('calcular-consumo').addEventListener('click', () => this.calcularConsumoEstimado());
         
-        // Visual feedback para preferencias
-        this.addPreferenceAnimations();
-        
-        // Visual feedback para selecciones de tejado
-        this.addRoofSelectionAnimations();
+        // Visual feedback para orientación
+        this.addOrientationAnimations();
+
+        // Visual feedback para ángulos
+        this.addAngleAnimations();
+
+        // Google Maps integration
+        this.initGoogleMaps();
         
         // Validaciones en tiempo real
         this.addRealtimeValidation();
@@ -115,55 +118,112 @@ class SimuladorSolar {
         if (orientacionNorte && !document.querySelector('input[name="orientacion"]:checked')) {
             orientacionNorte.checked = true;
         }
-        
-        const tejadoDosAguas = document.querySelector('input[name="tipo_tejado"][value="dos_aguas"]');
-        if (tejadoDosAguas && !document.querySelector('input[name="tipo_tejado"]:checked')) {
-            tejadoDosAguas.checked = true;
-        }
-        
+
         const angulo30 = document.querySelector('input[name="inclinacion"][value="30"]');
         if (angulo30 && !document.querySelector('input[name="inclinacion"]:checked')) {
             angulo30.checked = true;
         }
     }
     
-    addPreferenceAnimations() {
-        // Animaciones para preferencias con imágenes
-        const preferenceCards = document.querySelectorAll('.preference-card');
-        
-        preferenceCards.forEach(card => {
-            const checkbox = card.querySelector('input[type="checkbox"]');
-            const image = card.querySelector('.preference-image');
-            
-            if (checkbox && image) {
-                checkbox.addEventListener('change', (e) => {
-                    if (e.target.checked) {
-                        card.classList.add('selected');
-                        image.style.filter = 'brightness(1.1) saturate(1.2)';
-                        
-                        // Animación de selección
-                        card.style.transform = 'scale(1.02)';
+    addOrientationAnimations() {
+        // Animaciones para orientación con nuevas imágenes de casa
+        this.addRadioGroupAnimations('orientacion', '.orientation-card');
+
+        // Feedback especial para orientación óptima (Norte)
+        const orientationInputs = document.querySelectorAll('input[name="orientacion"]');
+        orientationInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                if (e.target.value === 'N' && e.target.checked) {
+                    this.showNotification('¡Excelente! La orientación Norte es óptima para Argentina.', 'success');
+                }
+            });
+        });
+    }
+
+    addAngleAnimations() {
+        // Animaciones para ángulos de inclinación
+        this.addRadioGroupAnimations('inclinacion', '.angle-card');
+
+        // Feedback especial para ángulo óptimo (30°)
+        const angleInputs = document.querySelectorAll('input[name="inclinacion"]');
+        angleInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                if (e.target.value === '30' && e.target.checked) {
+                    const selectedCard = e.target.nextElementSibling;
+                    if (selectedCard) {
+                        selectedCard.style.boxShadow = '0 0 25px rgba(34, 197, 94, 0.4)';
                         setTimeout(() => {
-                            card.style.transform = 'scale(1)';
-                        }, 200);
-                    } else {
-                        card.classList.remove('selected');
-                        image.style.filter = 'none';
+                            selectedCard.style.boxShadow = '';
+                        }, 1500);
                     }
-                });
-            }
+                }
+            });
         });
     }
     
-    addRoofSelectionAnimations() {
-        // Animaciones para selección de tipo de tejado
-        this.addRadioGroupAnimations('tipo_tejado', '.roof-type-card');
-        
-        // Animaciones para selección de ángulo
-        this.addRadioGroupAnimations('inclinacion', '.angle-card');
-        
-        // Animaciones para orientación
-        this.addRadioGroupAnimations('orientacion', '.orientation-card');
+    initGoogleMaps() {
+        // Configurar Google Maps para provincias argentinas
+        this.provinciaCoords = {
+            'caba': { lat: -34.6131, lng: -58.3772, name: 'Ciudad de Buenos Aires' },
+            'buenos_aires': { lat: -34.9214, lng: -57.9544, name: 'La Plata, Buenos Aires' },
+            'catamarca': { lat: -28.4696, lng: -65.7795, name: 'San Fernando del Valle de Catamarca' },
+            'chaco': { lat: -27.4512, lng: -58.9867, name: 'Resistencia, Chaco' },
+            'chubut': { lat: -43.2481, lng: -65.3055, name: 'Rawson, Chubut' },
+            'cordoba': { lat: -31.4201, lng: -64.1888, name: 'Córdoba' },
+            'corrientes': { lat: -27.4806, lng: -58.8341, name: 'Corrientes' },
+            'entre_rios': { lat: -31.7413, lng: -60.5115, name: 'Paraná, Entre Ríos' },
+            'formosa': { lat: -26.1775, lng: -58.1781, name: 'Formosa' },
+            'jujuy': { lat: -24.1858, lng: -65.2995, name: 'San Salvador de Jujuy' },
+            'la_pampa': { lat: -36.6167, lng: -64.2833, name: 'Santa Rosa, La Pampa' },
+            'la_rioja': { lat: -29.4139, lng: -66.8561, name: 'La Rioja' },
+            'mendoza': { lat: -32.8833, lng: -68.8167, name: 'Mendoza' },
+            'misiones': { lat: -27.3621, lng: -55.9008, name: 'Posadas, Misiones' },
+            'neuquen': { lat: -38.9516, lng: -68.0591, name: 'Neuquén' },
+            'rio_negro': { lat: -40.8135, lng: -62.9967, name: 'Viedma, Río Negro' },
+            'salta': { lat: -24.7821, lng: -65.4232, name: 'Salta' },
+            'san_juan': { lat: -31.5375, lng: -68.5364, name: 'San Juan' },
+            'san_luis': { lat: -33.2949, lng: -66.3281, name: 'San Luis' },
+            'santa_cruz': { lat: -51.6230, lng: -69.2168, name: 'Río Gallegos, Santa Cruz' },
+            'santa_fe': { lat: -31.6333, lng: -60.7000, name: 'Santa Fe' },
+            'santiago_del_estero': { lat: -27.7824, lng: -64.2642, name: 'Santiago del Estero' },
+            'tierra_del_fuego': { lat: -54.8019, lng: -68.3030, name: 'Ushuaia, Tierra del Fuego' },
+            'tucuman': { lat: -26.8083, lng: -65.2176, name: 'San Miguel de Tucumán' }
+        };
+
+        // Listener para cambio de provincia
+        const ubicacionSelect = document.getElementById('ubicacion');
+        if (ubicacionSelect) {
+            ubicacionSelect.addEventListener('change', (e) => {
+                this.updateGoogleMap(e.target.value);
+            });
+        }
+    }
+
+    updateGoogleMap(provinciaCode) {
+        const mapContainer = document.getElementById('google-map-container');
+        const mapIframe = document.getElementById('google-map');
+
+        if (!provinciaCode || !this.provinciaCoords[provinciaCode]) {
+            mapContainer.style.display = 'none';
+            return;
+        }
+
+        const coords = this.provinciaCoords[provinciaCode];
+        const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50000!2d${coords.lng}!3d${coords.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z${coords.lat},${coords.lng}!5e0!3m2!1ses!2sar!4v1640000000000`;
+
+        mapIframe.src = mapUrl;
+        mapContainer.style.display = 'block';
+
+        // Animar la aparición del mapa
+        mapContainer.style.opacity = '0';
+        mapContainer.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            mapContainer.style.transition = 'all 0.5s ease';
+            mapContainer.style.opacity = '1';
+            mapContainer.style.transform = 'translateY(0)';
+        }, 100);
+
+        this.showNotification(`Ubicación actualizada: ${coords.name}`, 'info');
     }
     
     addRadioGroupAnimations(groupName, cardSelector) {
@@ -211,9 +271,15 @@ class SimuladorSolar {
                 this.currentStep++;
                 this.updateStepDisplay();
                 this.updateNavigation();
-                
+
+                // Scroll suave al inicio de la página
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
                 // Si llegamos al último paso y no es resultados, enviar formulario
-                if (this.currentStep === 5) {
+                if (this.currentStep === 3) {
                     this.processSimulation();
                 }
             }
@@ -225,6 +291,12 @@ class SimuladorSolar {
             this.currentStep--;
             this.updateStepDisplay();
             this.updateNavigation();
+
+            // Scroll suave al inicio de la página
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
     }
     
@@ -253,8 +325,6 @@ class SimuladorSolar {
                     fieldValid = false;
                     if (input.name === 'orientacion') {
                         errorMessages.push('Selecciona la orientación del tejado');
-                    } else if (input.name === 'tipo_tejado') {
-                        errorMessages.push('Selecciona el tipo de tejado');
                     } else if (input.name === 'inclinacion') {
                         errorMessages.push('Selecciona el ángulo del tejado');
                     }
@@ -357,11 +427,8 @@ class SimuladorSolar {
         
         // Recopilar datos del formulario
         formData.consumo_anual = parseFloat(document.getElementById('consumo_anual').value) || 0;
-        formData.coche_electrico = document.getElementById('coche_electrico').checked;
-        formData.bateria = document.getElementById('bateria').checked;
         formData.ubicacion = document.getElementById('ubicacion').value;
         formData.orientacion = document.querySelector('input[name="orientacion"]:checked')?.value || 'N';
-        formData.tipo_tejado = document.querySelector('input[name="tipo_tejado"]:checked')?.value || 'dos_aguas';
         formData.inclinacion = parseFloat(document.querySelector('input[name="inclinacion"]:checked')?.value) || 30;
         formData.superficie = parseFloat(document.getElementById('superficie').value) || 0;
         
@@ -394,7 +461,7 @@ class SimuladorSolar {
             if (data.success) {
                 this.displayResults(data.resultados, formData);
                 // Ir al paso de resultados
-                this.currentStep = 5;
+                this.currentStep = 3;
                 this.updateStepDisplay();
                 this.updateNavigation();
             } else {
@@ -613,7 +680,7 @@ class SimuladorSolar {
         document.getElementById('resultados-container').style.display = 'none';
         
         // Ir al paso de resultados para mostrar el error
-        this.currentStep = 5;
+        this.currentStep = 3;
         this.updateStepDisplay();
         this.updateNavigation();
     }
@@ -642,6 +709,30 @@ class SimuladorSolar {
         this.showNotification('Simulador reiniciado. Puedes comenzar una nueva simulación.', 'success');
     }
     
+    addOrientationAnimations() {
+        const orientationOptions = document.querySelectorAll('.orientation-option input');
+        orientationOptions.forEach(input => {
+            input.addEventListener('change', (e) => {
+                // Remover clase active de todas las opciones
+                document.querySelectorAll('.orientation-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+
+                // Agregar clase active a la opción seleccionada
+                if (e.target.checked) {
+                    const card = e.target.nextElementSibling;
+                    card.classList.add('selected');
+
+                    // Animación de selección
+                    card.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                    }, 200);
+                }
+            });
+        });
+    }
+
     showNotification(message, type = 'info') {
         // Crear notificación temporal
         const notification = document.createElement('div');

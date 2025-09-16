@@ -1,23 +1,41 @@
 {% if has_video %}
 <div class="video-container" data-platform="{{ platform }}">
-    {% if platform == 'youtube' %}
+    {% if video_file %}
+        <!-- Video subido como archivo local -->
+        <video 
+            class="video-direct video-local"
+            {% if controls %}controls{% endif %}
+            {% if autoplay %}autoplay{% endif %}
+            {% if muted %}muted{% endif %}
+            {% if loop %}loop{% endif %}
+            preload="metadata"
+            style="width: 100%; height: auto; border-radius: 8px;">
+            <source src="{{ video_file }}" type="video/mp4">
+            <source src="{{ video_file }}" type="video/webm">
+            <source src="{{ video_file }}" type="video/mov">
+            <p>Tu navegador no soporta videos HTML5. <a href="{{ video_file }}" download>Descargar video</a></p>
+        </video>
+    
+    {% elif platform == 'youtube' %}
         <iframe 
             class="video-iframe"
-            src="{{ embed_url }}{% if autoplay %}?autoplay=1{% if muted %}&mute=1{% endif %}{% endif %}"
+            src="{{ embed_url }}{% if autoplay %}?autoplay=1{% if muted %}&mute=1{% endif %}{% if loop %}&loop=1{% endif %}{% endif %}"
             title="{{ title }}"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
+            allowfullscreen
+            style="border-radius: 8px;">
         </iframe>
     
     {% elif platform == 'vimeo' %}
         <iframe 
             class="video-iframe"
-            src="{{ embed_url }}{% if autoplay %}?autoplay=1{% if muted %}&muted=1{% endif %}{% endif %}"
+            src="{{ embed_url }}{% if autoplay %}?autoplay=1{% if muted %}&muted=1{% endif %}{% if loop %}&loop=1{% endif %}{% endif %}"
             title="{{ title }}"
             frameborder="0"
             allow="autoplay; fullscreen; picture-in-picture"
-            allowfullscreen>
+            allowfullscreen
+            style="border-radius: 8px;">
         </iframe>
     
     {% elif platform == 'direct' or platform == 'gdrive' or platform == 'dropbox' %}
@@ -26,7 +44,9 @@
             {% if controls %}controls{% endif %}
             {% if autoplay %}autoplay{% endif %}
             {% if muted %}muted{% endif %}
-            preload="metadata">
+            {% if loop %}loop{% endif %}
+            preload="metadata"
+            style="width: 100%; height: auto; border-radius: 8px;">
             <source src="{{ embed_url }}" type="video/mp4">
             <p>Tu navegador no soporta videos HTML5. <a href="{{ embed_url }}">Descargar video</a></p>
         </video>
@@ -34,8 +54,54 @@
     {% else %}
         <div class="video-error">
             <i class="fas fa-exclamation-triangle"></i>
-            <p>No se puede reproducir este video. <a href="{{ video_url }}" target="_blank">Ver en enlace original</a></p>
+            <p>No se puede reproducir este video. <a href="{{ video_url|default:embed_url }}" target="_blank">Ver en enlace original</a></p>
         </div>
     {% endif %}
 </div>
+
+<!-- CSS inline para mejor compatibilidad -->
+<style>
+    .video-container {
+        position: relative;
+        width: 100%;
+        margin: var(--space-4, 1rem) 0;
+        border-radius: var(--border-radius-lg, 8px);
+        overflow: hidden;
+        box-shadow: var(--shadow, 0 1px 3px 0 rgb(0 0 0 / 0.1));
+    }
+    
+    .video-iframe {
+        width: 100%;
+        height: 400px;
+    }
+    
+    .video-direct, .video-local {
+        width: 100%;
+        max-height: 500px;
+        background: #000;
+    }
+    
+    .video-error {
+        padding: var(--space-8, 2rem);
+        text-align: center;
+        background: var(--gray-100, #f5f5f5);
+        border-radius: var(--border-radius, 8px);
+        color: var(--error, #ef4444);
+    }
+    
+    .video-error i {
+        font-size: 2rem;
+        margin-bottom: var(--space-4, 1rem);
+    }
+    
+    @media (max-width: 768px) {
+        .video-iframe {
+            height: 250px;
+        }
+        
+        .video-direct, .video-local {
+            max-height: 300px;
+        }
+    }
+</style>
 {% endif %}

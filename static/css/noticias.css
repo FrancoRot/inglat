@@ -369,12 +369,14 @@
     object-fit: cover;
     object-position: center;
     transition: transform 0.3s ease;
-    /* Anti-aliasing y optimización de renderizado */
+    /* Optimización de calidad de imagen */
+    image-rendering: high-quality;
     image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Mejorar nitidez y rendimiento */
     backface-visibility: hidden;
-    /* Prevenir pixelado en escalado */
+    -webkit-backface-visibility: hidden;
     transform: translateZ(0);
     will-change: transform;
 }

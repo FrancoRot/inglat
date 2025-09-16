@@ -4,8 +4,8 @@ from django.utils.html import format_html
 from django.db import models
 from django.forms import TextInput, Textarea
 from .models import (
-    Project, HomePortada, SimuladorConfig, CostoInstalacion, 
-    FactorUbicacion, FactorOrientacion, TipoTejado, AnguloTejado
+    Project, HomePortada, SimuladorConfig, CostoInstalacion,
+    FactorUbicacion, FactorOrientacion, AnguloTejado
 )
 
 
@@ -394,51 +394,7 @@ class FactorOrientacionAdmin(admin.ModelAdmin):
     ordering = ['angulo_solar']
 
 
-@admin.register(TipoTejado)
-class TipoTejadoAdmin(admin.ModelAdmin):
-    """Administrador para tipos de tejado"""
-    
-    list_display = [
-        'tipo_display',
-        'factor_complejidad_display',
-        'angulo_optimo_display',
-        'imagen_svg',
-        'activo'
-    ]
-    
-    list_filter = ['activo']
-    
-    fields = [
-        'tipo',
-        'factor_complejidad',
-        'angulo_optimo',
-        'imagen_svg',
-        'descripcion',
-        'activo'
-    ]
-    
-    list_editable = ['activo']
-    
-    def tipo_display(self, obj):
-        return obj.get_tipo_display()
-    tipo_display.short_description = 'Tipo de Tejado'
-    
-    def factor_complejidad_display(self, obj):
-        if obj.factor_complejidad == 1.0:
-            return format_html('<span style="color: green;">1.0 (Normal)</span>')
-        elif obj.factor_complejidad > 1.0:
-            return format_html(
-                f'<span style="color: orange;">{obj.factor_complejidad} (+{(obj.factor_complejidad-1)*100:.0f}%)</span>'
-            )
-        else:
-            return format_html(
-                f'<span style="color: blue;">{obj.factor_complejidad} ({(obj.factor_complejidad-1)*100:.0f}%)</span>'
-            )
-    factor_complejidad_display.short_description = 'Complejidad'
-    
-    def angulo_optimo_display(self, obj):
-        return f"{obj.angulo_optimo}°"
-    angulo_optimo_display.short_description = 'Ángulo Óptimo'
+# TipoTejado eliminado - ya no se usa en el simulador simplificado
 
 
 @admin.register(AnguloTejado)
@@ -513,8 +469,7 @@ FactorUbicacion._meta.verbose_name_plural = "SIMULADOR - Factores de Ubicacion"
 FactorOrientacion._meta.verbose_name = "SIMULADOR - Factor de Orientacion"
 FactorOrientacion._meta.verbose_name_plural = "SIMULADOR - Factores de Orientacion"
 
-TipoTejado._meta.verbose_name = "SIMULADOR - Tipo de Tejado"
-TipoTejado._meta.verbose_name_plural = "SIMULADOR - Tipos de Tejado"
+# TipoTejado eliminado del admin
 
 AnguloTejado._meta.verbose_name = "SIMULADOR - Angulo de Inclinacion"
 AnguloTejado._meta.verbose_name_plural = "SIMULADOR - Angulos de Tejado"

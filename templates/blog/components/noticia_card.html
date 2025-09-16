@@ -4,71 +4,66 @@
 <article class="noticia-card" data-categoria="{{ noticia.categoria.slug|default:'sin-categoria' }}">
     <a href="{{ noticia.get_absolute_url }}" class="card-link">
         
-        <!-- Multimedia Universal (Imagen o Video Preview) -->
+        <!-- Miniatura Universal (Siempre usa miniatura, no contenido completo) -->
         <div class="card-media" data-media-type="{{ noticia.multimedia_type|default:'none' }}">
-            {% if noticia.tipo_multimedia == 'imagen' and noticia.imagen %}
-                <!-- Imagen tradicional -->
-                <img src="{{ noticia.imagen.url }}" 
-                     alt="{{ noticia.titulo }}" 
-                     class="card-image"
-                     loading="lazy"
-                     decoding="async"
-                     fetchpriority="low">
-            
-            {% elif noticia.tipo_multimedia == 'video' or noticia.has_video %}
-                <!-- Sistema de video universal -->
-                <div class="card-video-preview" data-platform="{{ noticia.video_platform|default:'video' }}">
-                    {% if noticia.video_thumbnail_url %}
-                        <!-- Usar thumbnail generado automáticamente -->
-                        <img src="{{ noticia.video_thumbnail_url }}" 
-                             alt="{{ noticia.titulo }}" 
-                             class="card-image"
-                             loading="lazy"
-                             decoding="async"
-                             fetchpriority="low">
-                    {% elif noticia.imagen %}
-                        <!-- Fallback a imagen si no hay thumbnail de video -->
-                        <img src="{{ noticia.imagen.url }}" 
-                             alt="{{ noticia.titulo }}" 
-                             class="card-image"
-                             loading="lazy"
-                             decoding="async"
-                             fetchpriority="low">
+            {% with thumbnail_url=noticia.get_thumbnail_url %}
+                {% if thumbnail_url %}
+                    <!-- Mostrar miniatura con overlay de video si es necesario -->
+                    {% if noticia.tipo_multimedia == 'video' %}
+                        <div class="card-video-preview" data-platform="{{ noticia.video_platform|default:'video' }}">
+                            <img src="{{ thumbnail_url }}" 
+                                 alt="{{ noticia.titulo }}" 
+                                 class="card-image"
+                                 loading="lazy"
+                                 decoding="async"
+                                 fetchpriority="low"
+                                 style="object-fit: cover; width: 100%; height: 100%; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
+                            <!-- Overlay con icono de play para videos -->
+                            <div class="video-overlay">
+                                <i class="fas fa-play-circle fa-2x" style="color: white; opacity: 0.9;"></i>
+                            </div>
+                        </div>
                     {% else %}
-                        <!-- Placeholder para video sin thumbnail -->
-                        <div class="video-placeholder">
+                        <!-- Imagen simple sin overlay -->
+                        <img src="{{ thumbnail_url }}" 
+                             alt="{{ noticia.titulo }}" 
+                             class="card-image"
+                             loading="lazy"
+                             decoding="async"
+                             fetchpriority="low"
+                             style="object-fit: cover; width: 100%; height: 100%; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
+                    {% endif %}
+                
+                {% elif noticia.video_vimeo_id %}
+                    <!-- Fallback legacy para Vimeo existente -->
+                    <div class="card-video-preview" data-platform="vimeo-legacy">
+                        <img src="https://vumbnail.com/{{ noticia.video_vimeo_id }}.jpg" 
+                             alt="{{ noticia.titulo }}" 
+                             class="card-image"
+                             loading="lazy"
+                             decoding="async"
+                             fetchpriority="low">
+                        <div class="video-overlay">
+                            <i class="fas fa-play-circle fa-2x" style="color: white; opacity: 0.9;"></i>
+                        </div>
+                    </div>
+                
+                {% else %}
+                    <!-- Placeholder cuando no hay miniatura disponible -->
+                    <div class="card-placeholder">
+                        {% if noticia.tipo_multimedia == 'video' %}
                             <i class="fas fa-play-circle fa-3x" style="color: white;"></i>
                             <span style="color: white; margin-top: 8px; font-size: 14px;">Video disponible</span>
-                        </div>
-                    {% endif %}
-                    
-                    <!-- Overlay con icono de play general (sin iconos de plataforma) -->
-                    <div class="video-overlay">
-                        <i class="fas fa-play-circle fa-2x" style="color: white; opacity: 0.9;"></i>
+                        {% elif noticia.tipo_multimedia == 'imagen' %}
+                            <i class="fas fa-image fa-3x" style="color: white;"></i>
+                            <span style="color: white; margin-top: 8px; font-size: 14px;">Imagen disponible</span>
+                        {% else %}
+                            <i class="fas fa-newspaper fa-3x" style="color: white;"></i>
+                            <span style="color: white; margin-top: 8px; font-size: 14px;">Sin multimedia</span>
+                        {% endif %}
                     </div>
-                </div>
-                
-            {% elif noticia.video_vimeo_id %}
-                <!-- Fallback legacy para Vimeo existente -->
-                <div class="card-video-preview" data-platform="vimeo-legacy">
-                    <img src="https://vumbnail.com/{{ noticia.video_vimeo_id }}.jpg" 
-                         alt="{{ noticia.titulo }}" 
-                         class="card-image"
-                         loading="lazy"
-                         decoding="async"
-                         fetchpriority="low">
-                    <div class="video-overlay">
-                        <i class="fas fa-play-circle fa-2x" style="color: white; opacity: 0.9;"></i>
-                    </div>
-                </div>
-            
-            {% else %}
-                <!-- Placeholder cuando no hay multimedia -->
-                <div class="card-placeholder">
-                    <i class="fas fa-newspaper fa-2x" style="color: white;"></i>
-                    <span style="color: white; margin-top: 8px; font-size: 14px;">Sin imagen</span>
-                </div>
-            {% endif %}
+                {% endif %}
+            {% endwith %}
             
             <!-- Badge de Categoría -->
             {% if noticia.categoria %}

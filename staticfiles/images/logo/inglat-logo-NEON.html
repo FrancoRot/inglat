@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INGLAT - Neon Futurista Mod</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family: 'Orbitron', sans-serif;
+    background: transparent;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logo-inglat{
+    position: relative;
+    padding: 20px 50px;
+    background: rgba(0,0,0,0.7); /* recuadro negro semi */
+    border-radius: 14px;
+    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+    border: 1px solid rgba(0,255,255,0.4);
+}
+.logo-text{
+    font-size: 36px;
+    font-weight: 800;
+    color: #00E0FF;
+    text-shadow: 0 0 10px #00E0FF, 0 0 20px #00E0FF, 0 0 40px #00E0FF;
+    position: relative;
+    z-index: 10;
+}
+.electron{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:5;
+}
+.electron--pink{
+    background: #FF00FF;
+    box-shadow: 0 0 8px #FF00FF, 0 0 15px #FF00FF;
+}
+.electron--green{
+    background: #00FF88;
+    box-shadow: 0 0 8px #00FF88, 0 0 15px #00FF88;
+}
+/* Animación aleatoria controlada */
+@keyframes randomMove1 {
+    0% {transform: translate(0,0);}
+    25% {transform: translate(20px,-15px);}
+    50% {transform: translate(-15px,15px);}
+    75% {transform: translate(10px,-10px);}
+    100% {transform: translate(0,0);}
+}
+@keyframes randomMove2 {
+    0% {transform: translate(0,0);}
+    20% {transform: translate(-20px,10px);}
+    40% {transform: translate(15px,-10px);}
+    60% {transform: translate(-10px,-15px);}
+    80% {transform: translate(10px,15px);}
+    100% {transform: translate(0,0);}
+}
+@keyframes randomMove3 {
+    0% {transform: translate(0,0);}
+    30% {transform: translate(12px,12px);}
+    60% {transform: translate(-12px,-8px);}
+    90% {transform: translate(8px,-12px);}
+    100% {transform: translate(0,0);}
+}
+.electron.move1{animation: randomMove1 4s ease-in-out infinite;}
+.electron.move2{animation: randomMove2 5s ease-in-out infinite;}
+.electron.move3{animation: randomMove3 6s ease-in-out infinite;}
+</style>
+</head>
+<body>
+<div class="logo-inglat">
+    <span class="logo-text">INGLAT</span>
+
+    <!-- 3 Electrones Rosa -->
+    <div class="electron electron--pink move1" style="top:30%; left:20%;"></div>
+    <div class="electron electron--pink move2" style="top:50%; left:70%;"></div>
+    <div class="electron electron--pink move3" style="top:70%; left:40%;"></div>
+
+    <!-- 3 Electrones Verdes -->
+    <div class="electron electron--green move1" style="top:40%; left:60%; animation-delay:-1s;"></div>
+    <div class="electron electron--green move2" style="top:60%; left:25%; animation-delay:-2s;"></div>
+    <div class="electron electron--green move3" style="top:35%; left:50%; animation-delay:-3s;"></div>
+</div>
+</body>
+</html>

@@ -2,10 +2,19 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
+      "Bash(./venv/Scripts/python.exe manage.py collectstatic --noinput)",
+      "WebSearch",
+      "Bash(python:*)",
+      "Bash(./venv/Scripts/python.exe manage.py check)",
       "Read(//mnt/c/Users/franc/Downloads/**)",
-      "Bash(python manage.py collectstatic:*)",
-      "Bash(python3 manage.py collectstatic:*)",
-      "Bash(python manage.py runserver:*)"
+      "Bash(./venv/Scripts/python.exe manage.py check:*)",
+      "Bash(./venv/Scripts/python.exe manage.py makemigrations:*)",
+      "Bash(find:*)",
+      "Bash(ffprobe:*)",
+      "mcp__firecrawl__firecrawl_search",
+      "WebFetch(domain:www.canva.com)",
+      "WebFetch(domain:www.cronyxdigital.com)",
+      "Bash(mediainfo:*)"
     ],
     "deny": [],
     "ask": []

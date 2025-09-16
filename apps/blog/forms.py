@@ -16,9 +16,12 @@ class NoticiaAdminForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'video_url': forms.URLInput(attrs={
-                'placeholder': 'https://www.youtube.com/watch?v=abc123 o https://vimeo.com/123456789',
+                'placeholder': 'https://www.youtube.com/watch?v=abc123 o https://example.com/imagen.jpg',
                 'size': 100,
                 'class': 'vLargeTextField'
+            }),
+            'archivo': forms.FileInput(attrs={
+                'accept': '.jpg,.jpeg,.png,.gif,.mp4,.webm,.mov,.avi,.m4v'
             }),
             'contenido': forms.Textarea(attrs={
                 'rows': 20,
@@ -39,13 +42,21 @@ class NoticiaAdminForm(forms.ModelForm):
         
         # Agregar ayuda contextual
         self.fields['video_url'].help_text = (
-            "Soportamos: YouTube, Vimeo, Google Drive, Dropbox y URLs directas MP4. "
+            "URLs soportadas: YouTube, Vimeo, Google Drive, Dropbox y URLs directas de archivos. "
             "El sistema detectara automaticamente la plataforma y generara las URLs de embed."
         )
         
+        self.fields['archivo'].help_text = (
+            "Sube un archivo directamente: JPG/PNG para imagenes, MP4/WebM para videos. "
+            "Maximo 50MB por archivo."
+        )
+        
         self.fields['tipo_multimedia'].help_text = (
-            "Selecciona 'imagen' para usar imagen o 'video' para usar video. "
-            "Si seleccionas video, asegurate de proporcionar una URL valida."
+            "Selecciona el tipo de contenido. Las opciones de configuracion cambian dinamicamente."
+        )
+        
+        self.fields['thumbnail_custom'].help_text = (
+            "Miniatura personalizada (opcional). Se usara en las tarjetas en lugar de la miniatura automatica."
         )
         
         # Hacer campos readonly cuando corresponda (verificar existencia primero)
@@ -58,47 +69,75 @@ class NoticiaAdminForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         tipo_multimedia = cleaned_data.get('tipo_multimedia')
-        imagen = cleaned_data.get('imagen')
+        archivo = cleaned_data.get('archivo')
         video_url = cleaned_data.get('video_url')
-        video_vimeo_url = cleaned_data.get('video_vimeo_url')
         
         # Validación de multimedia
         if tipo_multimedia == 'imagen':
-            if not imagen:
-                raise ValidationError("Debes subir una imagen cuando seleccionas 'imagen' como tipo multimedia")
-            if video_url or video_vimeo_url:
-                self.add_error('tipo_multimedia', "No puedes tener imagen Y video. Selecciona solo uno.")
+            if not archivo and not video_url:
+                raise ValidationError("Debes subir un archivo o proporcionar una URL cuando seleccionas 'imagen'")
+            
+            # Validar tipo de archivo si se sube
+            if archivo:
+                import os
+                ext = os.path.splitext(archivo.name)[1].lower()
+                image_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+                if ext not in image_extensions:
+                    self.add_error('archivo', f"Para imagenes solo se permiten archivos: {', '.join(image_extensions)}")
         
         elif tipo_multimedia == 'video':
-            if not video_url and not video_vimeo_url:
-                raise ValidationError("Debes proporcionar una URL de video cuando seleccionas 'video' como tipo multimedia")
-            if imagen:
-                self.add_error('tipo_multimedia', "No puedes tener imagen Y video. Selecciona solo uno.")
+            if not archivo and not video_url:
+                raise ValidationError("Debes subir un archivo o proporcionar una URL cuando seleccionas 'video'")
+            
+            # Validar tipo de archivo si se sube
+            if archivo:
+                import os
+                ext = os.path.splitext(archivo.name)[1].lower()
+                video_extensions = ['.mp4', '.webm', '.mov', '.avi', '.m4v']
+                if ext not in video_extensions:
+                    self.add_error('archivo', f"Para videos solo se permiten archivos: {', '.join(video_extensions)}")
+        
+        # Validar que no se use archivo y URL al mismo tiempo
+        if archivo and video_url:
+            self.add_error('video_url', "No puedes usar archivo y URL al mismo tiempo. Selecciona solo uno.")
+            self.add_error('archivo', "No puedes usar archivo y URL al mismo tiempo. Selecciona solo uno.")
         
         return cleaned_data
     
     def clean_video_url(self):
-        """Validación personalizada para la URL de video"""
+        """Validación personalizada para la URL multimedia"""
         video_url = self.cleaned_data.get('video_url')
         
         if not video_url:
             return video_url
         
-        # Validar que la URL sea soportada
-        try:
-            VideoURLValidator.validate_video_url(video_url)
-        except ValidationError as e:
-            raise ValidationError(f"URL de video invalida: {str(e)}")
-        
-        # Verificar que sea accesible solo si requests está disponible
         tipo_multimedia = self.cleaned_data.get('tipo_multimedia')
-        if tipo_multimedia == 'video' and HAS_REQUESTS:
-            platform = VideoURLValidator.detect_platform(video_url)
-            if not VideoURLValidator.test_video_accessibility(video_url, platform):
-                self.add_error('video_url', 
-                    "Advertencia: No se pudo verificar que el video sea accesible publicamente. "
-                    "Asegurate de que el enlace no requiera autenticacion."
-                )
+        
+        # Para videos, validar que la URL sea soportada
+        if tipo_multimedia == 'video':
+            try:
+                VideoURLValidator.validate_video_url(video_url)
+            except ValidationError as e:
+                raise ValidationError(f"URL de video invalida: {str(e)}")
+            
+            # Verificar que sea accesible solo si requests está disponible
+            if HAS_REQUESTS:
+                platform = VideoURLValidator.detect_platform(video_url)
+                if not VideoURLValidator.test_video_accessibility(video_url, platform):
+                    self.add_error('video_url', 
+                        "Advertencia: No se pudo verificar que el video sea accesible publicamente. "
+                        "Asegurate de que el enlace no requiera autenticacion."
+                    )
+        
+        # Para imágenes, hacer validación básica de URL
+        elif tipo_multimedia == 'imagen':
+            # Verificar que sea una URL válida
+            from django.core.validators import URLValidator
+            url_validator = URLValidator()
+            try:
+                url_validator(video_url)
+            except ValidationError:
+                raise ValidationError("Formato de URL inválido para imagen")
         
         return video_url
 

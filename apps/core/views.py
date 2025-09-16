@@ -124,12 +124,9 @@ class SimuladorSolarView(TemplateView):
             except (ValueError, TypeError):
                 return JsonResponse({'success': False, 'error': 'Inclinación inválida'}, status=400)
             
-            # Variables booleanas y de texto
-            coche_electrico = bool(data.get('coche_electrico', False))
-            bateria = bool(data.get('bateria', False))
+            # Variables de texto
             ubicacion = str(data.get('ubicacion', '')).strip()
-            orientacion = str(data.get('orientacion', 'S')).strip()
-            tipo_tejado = str(data.get('tipo_tejado', 'dos_aguas')).strip()
+            orientacion = str(data.get('orientacion', 'N')).strip()
             
             # Validar ubicación no vacía
             if not ubicacion:
@@ -137,8 +134,7 @@ class SimuladorSolarView(TemplateView):
             
             # Realizar cálculos
             resultados = self.calcular_simulacion(
-                consumo_anual, coche_electrico, bateria, 
-                ubicacion, orientacion, inclinacion, superficie, tipo_tejado
+                consumo_anual, ubicacion, orientacion, inclinacion, superficie
             )
             
             return JsonResponse({
@@ -152,13 +148,13 @@ class SimuladorSolarView(TemplateView):
                 'error': str(e)
             }, status=400)
     
-    def calcular_simulacion(self, consumo_anual, coche_electrico, bateria, ubicacion, orientacion, inclinacion, superficie, tipo_tejado=None):
+    def calcular_simulacion(self, consumo_anual, ubicacion, orientacion, inclinacion, superficie):
         """Calcula los resultados de la simulación solar usando parámetros configurables"""
         
         # Importar modelos necesarios
         from .models import (
-            SimuladorConfig, CostoInstalacion, FactorUbicacion, 
-            FactorOrientacion, TipoTejado, AnguloTejado
+            SimuladorConfig, CostoInstalacion, FactorUbicacion,
+            FactorOrientacion, AnguloTejado
         )
         
         # Obtener configuración activa
@@ -170,9 +166,7 @@ class SimuladorSolarView(TemplateView):
         potencia_panel = config.potencia_panel
         precio_kwh = config.precio_kwh
         
-        # Consumo adicional por coche eléctrico
-        if coche_electrico:
-            consumo_anual += config.consumo_coche_electrico
+        # Sin consumo adicional - simplificado
         
         # Obtener factores desde base de datos
         factor_ubicacion = FactorUbicacion.get_factor_provincia(ubicacion)
@@ -187,14 +181,8 @@ class SimuladorSolarView(TemplateView):
             factor_inclinacion = 1.0 - abs(inclinacion - 32) * 0.01
             factor_inclinacion = max(0.7, min(1.0, factor_inclinacion))
         
-        # Factor de complejidad del tejado
+        # Sin factor de complejidad del tejado (simplificado)
         factor_complejidad_tejado = 1.0
-        if tipo_tejado:
-            try:
-                tejado = TipoTejado.objects.get(tipo=tipo_tejado, activo=True)
-                factor_complejidad_tejado = tejado.factor_complejidad
-            except TipoTejado.DoesNotExist:
-                pass
         
         # Producción diaria requerida
         produccion_diaria_requerida = consumo_anual / 365
@@ -221,15 +209,9 @@ class SimuladorSolarView(TemplateView):
             factor_inclinacion
         )
         
-        # Autoconsumo (% de la producción que se consume directamente)
-        if bateria:
-            autoconsumo_porcentaje = config.autoconsumo_con_bateria
-            # Obtener costo de batería desde configuración
-            costo_instalacion_info = CostoInstalacion.get_costo_para_potencia(potencia_instalada)
-            costo_bateria = potencia_instalada * (costo_instalacion_info.costo_bateria_por_kw if costo_instalacion_info else 650)
-        else:
-            autoconsumo_porcentaje = config.autoconsumo_sin_bateria
-            costo_bateria = 0
+        # Autoconsumo sin baterías (simplificado)
+        autoconsumo_porcentaje = config.autoconsumo_sin_bateria
+        costo_bateria = 0
         
         energia_autoconsumida = produccion_anual * autoconsumo_porcentaje
         energia_excedente = produccion_anual - energia_autoconsumida
@@ -240,10 +222,10 @@ class SimuladorSolarView(TemplateView):
         compensacion_excedentes = energia_excedente * precio_kwh * config.compensacion_excedentes
         ahorro_total_anual = ahorro_autoconsumo + compensacion_excedentes
         
-        # Costo total de la instalación (incluyendo factor de complejidad del tejado)
+        # Costo total de la instalación (simplificado)
         costo_instalacion_info = CostoInstalacion.get_costo_para_potencia(potencia_instalada)
-        costo_base_por_kw = costo_instalacion_info.costo_por_kw if costo_instalacion_info else 1200
-        costo_instalacion = (potencia_instalada * costo_base_por_kw * factor_complejidad_tejado) + costo_bateria
+        costo_base_por_kw = costo_instalacion_info.costo_por_kw if costo_instalacion_info else 900
+        costo_instalacion = potencia_instalada * costo_base_por_kw
         
         # Período de retorno (payback)
         if ahorro_total_anual > 0:
@@ -284,7 +266,7 @@ class SimuladorSolarView(TemplateView):
             'periodo_retorno': round(periodo_retorno, 1),
             'ahorro_25_anos': round(ahorro_25_anos, 2),
             'datos_anuales': datos_anuales,
-            'incluye_bateria': bateria,
+            'incluye_bateria': False,
             'costo_bateria': round(costo_bateria, 2),
             'factor_ubicacion': factor_ubicacion,
             'factor_orientacion': factor_orientacion,

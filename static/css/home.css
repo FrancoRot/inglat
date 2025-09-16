@@ -1143,10 +1143,20 @@ html, body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    /* Optimización de calidad de imagen */
+    image-rendering: high-quality;
+    image-rendering: -webkit-optimize-contrast;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Mejorar nitidez y rendimiento */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .noticia-destacada-card:hover .noticia-imagen {
-    transform: scale(1.05);
+    transform: scale(1.05) translateZ(0);
 }
 
 .noticia-placeholder {

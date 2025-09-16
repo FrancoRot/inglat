@@ -1,11 +1,21 @@
 /* simulador.css - Estilos para el Simulador Solar INGLAT */
 
-/* Variables específicas del simulador */
+/* Variables específicas del simulador siguiendo UI_UX_doc.md */
 :root {
   --wizard-step-size: 3rem;
   --wizard-connector-width: 2px;
   --step-transition: all 0.3s ease;
   --form-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Variables adicionales para el simulador */
+  --orientation-card-size: 100px;
+  --angle-card-size: 90px;
+  --map-height: 300px;
+
+  /* Mobile adjustments */
+  --orientation-card-size-mobile: 80px;
+  --angle-card-size-mobile: 70px;
+  --map-height-mobile: 250px;
 }
 
 /* Hero Section del Simulador */
@@ -21,6 +31,19 @@
   gap: var(--space-8);
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* Mobile First - Responsive Grid */
+@media (max-width: 768px) {
+  .simulador-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding: 0 var(--space-4);
+  }
+
+  .simulador-info-panel {
+    order: -1; /* Mover info al principio en mobile */
+  }
 }
 
 /* Panel del Formulario */
@@ -1032,4 +1055,590 @@
     width: 50px;
     height: 50px;
   }
+}
+
+
+/* ========================================
+   NUEVOS ESTILOS PARA SIMULADOR OPTIMIZADO
+   ======================================== */
+
+/* Google Maps Integration */
+.google-map-container {
+  margin: var(--space-4) 0;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--form-transition);
+}
+
+.google-map-container h4 {
+  background: var(--gradient-primary);
+  color: var(--white);
+  margin: 0;
+  padding: var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.map-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  height: var(--map-height);
+  border: none;
+  transition: var(--form-transition);
+}
+
+/* Orientation Selector con Nuevas Imágenes de Casa */
+.orientation-selector {
+  margin: var(--space-6) 0;
+}
+
+.orientation-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.orientation-option {
+  position: relative;
+}
+
+.orientation-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.orientation-card {
+  background: var(--white);
+  border: 2px solid var(--gray-300);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-4);
+  text-align: center;
+  cursor: pointer;
+  transition: var(--form-transition);
+  min-height: var(--orientation-card-size);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.orientation-card:hover {
+  border-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.orientation-option input:checked + .orientation-card {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  color: var(--white);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+.orientation-card.optimal {
+  position: relative;
+}
+
+.orientation-card.optimal::after {
+  content: "⭐ ÓPTIMO";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--gradient-accent);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: var(--border-radius);
+  transform: rotate(12deg);
+}
+
+.orientation-house {
+  width: 60px;
+  height: 60px;
+  margin-bottom: var(--space-2);
+  transition: var(--form-transition);
+}
+
+.orientation-text {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.orientation-efficiency {
+  font-size: var(--text-sm);
+  color: var(--success);
+  font-weight: bold;
+}
+
+.orientation-option input:checked + .orientation-card .orientation-efficiency {
+  color: var(--white);
+}
+
+/* Superficie Helper */
+.superficie-helper {
+  background: var(--gray-100);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.superficie-helper h4 {
+  color: var(--gray-900);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-lg);
+}
+
+.superficie-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.superficie-example {
+  background: var(--white);
+  padding: var(--space-4);
+  border-radius: var(--border-radius);
+  text-align: center;
+  border-left: 4px solid var(--primary-color);
+  transition: var(--form-transition);
+}
+
+.superficie-example:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+/* Responsive Design para Móviles */
+@media (max-width: 768px) {
+  /* Variables móviles */
+  :root {
+    --orientation-card-size: var(--orientation-card-size-mobile);
+    --map-height: var(--map-height-mobile);
+  }
+
+  /* Wizard Steps en Mobile */
+  .wizard-steps {
+    gap: var(--space-2);
+  }
+
+  .step-title {
+    font-size: 11px;
+    text-align: center;
+  }
+
+  /* Orientation Grid Mobile */
+  .orientation-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  .orientation-house {
+    width: 40px;
+    height: 40px;
+  }
+
+  .orientation-card {
+    padding: var(--space-2);
+    min-height: auto;
+  }
+
+  .orientation-text {
+    font-size: 12px;
+  }
+
+  .orientation-efficiency {
+    font-size: 11px;
+  }
+
+  /* Google Maps Mobile */
+  .google-map-container {
+    margin: var(--space-2) 0;
+  }
+
+  .map-wrapper iframe {
+    height: var(--map-height-mobile);
+  }
+
+  /* Superficie Examples Mobile */
+  .superficie-examples {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  .superficie-example {
+    padding: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  /* Resultados Grid Mobile */
+  .resultados-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  .resultado-card {
+    padding: var(--space-2);
+  }
+
+  .resultado-value {
+    font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .orientation-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .resultados-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .superficie-examples {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animaciones mejoradas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.wizard-step.active {
+  animation: fadeInUp 0.5s ease;
+}
+
+.orientation-card.optimal {
+  animation: pulse 2s infinite;
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .google-map-container,
+  .simulador-info-panel {
+    display: none;
+  }
+
+  .simulador-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   ESTILOS PARA VISUALIZACIÓN 3D DE ORIENTACIÓN
+   ======================================== */
+
+/* Container principal para orientación 3D */
+.orientation-3d-container {
+  margin: var(--space-6) 0;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+/* Wrapper para el dropdown selector */
+.orientation-dropdown-wrapper {
+  padding: var(--space-4);
+  background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
+  border-bottom: 1px solid var(--gray-300);
+}
+
+/* Estilos para el select de orientación */
+.orientation-select {
+  width: 100%;
+  padding: var(--space-3);
+  border: 2px solid var(--gray-300);
+  border-radius: var(--border-radius);
+  background: var(--white);
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--gray-900);
+  transition: var(--form-transition);
+  cursor: pointer;
+}
+
+.orientation-select:hover {
+  border-color: var(--primary-light);
+}
+
+.orientation-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 100, 102, 0.1);
+}
+
+/* Container para el viewer 3D */
+.orientation-3d-viewer {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  background: linear-gradient(135deg, #87CEEB 0%, #E0F6FF 100%);
+  overflow: hidden;
+}
+
+/* Canvas 3D */
+.orientation-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+/* Loader para el modelo 3D */
+.orientation-3d-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--gray-600);
+  z-index: 10;
+}
+
+.loader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--gray-300);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.orientation-3d-loader span {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Error state */
+.orientation-3d-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--error);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  z-index: 10;
+}
+
+/* Panel de información de eficiencia */
+.orientation-info {
+  padding: var(--space-4);
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+}
+
+.orientation-efficiency-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  padding: var(--space-3);
+  background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-200);
+}
+
+.efficiency-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.efficiency-value {
+  font-size: var(--text-lg);
+  font-weight: bold;
+  color: var(--success);
+  transition: var(--form-transition);
+}
+
+.efficiency-value.updating {
+  animation: pulse 0.3s ease;
+  color: var(--primary-color);
+}
+
+/* Responsive Design para móviles */
+@media (max-width: 768px) {
+  .orientation-3d-viewer {
+    height: 280px;
+  }
+
+  .orientation-dropdown-wrapper {
+    padding: var(--space-3);
+  }
+
+  .orientation-select {
+    padding: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .orientation-info {
+    padding: var(--space-3);
+  }
+
+  .orientation-efficiency-display {
+    flex-direction: column;
+    gap: var(--space-1);
+    text-align: center;
+  }
+
+  .efficiency-value {
+    font-size: var(--text-base);
+  }
+
+  .loader-spinner {
+    width: 32px;
+    height: 32px;
+  }
+
+  .orientation-3d-loader span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orientation-3d-viewer {
+    height: 220px;
+  }
+
+  .efficiency-label,
+  .efficiency-value {
+    font-size: var(--text-sm);
+  }
+}
+
+/* Fallback para navegadores sin WebGL */
+@supports not (display: grid) {
+  .orientation-3d-container {
+    display: block;
+  }
+}
+
+/* Animación mejorada para eficiencia */
+@keyframes efficiencyUpdate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.efficiency-value.updating {
+  animation: efficiencyUpdate 0.4s ease;
+}
+
+/* ========================================
+   ESTILOS PARA VIDEO BACKGROUND HERO SECTION
+   ======================================== */
+
+/* Hero section con video responsive */
+.hero--video {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 60vh; /* Altura fija más pequeña para desktop */
+    margin: 0;
+    padding: 0;
+}
+
+/* Container para el video */
+.hero__video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Video responsive */
+.hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Responsive Design para Video Hero */
+@media (max-width: 1024px) {
+    .hero--video {
+        height: 50vh; /* Más pequeño en tablet */
+    }
+}
+
+@media (max-width: 768px) {
+    .hero--video {
+        height: 40vh; /* Más pequeño en móvil */
+    }
+}
+
+@media (max-width: 480px) {
+    .hero--video {
+        height: 35vh; /* Muy pequeño en móviles pequeños */
+    }
+}
+
+/* Respeto por preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .hero__video {
+        animation-play-state: paused;
+    }
 }

@@ -237,39 +237,58 @@
             <article class="noticia-destacada-card">
                 <a href="{{ noticia.get_absolute_url }}" class="noticia-link">
                     <div class="noticia-media">
-                        {% if noticia.tipo_multimedia == 'imagen' and noticia.imagen %}
-                            <img src="{{ noticia.imagen.url }}" 
-                                 alt="{{ noticia.titulo }}" 
-                                 class="noticia-imagen"
-                                 loading="lazy">
-                        {% elif noticia.tipo_multimedia == 'video' %}
-                            <div class="noticia-video-preview" data-video-autoplay="true">
-                                {% if noticia.video_thumbnail_url %}
-                                    <img src="{{ noticia.video_thumbnail_url }}" 
+                        {% with thumbnail_url=noticia.get_thumbnail_url %}
+                            {% if thumbnail_url %}
+                                <!-- Mostrar miniatura con overlay de video si es necesario -->
+                                {% if noticia.tipo_multimedia == 'video' %}
+                                    <div class="noticia-video-preview" data-video-autoplay="true">
+                                        <img src="{{ thumbnail_url }}" 
+                                             alt="{{ noticia.titulo }}" 
+                                             class="noticia-imagen"
+                                             loading="lazy"
+                                             style="object-fit: cover; width: 100%; height: 100%;">
+                                        <div class="video-overlay">
+                                            <i class="fas fa-play-circle fa-2x"></i>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <!-- Imagen simple sin overlay -->
+                                    <img src="{{ thumbnail_url }}" 
                                          alt="{{ noticia.titulo }}" 
                                          class="noticia-imagen"
-                                         loading="lazy">
-                                {% elif noticia.video_vimeo_id %}
+                                         loading="lazy"
+                                         style="object-fit: cover; width: 100%; height: 100%;">
+                                {% endif %}
+                            
+                            {% elif noticia.video_vimeo_id %}
+                                <!-- Fallback legacy para Vimeo existente -->
+                                <div class="noticia-video-preview" data-video-autoplay="true">
                                     <img src="https://vumbnail.com/{{ noticia.video_vimeo_id }}.jpg" 
                                          alt="{{ noticia.titulo }}" 
                                          class="noticia-imagen"
-                                         loading="lazy">
-                                {% else %}
-                                    <div class="video-placeholder">
+                                         loading="lazy"
+                                         style="object-fit: cover; width: 100%; height: 100%;">
+                                    <div class="video-overlay">
+                                        <i class="fas fa-play-circle fa-2x"></i>
+                                    </div>
+                                </div>
+                            
+                            {% else %}
+                                <!-- Placeholder cuando no hay miniatura disponible -->
+                                <div class="noticia-placeholder">
+                                    {% if noticia.tipo_multimedia == 'video' %}
                                         <i class="fas fa-play-circle fa-3x" style="color: white;"></i>
                                         <span style="color: white; margin-top: 8px; font-size: 14px;">Video disponible</span>
-                                    </div>
-                                {% endif %}
-                                <div class="video-overlay">
-                                    <i class="fas fa-play-circle fa-2x"></i>
+                                    {% elif noticia.tipo_multimedia == 'imagen' %}
+                                        <i class="fas fa-image fa-3x" style="color: white;"></i>
+                                        <span style="color: white; margin-top: 8px; font-size: 14px;">Imagen disponible</span>
+                                    {% else %}
+                                        <i class="fas fa-newspaper fa-3x" style="color: white;"></i>
+                                        <span style="color: white; margin-top: 8px; font-size: 14px;">Sin multimedia</span>
+                                    {% endif %}
                                 </div>
-                            </div>
-                        {% else %}
-                            <div class="noticia-placeholder">
-                                <i class="fas fa-newspaper fa-2x" style="color: white;"></i>
-                                <span style="color: white; margin-top: 8px; font-size: 14px;">Sin imagen</span>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        {% endwith %}
                         
                         {% if noticia.categoria %}
                         <div class="noticia-categoria-badge" style="background-color: {{ noticia.categoria.color }};">

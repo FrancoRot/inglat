@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand
 from django.utils import timezone
+from django.db import models
 from apps.blog.models import Noticia
 from datetime import datetime, timedelta
 
@@ -195,14 +196,25 @@ class Command(BaseCommand):
         
         self.stdout.write(f'Encontrados {len(archivos_imagenes)} archivos de imagen')
         
-        # Obtener todas las noticias activas con imágenes
-        noticias_con_imagenes = Noticia.objects.exclude(imagen='').exclude(imagen__isnull=True)
+        # Obtener todas las noticias activas con archivos multimedia
+        noticias_con_imagenes = Noticia.objects.filter(
+            models.Q(archivo__isnull=False) | models.Q(thumbnail_custom__isnull=False)
+        ).exclude(archivo='').exclude(thumbnail_custom='')
         imagenes_en_uso = set()
         
         for noticia in noticias_con_imagenes:
-            if noticia.imagen:
+            # Verificar archivos multimedia (imágenes y videos)
+            if noticia.archivo:
                 try:
-                    imagenes_en_uso.add(noticia.imagen.path)
+                    imagenes_en_uso.add(noticia.archivo.path)
+                except ValueError:
+                    # Path inválido, ignorar
+                    pass
+            
+            # Verificar thumbnails personalizados
+            if noticia.thumbnail_custom:
+                try:
+                    imagenes_en_uso.add(noticia.thumbnail_custom.path)
                 except ValueError:
                     # Path inválido, ignorar
                     pass

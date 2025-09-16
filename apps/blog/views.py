@@ -157,9 +157,12 @@ class NoticiaDetailView(DetailView):
             }
         }
         
-        # Añadir imagen si existe
-        if self.object.imagen:
-            schema["image"] = self.request.build_absolute_uri(self.object.imagen.url)
+        # Añadir imagen si existe (usando el campo archivo para imágenes o thumbnail_custom)
+        thumbnail_url = self.object.get_thumbnail_url()
+        if thumbnail_url:
+            schema["image"] = self.request.build_absolute_uri(thumbnail_url)
+        elif self.object.archivo and self.object.tipo_multimedia == 'imagen':
+            schema["image"] = self.request.build_absolute_uri(self.object.archivo.url)
         
         # Añadir video si existe
         if self.object.video_embed_url:

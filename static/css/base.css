@@ -132,6 +132,7 @@ body {
   background-color: var(--white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: 10px; /* Línea de subrayado para el menú */
 }
 
 /* ==========================================================================
@@ -156,11 +157,14 @@ body {
    ========================================================================== */
 
 .header {
-  background: rgba(255, 255, 255, 0.95);
+  background: #dbe6dbf2;
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 20px 0 rgba(0, 100, 102, 0.1);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 100;
   transition: all 0.3s ease;
 }

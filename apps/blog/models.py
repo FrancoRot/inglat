@@ -11,6 +11,25 @@ import os
 import logging
 
 
+def validate_multimedia_file(archivo):
+    """Validador personalizado para archivos multimedia"""
+    if not archivo:
+        return
+    
+    # Obtener extensión del archivo
+    ext = os.path.splitext(archivo.name)[1].lower()
+    
+    # Extensiones permitidas
+    image_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+    video_extensions = ['.mp4', '.webm', '.mov', '.avi', '.m4v']
+    
+    if ext not in image_extensions + video_extensions:
+        raise ValidationError(
+            f'Tipo de archivo no soportado: {ext}. '
+            f'Extensiones permitidas: {", ".join(image_extensions + video_extensions)}'
+        )
+
+
 class Categoria(models.Model):
     """Modelo para categorias del blog"""
     nombre = models.CharField(max_length=100, unique=True)
@@ -53,7 +72,7 @@ class Noticia(models.Model):
     # Opciones para tipo de multimedia
     TIPO_MEDIA_CHOICES = [
         ('imagen', 'Imagen'),
-        ('video', 'Video de Vimeo'),
+        ('video', 'Video'),
         ('ninguno', 'Sin multimedia')
     ]
     
@@ -73,19 +92,29 @@ class Noticia(models.Model):
         default='imagen',
         help_text="Selecciona el tipo de multimedia para el articulo"
     )
-    imagen = models.ImageField(
-        upload_to='noticias/imagenes/', 
+    archivo = models.FileField(
+        upload_to='noticias/archivos/', 
         blank=True, 
         null=True,
-        help_text="Imagen principal del articulo (JPG, PNG)"
+        validators=[validate_multimedia_file],
+        help_text="Archivo multimedia: JPG/PNG para imagenes o MP4/WebM/MOV para videos"
     )
     
-    # Sistema de video universal
+    # Miniatura personalizada
+    thumbnail_custom = models.ImageField(
+        upload_to='noticias/thumbnails/',
+        blank=True,
+        null=True,
+        help_text="Miniatura personalizada para mostrar en las tarjetas (opcional)"
+    )
+    
+    # Sistema multimedia universal por URL (renombrado de video_url)
     video_url = models.URLField(
         blank=True,
         help_text=(
-            "URL publica de video. Soportamos: YouTube, Vimeo, Google Drive, "
-            "Dropbox y URLs directas MP4. Ejemplo: https://www.youtube.com/watch?v=abc123"
+            "URL publica de imagen o video. Soportamos: YouTube, Vimeo, Google Drive, "
+            "Dropbox, URLs directas de imagenes (JPG/PNG) o videos (MP4). "
+            "Ejemplo: https://www.youtube.com/watch?v=abc123"
         )
     )
     video_platform = models.CharField(
@@ -109,12 +138,16 @@ class Noticia(models.Model):
     
     # Configuracion de video
     video_autoplay = models.BooleanField(
-        default=False,
+        default=True,
         help_text="Reproducir automaticamente en la vista detalle"
     )
     video_muted = models.BooleanField(
         default=True,
         help_text="Silenciar video por defecto"
+    )
+    video_loop = models.BooleanField(
+        default=True,
+        help_text="Reproducir video en bucle infinito"
     )
     video_show_controls = models.BooleanField(
         default=True,
@@ -197,7 +230,7 @@ class Noticia(models.Model):
         if not self.slug:
             self.slug = slugify(self.titulo)
         
-        # Procesar URL de video universal
+        # Procesar URL multimedia universal
         if self.video_url:
             self.video_url = clean_video_url(self.video_url)
             self.video_platform = VideoURLValidator.detect_platform(self.video_url)
@@ -249,10 +282,17 @@ class Noticia(models.Model):
         return f"{minutos} min de lectura"
     
     @property
+    def archivo_url(self):
+        """Retorna la URL del archivo (imagen o video) o None"""
+        if self.archivo:
+            return self.archivo.url
+        return None
+    
+    @property
     def imagen_url(self):
-        """Retorna la URL de la imagen o None"""
-        if self.imagen:
-            return self.imagen.url
+        """Retorna la URL de la imagen o None (backward compatibility)"""
+        if self.archivo and self.tipo_multimedia == 'imagen':
+            return self.archivo.url
         return None
     
     @property
@@ -262,7 +302,7 @@ class Noticia(models.Model):
         if self.video_embed_url_cached:
             return self.video_embed_url_cached
         
-        # Generar dinámicamente si hay URL de video
+        # Generar dinámicamente si hay URL multimedia
         if self.video_url:
             return VideoURLValidator.get_embed_url(self.video_url, self.video_platform)
         
@@ -275,12 +315,16 @@ class Noticia(models.Model):
     @property
     def has_video(self):
         """Verifica si la noticia tiene video"""
-        return bool(self.video_url or self.video_vimeo_url)
+        return bool(
+            (self.tipo_multimedia == 'video' and self.archivo) or 
+            self.video_url or 
+            self.video_vimeo_url
+        )
     
     @property
     def has_image(self):
         """Verifica si la noticia tiene imagen"""
-        return bool(self.imagen)
+        return bool(self.tipo_multimedia == 'imagen' and self.archivo)
     
     @property
     def multimedia_url(self):
@@ -288,7 +332,7 @@ class Noticia(models.Model):
         if self.tipo_multimedia == 'video' and self.has_video:
             return self.video_thumbnail_url or self.video_embed_url
         elif self.tipo_multimedia == 'imagen' and self.has_image:
-            return self.imagen_url
+            return self.archivo_url
         return None
     
     @property
@@ -311,11 +355,34 @@ class Noticia(models.Model):
             if thumbnail:
                 return thumbnail
         
-        # Fallback a imagen si existe
-        if self.imagen:
-            return self.imagen.url
+        # Fallback a archivo si existe
+        if self.archivo:
+            return self.archivo.url
         
         return '/static/images/video-placeholder.jpg'
+    
+    def get_thumbnail_url(self):
+        """Obtiene la miniatura con lógica de prioridades para tarjetas"""
+        # Prioridad 1: Miniatura personalizada
+        if self.thumbnail_custom:
+            return self.thumbnail_custom.url
+        
+        # Prioridad 2: Frame automático de video si es MP4 local
+        if self.tipo_multimedia == 'video' and self.archivo:
+            # Para videos locales, usar el primer frame (esto requeriría procesamiento adicional)
+            # Por ahora usamos el archivo como fallback
+            return self.archivo.url
+        
+        # Prioridad 3: Thumbnail de URL externa de video
+        if self.tipo_multimedia == 'video' and self.video_thumbnail_url:
+            return self.video_thumbnail_url
+        
+        # Prioridad 4: Imagen original si tipo=imagen
+        if self.tipo_multimedia == 'imagen' and self.archivo:
+            return self.archivo.url
+        
+        # Fallback por defecto
+        return None
     
     def get_noticias_relacionadas(self, limit=3):
         """Retorna noticias relacionadas de la misma categoria"""
@@ -331,12 +398,22 @@ class Noticia(models.Model):
         # Lista de archivos a eliminar
         archivos_a_eliminar = []
         
-        # Si tiene imagen tradicional, agregarla
-        if self.imagen and hasattr(self.imagen, 'path'):
+        # Si tiene archivo multimedia (imagen o video), agregarlo
+        if self.archivo and hasattr(self.archivo, 'path'):
             try:
-                if os.path.exists(self.imagen.path):
-                    archivos_a_eliminar.append(self.imagen.path)
-                    logger.info(f'Marcado para eliminar imagen tradicional: {self.imagen.path}')
+                if os.path.exists(self.archivo.path):
+                    archivos_a_eliminar.append(self.archivo.path)
+                    logger.info(f'Marcado para eliminar archivo multimedia: {self.archivo.path}')
+            except ValueError:
+                # El archivo ya no existe o path inválido
+                pass
+        
+        # Si tiene miniatura personalizada, agregarla
+        if self.thumbnail_custom and hasattr(self.thumbnail_custom, 'path'):
+            try:
+                if os.path.exists(self.thumbnail_custom.path):
+                    archivos_a_eliminar.append(self.thumbnail_custom.path)
+                    logger.info(f'Marcado para eliminar miniatura personalizada: {self.thumbnail_custom.path}')
             except ValueError:
                 # El archivo ya no existe o path inválido
                 pass
@@ -356,11 +433,31 @@ class Noticia(models.Model):
                 f"{titulo_limpio}_*.*"
             )
             
-            archivos_encontrados = glob.glob(patron_busqueda)
-            archivos_a_eliminar.extend(archivos_encontrados)
+            # Buscar también archivos de video y thumbnails asociados
+            patron_videos = os.path.join(
+                settings.MEDIA_ROOT, 
+                'noticias', 
+                'archivos',
+                f"{titulo_limpio}_*.*"
+            )
+            patron_thumbnails = os.path.join(
+                settings.MEDIA_ROOT, 
+                'noticias', 
+                'thumbnails',
+                f"{titulo_limpio}_*.*"
+            )
             
-            if archivos_encontrados:
-                logger.info(f'Encontradas {len(archivos_encontrados)} imágenes EstefaniPUBLI para eliminar')
+            archivos_encontrados = glob.glob(patron_busqueda)
+            videos_encontrados = glob.glob(patron_videos)
+            thumbnails_encontrados = glob.glob(patron_thumbnails)
+            
+            archivos_a_eliminar.extend(archivos_encontrados)
+            archivos_a_eliminar.extend(videos_encontrados)
+            archivos_a_eliminar.extend(thumbnails_encontrados)
+            
+            total_archivos = len(archivos_encontrados) + len(videos_encontrados) + len(thumbnails_encontrados)
+            if total_archivos > 0:
+                logger.info(f'Encontrados {total_archivos} archivos EstefaniPUBLI para eliminar (imágenes: {len(archivos_encontrados)}, videos: {len(videos_encontrados)}, thumbnails: {len(thumbnails_encontrados)})')
         
         # Eliminar la noticia de la base de datos primero
         super().delete(*args, **kwargs)
