@@ -5,6 +5,54 @@ html, body {
     overflow-x: hidden;
 }
 
+/* CSS Classes para eliminar inline styles */
+.section-title-center {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--gray-900);
+    margin-bottom: var(--space-4);
+}
+
+.image-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.video-icon {
+    color: white;
+}
+
+.video-available-text {
+    color: white;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.image-icon {
+    color: white;
+}
+
+.image-available-text {
+    color: white;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.news-icon {
+    color: white;
+}
+
+.no-multimedia-text {
+    color: white;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.categoria-badge-dynamic {
+    /* Color dinámico se aplicará via style attribute solo para colores */
+}
+
 /* Hero Hyperspeed Background Effect */
 .hero {
     position: relative;

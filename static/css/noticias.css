@@ -1,6 +1,51 @@
 /* ===== NOTICIAS CSS - INGLAT ===== */
 /* Estilos para el sistema de blog/noticias */
 
+/* CSS Classes para eliminar inline styles */
+.categoria-color-text {
+    /* Color dinámico vía style attribute */
+}
+
+.youtube-icon {
+    color: #FF0000;
+}
+
+.vimeo-icon {
+    color: #1ab7ea;
+}
+
+.google-drive-icon {
+    color: #4285F4;
+}
+
+.dropbox-icon {
+    color: #0061FF;
+}
+
+.video-generic-icon {
+    color: #28a745;
+}
+
+.vimeo-legacy-icon {
+    color: #1ab7ea;
+}
+
+.categoria-icon-colored {
+    /* Color dinámico vía style attribute */
+}
+
+.loading-state-hidden {
+    display: none;
+}
+
+.categoria-hero-gradient {
+    /* Background dinámico vía style attribute */
+}
+
+.no-noticias-icon-colored {
+    /* Color dinámico vía style attribute */
+}
+
 /* ===== HERO SECTION ===== */
 .noticias-hero {
     background: var(--gradient-primary);

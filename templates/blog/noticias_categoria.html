@@ -11,11 +11,11 @@
 
 {% block content %}
 <!-- Hero Section de Categoría -->
-<section class="categoria-hero" style="background: linear-gradient(135deg, {{ categoria_actual.color }}22 0%, {{ categoria_actual.color }}11 100%);">
+<section class="categoria-hero categoria-hero-gradient" style="background: linear-gradient(135deg, {{ categoria_actual.color }}22 0%, {{ categoria_actual.color }}11 100%);">
     <div class="container">
         <div class="hero-content">
             <div class="categoria-info">
-                <div class="categoria-icon" style="color: {{ categoria_actual.color }};">
+                <div class="categoria-icon categoria-icon-colored" style="color: {{ categoria_actual.color }};">
                     <i class="{{ categoria_actual.icono }} fa-3x"></i>
                 </div>
                 <div class="categoria-text">
@@ -75,7 +75,7 @@
                         <li class="categoria-nav-item {% if categoria.slug == categoria_actual.slug %}active{% endif %}">
                             <a href="{% url 'blog:por_categoria' categoria.slug %}" 
                                class="categoria-nav-link">
-                                <i class="{{ categoria.icono }}" style="color: {{ categoria.color }};"></i>
+                                <i class="{{ categoria.icono }} categoria-icon-colored" style="color: {{ categoria.color }};"></i>
                                 <span>{{ categoria.nombre }}</span>
                                 <span class="categoria-count">({{ categoria.noticias_count }})</span>
                             </a>
@@ -113,7 +113,7 @@
                     </div>
                 {% else %}
                     <div class="no-noticias-categoria">
-                        <div class="no-noticias-icon" style="color: {{ categoria_actual.color }};">
+                        <div class="no-noticias-icon no-noticias-icon-colored" style="color: {{ categoria_actual.color }};">
                             <i class="{{ categoria_actual.icono }} fa-4x"></i>
                         </div>
                         <h3>No hay noticias en {{ categoria_actual.nombre }}</h3>

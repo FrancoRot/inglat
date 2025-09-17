@@ -1,5 +1,31 @@
 /* simulador.css - Estilos para el Simulador Solar INGLAT */
 
+/* CSS Classes para eliminar inline styles */
+.google-map-container-hidden {
+    display: none;
+}
+
+.simulador-map-iframe {
+    border: 0;
+    border-radius: var(--border-radius);
+}
+
+.btn-loader-hidden {
+    display: none;
+}
+
+.resultados-container-hidden {
+    display: none;
+}
+
+.error-container-hidden {
+    display: none;
+}
+
+.prev-btn-hidden {
+    display: none;
+}
+
 /* Variables específicas del simulador siguiendo UI_UX_doc.md */
 :root {
   --wizard-step-size: 3rem;
@@ -868,6 +894,15 @@
   text-align: center;
 }
 
+/* Contenedor responsivo para tabla */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: var(--space-6) 0;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow);
+}
+
 /* Tabla de Resumen */
 .resumen-table {
   width: 100%;
@@ -875,8 +910,8 @@
   background: var(--white);
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow);
-  margin: var(--space-6) 0;
+  margin: 0; /* Margin movido al contenedor */
+  box-shadow: none; /* Shadow movido al contenedor */
 }
 
 .resumen-table th,
@@ -884,6 +919,7 @@
   padding: var(--space-4);
   text-align: left;
   border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap; /* Evitar cortes de texto en móvil */
 }
 
 .resumen-table th {
@@ -983,25 +1019,47 @@
   .resultados-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .wizard-navigation {
     flex-direction: column;
     gap: var(--space-3);
   }
-  
+
   .range-input-container {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-2);
   }
-  
+
   .chart-container {
     height: 280px;
     padding: var(--space-3);
   }
-  
+
   .chart-container canvas {
     max-height: 220px !important;
+  }
+
+  /* Optimizaciones móvil para tabla de resumen */
+  .resumen-table th,
+  .resumen-table td {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .resumen-table th:first-child,
+  .resumen-table td:first-child {
+    min-width: 120px; /* Ancho mínimo para "Concepto" */
+  }
+
+  .resumen-table th:nth-child(2),
+  .resumen-table td:nth-child(2) {
+    min-width: 100px; /* Ancho mínimo para "Valor" */
+  }
+
+  .resumen-table th:nth-child(3),
+  .resumen-table td:nth-child(3) {
+    min-width: 140px; /* Ancho mínimo para "Descripción" */
   }
 }
 
@@ -1054,6 +1112,28 @@
   .roof-type-image {
     width: 50px;
     height: 50px;
+  }
+
+  /* Optimizaciones extra móvil para tabla de resumen */
+  .resumen-table th,
+  .resumen-table td {
+    padding: var(--space-1) var(--space-2);
+    font-size: 12px;
+  }
+
+  .resumen-table th:first-child,
+  .resumen-table td:first-child {
+    min-width: 100px; /* Reducir ancho en pantallas muy pequeñas */
+  }
+
+  .resumen-table th:nth-child(2),
+  .resumen-table td:nth-child(2) {
+    min-width: 80px; /* Reducir ancho en pantallas muy pequeñas */
+  }
+
+  .resumen-table th:nth-child(3),
+  .resumen-table td:nth-child(3) {
+    min-width: 120px; /* Reducir ancho en pantallas muy pequeñas */
   }
 }
 
@@ -1589,50 +1669,91 @@
    ESTILOS PARA VIDEO BACKGROUND HERO SECTION
    ======================================== */
 
-/* Hero section con video responsive */
+/* Hero section con video responsive - Ajustado para mostrar video completo */
 .hero--video {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 60vh; /* Altura fija más pequeña para desktop */
-    margin: 0;
+    /* Altura ajustada para mostrar video completo sin recortes */
+    height: 75vh; /* Aumentada para acomodar mejor el video */
+    margin: 0; /* Sin margen - video pegado al header */
     padding: 0;
+    background: linear-gradient(135deg, #000000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Container para el video */
 .hero__video-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Video responsive */
-.hero__video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
+/* Video responsive - Modificado para mostrar contenido completo */
+/* Mayor especificidad para sobrescribir estilos de home.css */
+.hero--video .hero__video-container .hero__video {
+    position: relative !important; /* Sobrescribir position: absolute del home.css */
+    top: auto !important;
+    left: auto !important;
+    transform: none !important; /* Remover transform del home.css */
+    min-width: auto !important;
+    min-height: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important; /* Forzar contain sobre cover del home.css */
+    object-position: center !important;
+    display: block !important;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    pointer-events: auto; /* Reactivar eventos del video */
 }
 
-/* Responsive Design para Video Hero */
+/* Responsive Design para Video Hero - Alturas optimizadas */
 @media (max-width: 1024px) {
     .hero--video {
-        height: 50vh; /* Más pequeño en tablet */
+        height: 65vh; /* Ajustado para tablet */
     }
 }
 
 @media (max-width: 768px) {
     .hero--video {
-        height: 40vh; /* Más pequeño en móvil */
+        height: 55vh; /* Ajustado para móvil */
+    }
+
+    .hero--video .hero__video-container .hero__video {
+        border-radius: 6px; /* Esquinas más pequeñas en móvil */
     }
 }
 
 @media (max-width: 480px) {
     .hero--video {
-        height: 35vh; /* Muy pequeño en móviles pequeños */
+        height: 45vh; /* Ajustado para móviles pequeños */
+    }
+
+    .hero--video .hero__video-container .hero__video {
+        border-radius: 4px; /* Esquinas aún más pequeñas */
+    }
+}
+
+/* Responsive para pantallas muy anchas */
+@media (min-width: 1440px) {
+    .hero--video {
+        height: 80vh; /* Más espacio en pantallas grandes */
+    }
+}
+
+/* Responsive para pantallas ultra anchas */
+@media (min-width: 1920px) {
+    .hero--video {
+        height: 85vh; /* Máximo espacio en pantallas muy grandes */
     }
 }
 
@@ -1640,5 +1761,23 @@
 @media (prefers-reduced-motion: reduce) {
     .hero__video {
         animation-play-state: paused;
+    }
+
+    .hero--video {
+        background: #f8fafc; /* Fondo estático sin gradiente */
+    }
+}
+
+/* Fallback para navegadores que no soportan object-fit */
+@supports not (object-fit: contain) {
+    .hero--video .hero__video-container .hero__video {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        min-width: auto !important;
+        min-height: auto !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
     }
 }

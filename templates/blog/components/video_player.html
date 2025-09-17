@@ -9,7 +9,7 @@
             {% if muted %}muted{% endif %}
             {% if loop %}loop{% endif %}
             preload="metadata"
-            style="width: 100%; height: auto; border-radius: 8px;">
+            class="video-player-element">
             <source src="{{ video_file }}" type="video/mp4">
             <source src="{{ video_file }}" type="video/webm">
             <source src="{{ video_file }}" type="video/mov">
@@ -24,7 +24,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            style="border-radius: 8px;">
+            class="video-player-element">
         </iframe>
     
     {% elif platform == 'vimeo' %}
@@ -35,7 +35,7 @@
             frameborder="0"
             allow="autoplay; fullscreen; picture-in-picture"
             allowfullscreen
-            style="border-radius: 8px;">
+            class="video-player-element">
         </iframe>
     
     {% elif platform == 'direct' or platform == 'gdrive' or platform == 'dropbox' %}
@@ -46,7 +46,7 @@
             {% if muted %}muted{% endif %}
             {% if loop %}loop{% endif %}
             preload="metadata"
-            style="width: 100%; height: auto; border-radius: 8px;">
+            class="video-player-element">
             <source src="{{ embed_url }}" type="video/mp4">
             <p>Tu navegador no soporta videos HTML5. <a href="{{ embed_url }}">Descargar video</a></p>
         </video>

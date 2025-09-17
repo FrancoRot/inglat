@@ -278,6 +278,32 @@ LOGGING = {
     },
 }
 
+# Security Settings for Production
+# Configuración de seguridad mejorada para deploy
+
+# HTTPS Security Headers
+SECURE_HSTS_SECONDS = int(get_env_variable('SECURE_HSTS_SECONDS', '31536000' if not DEBUG else '0'))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = get_env_variable('SECURE_HSTS_INCLUDE_SUBDOMAINS', 'True' if not DEBUG else 'False').lower() == 'true'
+SECURE_HSTS_PRELOAD = get_env_variable('SECURE_HSTS_PRELOAD', 'True' if not DEBUG else 'False').lower() == 'true'
+
+# SSL/HTTPS Configuration
+SECURE_SSL_REDIRECT = get_env_variable('SECURE_SSL_REDIRECT', 'True' if not DEBUG else 'False').lower() == 'true'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') if not DEBUG else None
+
+# Secure Cookies
+SESSION_COOKIE_SECURE = get_env_variable('SESSION_COOKIE_SECURE', 'True' if not DEBUG else 'False').lower() == 'true'
+CSRF_COOKIE_SECURE = get_env_variable('CSRF_COOKIE_SECURE', 'True' if not DEBUG else 'False').lower() == 'true'
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
+# Additional Security Headers
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Content Security Policy
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
 # TinyMCE Configuration
 TINYMCE_DEFAULT_CONFIG = {
     'theme': 'silver',

@@ -1,5 +1,31 @@
 /* simulador.css - Estilos para el Simulador Solar INGLAT */
 
+/* CSS Classes para eliminar inline styles */
+.google-map-container-hidden {
+    display: none;
+}
+
+.simulador-map-iframe {
+    border: 0;
+    border-radius: var(--border-radius);
+}
+
+.btn-loader-hidden {
+    display: none;
+}
+
+.resultados-container-hidden {
+    display: none;
+}
+
+.error-container-hidden {
+    display: none;
+}
+
+.prev-btn-hidden {
+    display: none;
+}
+
 /* Variables específicas del simulador siguiendo UI_UX_doc.md */
 :root {
   --wizard-step-size: 3rem;

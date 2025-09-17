@@ -84,7 +84,7 @@
                         {% if noticia.categoria %}
                         <a href="{% url 'blog:por_categoria' noticia.categoria.slug %}" 
                            class="categoria-link" 
-                           style="color: {{ noticia.categoria.color }};">
+                           class="categoria-color-text" style="color: {{ noticia.categoria.color }};">
                             <i class="{{ noticia.categoria.icono }}"></i>
                             {{ noticia.categoria.nombre }}
                         </a>
@@ -174,15 +174,15 @@
                             <div class="video-meta">
                                 <span class="video-platform">
                                     {% if noticia.video_platform == 'youtube' %}
-                                        <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
+                                        <i class="fab fa-youtube youtube-icon"></i> YouTube
                                     {% elif noticia.video_platform == 'vimeo' %}
-                                        <i class="fab fa-vimeo" style="color: #1ab7ea;"></i> Vimeo
+                                        <i class="fab fa-vimeo vimeo-icon"></i> Vimeo
                                     {% elif noticia.video_platform == 'gdrive' %}
-                                        <i class="fab fa-google-drive" style="color: #4285F4;"></i> Google Drive
+                                        <i class="fab fa-google-drive google-drive-icon"></i> Google Drive
                                     {% elif noticia.video_platform == 'dropbox' %}
-                                        <i class="fab fa-dropbox" style="color: #0061FF;"></i> Dropbox
+                                        <i class="fab fa-dropbox dropbox-icon"></i> Dropbox
                                     {% else %}
-                                        <i class="fas fa-video" style="color: #28a745;"></i> Video
+                                        <i class="fas fa-video video-generic-icon"></i> Video
                                     {% endif %}
                                 </span>
                                 
@@ -210,7 +210,7 @@
                         <div class="video-info legacy">
                             <div class="video-meta">
                                 <span class="video-platform">
-                                    <i class="fab fa-vimeo" style="color: #1ab7ea;"></i> Vimeo (Legacy)
+                                    <i class="fab fa-vimeo vimeo-legacy-icon"></i> Vimeo (Legacy)
                                 </span>
                                 <a href="{{ noticia.video_vimeo_url }}" target="_blank" class="video-original-link">
                                     <i class="fas fa-external-link-alt"></i>

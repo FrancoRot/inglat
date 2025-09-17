@@ -17,10 +17,10 @@
                                  loading="lazy"
                                  decoding="async"
                                  fetchpriority="low"
-                                 style="object-fit: cover; width: 100%; height: 100%; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
+                                 class="noticia-image-cover">
                             <!-- Overlay con icono de play para videos -->
                             <div class="video-overlay">
-                                <i class="fas fa-play-circle fa-2x" style="color: white; opacity: 0.9;"></i>
+                                <i class="fas fa-play-circle fa-2x" class="video-play-overlay"></i>
                             </div>
                         </div>
                     {% else %}
@@ -31,7 +31,7 @@
                              loading="lazy"
                              decoding="async"
                              fetchpriority="low"
-                             style="object-fit: cover; width: 100%; height: 100%; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
+                             class="noticia-image-cover">
                     {% endif %}
                 
                 {% elif noticia.video_vimeo_id %}
@@ -44,7 +44,7 @@
                              decoding="async"
                              fetchpriority="low">
                         <div class="video-overlay">
-                            <i class="fas fa-play-circle fa-2x" style="color: white; opacity: 0.9;"></i>
+                            <i class="fas fa-play-circle fa-2x" class="video-play-overlay"></i>
                         </div>
                     </div>
                 
@@ -52,14 +52,14 @@
                     <!-- Placeholder cuando no hay miniatura disponible -->
                     <div class="card-placeholder">
                         {% if noticia.tipo_multimedia == 'video' %}
-                            <i class="fas fa-play-circle fa-3x" style="color: white;"></i>
-                            <span style="color: white; margin-top: 8px; font-size: 14px;">Video disponible</span>
+                            <i class="fas fa-play-circle fa-3x video-play-overlay-large"></i>
+                            <span class="video-available-overlay-text">Video disponible</span>
                         {% elif noticia.tipo_multimedia == 'imagen' %}
-                            <i class="fas fa-image fa-3x" style="color: white;"></i>
-                            <span style="color: white; margin-top: 8px; font-size: 14px;">Imagen disponible</span>
+                            <i class="fas fa-image fa-3x video-play-overlay-large"></i>
+                            <span class="image-available-overlay-text">Imagen disponible</span>
                         {% else %}
-                            <i class="fas fa-newspaper fa-3x" style="color: white;"></i>
-                            <span style="color: white; margin-top: 8px; font-size: 14px;">Sin multimedia</span>
+                            <i class="fas fa-newspaper fa-3x video-play-overlay-large"></i>
+                            <span class="no-multimedia-overlay-text">Sin multimedia</span>
                         {% endif %}
                     </div>
                 {% endif %}
@@ -67,7 +67,7 @@
             
             <!-- Badge de Categoría -->
             {% if noticia.categoria %}
-            <div class="card-categoria-badge" style="background-color: {{ noticia.categoria.color }};">
+            <div class="card-categoria-badge categoria-badge-card" style="background-color: {{ noticia.categoria.color }};">
                 <i class="{{ noticia.categoria.icono }}"></i>
                 {{ noticia.categoria.nombre }}
             </div>

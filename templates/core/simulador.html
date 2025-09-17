@@ -13,7 +13,7 @@
 <section class="hero hero--video">
     <div class="hero__video-container">
         <video class="hero__video" autoplay loop muted playsinline>
-            <source src="/media/videos/simulador2.mp4" type="video/mp4">
+            <source src="/media/videos/simulador.mp4" type="video/mp4">
         </video>
     </div>
 </section>
@@ -83,13 +83,13 @@
 
                             <!-- Mapa de Google Maps -->
                             <div class="form-group">
-                                <div class="google-map-container" id="google-map-container" style="display: none;">
+                                <div class="google-map-container google-map-container-hidden" id="google-map-container">
                                     <h4>Tu Ubicación</h4>
                                     <div class="map-wrapper">
                                         <iframe id="google-map" 
                                                 width="100%" 
                                                 height="300" 
-                                                style="border:0; border-radius: var(--border-radius);" 
+class="simulador-map-iframe" 
                                                 allowfullscreen="" 
                                                 loading="lazy" 
                                                 referrerpolicy="no-referrer-when-downgrade">
@@ -325,7 +325,7 @@
                             <div class="form-actions">
                                 <button type="submit" class="btn btn--primary btn--large">
                                     <span class="btn-text">Calcular Simulación</span>
-                                    <span class="btn-loader" style="display: none;">
+                                    <span class="btn-loader btn-loader-hidden">
                                         <svg class="spinner" width="20" height="20" viewBox="0 0 24 24">
                                             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="60" stroke-dashoffset="60">
                                                 <animate attributeName="stroke-dashoffset" values="60;0;60" dur="1.5s" repeatCount="indefinite"/>
@@ -341,11 +341,11 @@
 
                         <!-- Paso 3: Resultados -->
                         <div class="wizard-step" data-step="3">
-                            <div id="resultados-container" style="display: none;">
+                            <div id="resultados-container" class="resultados-container-hidden">
                                 <!-- Los resultados se cargarán aquí dinámicamente -->
                             </div>
                             
-                            <div id="error-container" class="error-message" style="display: none;">
+                            <div id="error-container" class="error-message error-container-hidden">
                                 <h3>Error en el cálculo</h3>
                                 <p id="error-text"></p>
                                 <button type="button" class="btn btn--secondary" onclick="goToStep(2)">
@@ -357,7 +357,7 @@
 
                     <!-- Navegación del Wizard -->
                     <div class="wizard-navigation">
-                        <button type="button" id="prev-btn" class="btn btn--secondary" style="display: none;">
+                        <button type="button" id="prev-btn" class="btn btn--secondary prev-btn-hidden">
                             ← Anterior
                         </button>
                         <button type="button" id="next-btn" class="btn btn--primary">
@@ -377,13 +377,13 @@
                                 <svg class="info-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                +500 instalaciones realizadas
+                                Pagás lo necesario, no más
                             </li>
                             <li>
                                 <svg class="info-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                Garantía de 25 años
+                                Garantía en la instalación
                             </li>
                             <li>
                                 <svg class="info-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -395,7 +395,7 @@
                                 <svg class="info-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                Mantenimiento incluido
+                                Mantenimiento 24/7
                             </li>
                         </ul>
                     </div>

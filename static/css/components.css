@@ -1,0 +1,47 @@
+/* components.css - Componentes reutilizables INGLAT */
+
+/* CSS Classes para componentes blog - eliminar inline styles */
+.noticia-image-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.video-play-overlay {
+    color: white;
+    opacity: 0.9;
+}
+
+.video-play-overlay-large {
+    color: white;
+}
+
+.video-available-overlay-text {
+    color: white;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.image-available-overlay-text {
+    color: white;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.no-multimedia-overlay-text {
+    color: white;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.categoria-badge-card {
+    /* El color dinámico se mantendrá via style attribute */
+}
+
+.video-player-element {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}

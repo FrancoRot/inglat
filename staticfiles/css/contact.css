@@ -2,6 +2,22 @@
    CONTACT PAGE STYLES - INGLAT
    ========================================================================== */
 
+/* CSS Classes para eliminar inline styles */
+.loading-text-hidden {
+    display: none;
+}
+
+.google-map-iframe {
+    border: 0;
+    border-radius: var(--border-radius);
+}
+
+.map-description {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+}
+
 /* Hero Section - Contact */
 .hero--contact {
     background: var(--gradient-hero);

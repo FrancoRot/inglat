@@ -126,7 +126,7 @@
                             <a href="{% url 'blog:por_categoria' categoria.slug %}" 
                                class="categoria-link">
                                 <i class="{{ categoria.icono }}" 
-                                   style="color: {{ categoria.color }};"></i>
+                                   class="categoria-icon-colored" style="color: {{ categoria.color }};"></i>
                                 <span class="categoria-nombre">{{ categoria.nombre }}</span>
                                 <span class="categoria-count">({{ categoria.noticias_count_activas }})</span>
                             </a>
@@ -154,7 +154,7 @@
                 </div>
                 
                 <!-- Loading State -->
-                <div id="loading-state" class="loading-state" style="display: none;">
+                <div id="loading-state" class="loading-state loading-state-hidden">
                     <div class="loading-spinner"></div>
                     <p>Cargando noticias...</p>
                 </div>

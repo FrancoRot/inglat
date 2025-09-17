@@ -520,47 +520,49 @@ class SimuladorSolar {
                 </div>
                 
                 <!-- Tabla Resumen Detallada -->
-                <table class="resumen-table">
-                    <thead>
-                        <tr>
-                            <th>Concepto</th>
-                            <th>Valor</th>
-                            <th>Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Inversión Inicial</strong></td>
-                            <td>USD ${resultados.costo_instalacion.toLocaleString()}</td>
-                            <td>Instalación completa ${resultados.incluye_bateria ? '(incluye batería)' : '(sin batería)'}</td>
-                        </tr>
-                        <tr>
-                            <td>Superficie necesaria</td>
-                            <td>${resultados.superficie_necesaria} m²</td>
-                            <td>Espacio requerido para ${resultados.num_paneles} paneles</td>
-                        </tr>
-                        <tr>
-                            <td>Producción anual</td>
-                            <td>${resultados.produccion_anual.toLocaleString()} kWh</td>
-                            <td>Energía generada por año</td>
-                        </tr>
-                        <tr>
-                            <td>Autoconsumo</td>
-                            <td>${resultados.autoconsumo_porcentaje}%</td>
-                            <td>Porcentaje de energía que consumes directamente</td>
-                        </tr>
-                        <tr>
-                            <td>Ahorro anual</td>
-                            <td>USD ${resultados.ahorro_total_anual.toLocaleString()}</td>
-                            <td>Reducción en tu factura eléctrica</td>
-                        </tr>
-                        <tr class="highlight">
-                            <td><strong>Ahorro en 25 años</strong></td>
-                            <td><strong>USD ${resultados.ahorro_25_anos.toLocaleString()}</strong></td>
-                            <td><strong>Beneficio total del sistema</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="resumen-table">
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Valor</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Inversión Inicial</strong></td>
+                                <td>USD ${resultados.costo_instalacion.toLocaleString()}</td>
+                                <td>Instalación completa ${resultados.incluye_bateria ? '(incluye batería)' : '(sin batería)'}</td>
+                            </tr>
+                            <tr>
+                                <td>Superficie necesaria</td>
+                                <td>${resultados.superficie_necesaria} m²</td>
+                                <td>Espacio requerido para ${resultados.num_paneles} paneles</td>
+                            </tr>
+                            <tr>
+                                <td>Producción anual</td>
+                                <td>${resultados.produccion_anual.toLocaleString()} kWh</td>
+                                <td>Energía generada por año</td>
+                            </tr>
+                            <tr>
+                                <td>Autoconsumo</td>
+                                <td>${resultados.autoconsumo_porcentaje}%</td>
+                                <td>Porcentaje de energía que consumes directamente</td>
+                            </tr>
+                            <tr>
+                                <td>Ahorro anual</td>
+                                <td>USD ${resultados.ahorro_total_anual.toLocaleString()}</td>
+                                <td>Reducción en tu factura eléctrica</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td><strong>Ahorro en 25 años</strong></td>
+                                <td><strong>USD ${resultados.ahorro_25_anos.toLocaleString()}</strong></td>
+                                <td><strong>Beneficio total del sistema</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <!-- Acciones Finales -->
                 <div class="resultados-actions">
