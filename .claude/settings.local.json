@@ -16,7 +16,9 @@
       "WebFetch(domain:www.cronyxdigital.com)",
       "Bash(mediainfo:*)",
       "Bash(git config:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
