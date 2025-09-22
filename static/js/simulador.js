@@ -1,5 +1,40 @@
 // simulador.js - Funcionalidad del Simulador Solar INGLAT
 
+// Funciones para manejo del video loading
+function showVideoLoading() {
+    const loadingOverlay = document.getElementById('video-loading');
+    if (loadingOverlay) {
+        loadingOverlay.classList.remove('hidden');
+    }
+}
+
+function hideVideoLoading() {
+    const loadingOverlay = document.getElementById('video-loading');
+    if (loadingOverlay) {
+        loadingOverlay.classList.add('hidden');
+        // Remover el overlay del DOM después de la transición
+        setTimeout(() => {
+            if (loadingOverlay.parentNode) {
+                loadingOverlay.parentNode.removeChild(loadingOverlay);
+            }
+        }, 300);
+    }
+}
+
+// Asegurar que el video se maneje correctamente al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.querySelector('.hero__video');
+    if (video) {
+        // Si el video ya está cargado, ocultar el loading
+        if (video.readyState >= 3) {
+            hideVideoLoading();
+        }
+
+        // Fallback: ocultar loading después de 5 segundos máximo
+        setTimeout(hideVideoLoading, 5000);
+    }
+});
+
 class SimuladorSolar {
     constructor() {
         this.currentStep = 1;

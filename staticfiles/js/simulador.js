@@ -1,5 +1,40 @@
 // simulador.js - Funcionalidad del Simulador Solar INGLAT
 
+// Funciones para manejo del video loading
+function showVideoLoading() {
+    const loadingOverlay = document.getElementById('video-loading');
+    if (loadingOverlay) {
+        loadingOverlay.classList.remove('hidden');
+    }
+}
+
+function hideVideoLoading() {
+    const loadingOverlay = document.getElementById('video-loading');
+    if (loadingOverlay) {
+        loadingOverlay.classList.add('hidden');
+        // Remover el overlay del DOM después de la transición
+        setTimeout(() => {
+            if (loadingOverlay.parentNode) {
+                loadingOverlay.parentNode.removeChild(loadingOverlay);
+            }
+        }, 300);
+    }
+}
+
+// Asegurar que el video se maneje correctamente al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.querySelector('.hero__video');
+    if (video) {
+        // Si el video ya está cargado, ocultar el loading
+        if (video.readyState >= 3) {
+            hideVideoLoading();
+        }
+
+        // Fallback: ocultar loading después de 5 segundos máximo
+        setTimeout(hideVideoLoading, 5000);
+    }
+});
+
 class SimuladorSolar {
     constructor() {
         this.currentStep = 1;
@@ -520,47 +555,49 @@ class SimuladorSolar {
                 </div>
                 
                 <!-- Tabla Resumen Detallada -->
-                <table class="resumen-table">
-                    <thead>
-                        <tr>
-                            <th>Concepto</th>
-                            <th>Valor</th>
-                            <th>Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Inversión Inicial</strong></td>
-                            <td>USD ${resultados.costo_instalacion.toLocaleString()}</td>
-                            <td>Instalación completa ${resultados.incluye_bateria ? '(incluye batería)' : '(sin batería)'}</td>
-                        </tr>
-                        <tr>
-                            <td>Superficie necesaria</td>
-                            <td>${resultados.superficie_necesaria} m²</td>
-                            <td>Espacio requerido para ${resultados.num_paneles} paneles</td>
-                        </tr>
-                        <tr>
-                            <td>Producción anual</td>
-                            <td>${resultados.produccion_anual.toLocaleString()} kWh</td>
-                            <td>Energía generada por año</td>
-                        </tr>
-                        <tr>
-                            <td>Autoconsumo</td>
-                            <td>${resultados.autoconsumo_porcentaje}%</td>
-                            <td>Porcentaje de energía que consumes directamente</td>
-                        </tr>
-                        <tr>
-                            <td>Ahorro anual</td>
-                            <td>USD ${resultados.ahorro_total_anual.toLocaleString()}</td>
-                            <td>Reducción en tu factura eléctrica</td>
-                        </tr>
-                        <tr class="highlight">
-                            <td><strong>Ahorro en 25 años</strong></td>
-                            <td><strong>USD ${resultados.ahorro_25_anos.toLocaleString()}</strong></td>
-                            <td><strong>Beneficio total del sistema</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="resumen-table">
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Valor</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Inversión Inicial</strong></td>
+                                <td>USD ${resultados.costo_instalacion.toLocaleString()}</td>
+                                <td>Instalación completa ${resultados.incluye_bateria ? '(incluye batería)' : '(sin batería)'}</td>
+                            </tr>
+                            <tr>
+                                <td>Superficie necesaria</td>
+                                <td>${resultados.superficie_necesaria} m²</td>
+                                <td>Espacio requerido para ${resultados.num_paneles} paneles</td>
+                            </tr>
+                            <tr>
+                                <td>Producción anual</td>
+                                <td>${resultados.produccion_anual.toLocaleString()} kWh</td>
+                                <td>Energía generada por año</td>
+                            </tr>
+                            <tr>
+                                <td>Autoconsumo</td>
+                                <td>${resultados.autoconsumo_porcentaje}%</td>
+                                <td>Porcentaje de energía que consumes directamente</td>
+                            </tr>
+                            <tr>
+                                <td>Ahorro anual</td>
+                                <td>USD ${resultados.ahorro_total_anual.toLocaleString()}</td>
+                                <td>Reducción en tu factura eléctrica</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td><strong>Ahorro en 25 años</strong></td>
+                                <td><strong>USD ${resultados.ahorro_25_anos.toLocaleString()}</strong></td>
+                                <td><strong>Beneficio total del sistema</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <!-- Acciones Finales -->
                 <div class="resultados-actions">

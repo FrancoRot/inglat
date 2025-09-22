@@ -14,7 +14,8 @@
       "mcp__firecrawl__firecrawl_search",
       "WebFetch(domain:www.canva.com)",
       "WebFetch(domain:www.cronyxdigital.com)",
-      "Bash(mediainfo:*)"
+      "Bash(mediainfo:*)",
+      "Bash(git config:*)"
     ],
     "deny": [],
     "ask": []

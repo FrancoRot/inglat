@@ -894,6 +894,15 @@
   text-align: center;
 }
 
+/* Contenedor responsivo para tabla */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: var(--space-6) 0;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow);
+}
+
 /* Tabla de Resumen */
 .resumen-table {
   width: 100%;
@@ -901,8 +910,8 @@
   background: var(--white);
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow);
-  margin: var(--space-6) 0;
+  margin: 0; /* Margin movido al contenedor */
+  box-shadow: none; /* Shadow movido al contenedor */
 }
 
 .resumen-table th,
@@ -910,6 +919,7 @@
   padding: var(--space-4);
   text-align: left;
   border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap; /* Evitar cortes de texto en móvil */
 }
 
 .resumen-table th {
@@ -1009,25 +1019,47 @@
   .resultados-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .wizard-navigation {
     flex-direction: column;
     gap: var(--space-3);
   }
-  
+
   .range-input-container {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-2);
   }
-  
+
   .chart-container {
     height: 280px;
     padding: var(--space-3);
   }
-  
+
   .chart-container canvas {
     max-height: 220px !important;
+  }
+
+  /* Optimizaciones móvil para tabla de resumen */
+  .resumen-table th,
+  .resumen-table td {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .resumen-table th:first-child,
+  .resumen-table td:first-child {
+    min-width: 120px; /* Ancho mínimo para "Concepto" */
+  }
+
+  .resumen-table th:nth-child(2),
+  .resumen-table td:nth-child(2) {
+    min-width: 100px; /* Ancho mínimo para "Valor" */
+  }
+
+  .resumen-table th:nth-child(3),
+  .resumen-table td:nth-child(3) {
+    min-width: 140px; /* Ancho mínimo para "Descripción" */
   }
 }
 
@@ -1080,6 +1112,28 @@
   .roof-type-image {
     width: 50px;
     height: 50px;
+  }
+
+  /* Optimizaciones extra móvil para tabla de resumen */
+  .resumen-table th,
+  .resumen-table td {
+    padding: var(--space-1) var(--space-2);
+    font-size: 12px;
+  }
+
+  .resumen-table th:first-child,
+  .resumen-table td:first-child {
+    min-width: 100px; /* Reducir ancho en pantallas muy pequeñas */
+  }
+
+  .resumen-table th:nth-child(2),
+  .resumen-table td:nth-child(2) {
+    min-width: 80px; /* Reducir ancho en pantallas muy pequeñas */
+  }
+
+  .resumen-table th:nth-child(3),
+  .resumen-table td:nth-child(3) {
+    min-width: 120px; /* Reducir ancho en pantallas muy pequeñas */
   }
 }
 
@@ -1615,50 +1669,87 @@
    ESTILOS PARA VIDEO BACKGROUND HERO SECTION
    ======================================== */
 
-/* Hero section con video responsive */
+/* Hero section con video responsive - Ajustado para mostrar video completo */
 .hero--video {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 60vh; /* Altura fija más pequeña para desktop */
-    margin: 0;
+    /* Altura ajustada para mostrar video completo sin recortes */
+    height: 75vh; /* Aumentada para acomodar mejor el video */
+    margin: 0; /* Sin margen - video pegado al header */
     padding: 0;
+    background: linear-gradient(135deg, #000000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Container para el video */
 .hero__video-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden; /* Asegurar que el video no se salga del contenedor */
 }
 
-/* Video responsive */
-.hero__video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
+/* Video responsive - Modificado para cubrir toda la portada como en home */
+/* Mayor especificidad para sobrescribir estilos de home.css */
+.hero--video .hero__video-container .hero__video {
+    position: absolute !important; /* Usar position absolute como en home */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* Usar cover para llenar toda la portada */
+    object-position: center !important;
+    display: block !important;
+    z-index: 1;
+    pointer-events: none; /* Desactivar eventos del video como en home */
+    border-radius: 0 !important; /* Sin bordes redondeados para cubrir toda la portada */
+    box-shadow: none !important; /* Sin sombra para cubrir toda la portada */
+    transform: none !important; /* Asegurar que no haya transformaciones */
+    min-width: 100% !important; /* Asegurar ancho mínimo */
+    min-height: 100% !important; /* Asegurar altura mínima */
 }
 
-/* Responsive Design para Video Hero */
+/* Responsive Design para Video Hero - Alturas optimizadas */
 @media (max-width: 1024px) {
     .hero--video {
-        height: 50vh; /* Más pequeño en tablet */
+        height: 65vh; /* Ajustado para tablet */
     }
 }
 
 @media (max-width: 768px) {
     .hero--video {
-        height: 40vh; /* Más pequeño en móvil */
+        height: 55vh; /* Ajustado para móvil */
+    }
+
+    .hero--video .hero__video-container .hero__video {
+        border-radius: 6px; /* Esquinas más pequeñas en móvil */
     }
 }
 
 @media (max-width: 480px) {
     .hero--video {
-        height: 35vh; /* Muy pequeño en móviles pequeños */
+        height: 45vh; /* Ajustado para móviles pequeños */
+    }
+
+    .hero--video .hero__video-container .hero__video {
+        border-radius: 4px; /* Esquinas aún más pequeñas */
+    }
+}
+
+/* Responsive para pantallas muy anchas */
+@media (min-width: 1440px) {
+    .hero--video {
+        height: 80vh; /* Más espacio en pantallas grandes */
+    }
+}
+
+/* Responsive para pantallas ultra anchas */
+@media (min-width: 1920px) {
+    .hero--video {
+        height: 85vh; /* Máximo espacio en pantallas muy grandes */
     }
 }
 
@@ -1667,4 +1758,118 @@
     .hero__video {
         animation-play-state: paused;
     }
+
+    .hero--video {
+        background: #f8fafc; /* Fondo estático sin gradiente */
+    }
+}
+
+/* Fallback para navegadores que no soportan object-fit */
+@supports not (object-fit: contain) {
+    .hero--video .hero__video-container .hero__video {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        min-width: auto !important;
+        min-height: auto !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+    }
+}
+
+/* Regla adicional con máxima especificidad para forzar el video a cubrir toda la portada */
+section.hero.hero--video .hero__video-container .hero__video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    z-index: 1 !important;
+}
+
+/* Regla de máxima especificidad para sobrescribir cualquier estilo del home.css */
+body .hero--video .hero__video-container .hero__video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+/* Video Loading Overlay */
+.video-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    color: white;
+    transition: opacity 0.3s ease;
+}
+
+.video-loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.video-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.video-loading-overlay p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Regla de máxima especificidad para forzar el video a cubrir toda la portada - Sobrescribir home.css */
+html body .hero--video .hero__video-container .hero__video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
 }
