@@ -1689,31 +1689,27 @@
     position: relative;
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden; /* Asegurar que el video no se salga del contenedor */
 }
 
-/* Video responsive - Modificado para mostrar contenido completo */
+/* Video responsive - Modificado para cubrir toda la portada como en home */
 /* Mayor especificidad para sobrescribir estilos de home.css */
 .hero--video .hero__video-container .hero__video {
-    position: relative !important; /* Sobrescribir position: absolute del home.css */
-    top: auto !important;
-    left: auto !important;
-    transform: none !important; /* Remover transform del home.css */
-    min-width: auto !important;
-    min-height: auto !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    width: auto !important;
-    height: auto !important;
-    object-fit: contain !important; /* Forzar contain sobre cover del home.css */
+    position: absolute !important; /* Usar position absolute como en home */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* Usar cover para llenar toda la portada */
     object-position: center !important;
     display: block !important;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     z-index: 1;
-    pointer-events: auto; /* Reactivar eventos del video */
+    pointer-events: none; /* Desactivar eventos del video como en home */
+    border-radius: 0 !important; /* Sin bordes redondeados para cubrir toda la portada */
+    box-shadow: none !important; /* Sin sombra para cubrir toda la portada */
+    transform: none !important; /* Asegurar que no haya transformaciones */
+    min-width: 100% !important; /* Asegurar ancho mínimo */
+    min-height: 100% !important; /* Asegurar altura mínima */
 }
 
 /* Responsive Design para Video Hero - Alturas optimizadas */
@@ -1780,4 +1776,57 @@
         max-width: 100% !important;
         max-height: 100% !important;
     }
+}
+
+/* Regla adicional con máxima especificidad para forzar el video a cubrir toda la portada */
+section.hero.hero--video .hero__video-container .hero__video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    z-index: 1 !important;
+}
+
+/* Regla de máxima especificidad para sobrescribir cualquier estilo del home.css */
+body .hero--video .hero__video-container .hero__video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+/* Regla de máxima especificidad para forzar el video a cubrir toda la portada - Sobrescribir home.css */
+html body .hero--video .hero__video-container .hero__video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
 }
