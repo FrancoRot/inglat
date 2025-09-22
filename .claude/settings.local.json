@@ -15,7 +15,8 @@
       "WebFetch(domain:www.canva.com)",
       "WebFetch(domain:www.cronyxdigital.com)",
       "Bash(mediainfo:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
